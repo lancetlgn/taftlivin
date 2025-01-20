@@ -1,57 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="main.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <title>Home</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>TaftLivin' - Rate My Dorm</title>
+    <meta name="description" content="Rate and review dormitories around DLSU">
+    <meta name="keywords" content="DLSU, dormitory, review, rate, Taft, Manila">
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet">
+
 </head>
-<body>
-    <div class="container">
-        
-    </div>
-    <div>
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">TaftLivin'</a>
-            </div>
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Condos</a></li>
-                <li><a href="#">Reviews</a></li>
-                <li><a href="#">Forum</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
 
-    <div class="container" id="section1">
-        <div class="jumbotron text-center">
-            <h1>Welcome to TaftLivin'</h1>
-            <p>Rate and review your favorite condos in Taft Avenue!</p>
-        </div>
+<body class="index-page">
 
-        <div class="row">
-            <div class="col-sm-4">
-                <h3>Top Rated Condos</h3>
-                <p>Discover the highest rated condos in the area.</p>
-            </div>
-            <div class="col-sm-4">
-                <h3>Latest Reviews</h3>
-                <p>Read the latest reviews from our community.</p>
-            </div>
-            <div class="col-sm-4">
-                <h3>Submit Your Review</h3>
-                <p>Share your experience and help others make informed decisions.</p>
-            </div>
-        </div>
-    </div>
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-    </div>
+            <a href="index.html" class="logo d-flex align-items-center me-auto">
+                <img src="assets/img/logo.png" alt="">
+                <h1 class="sitename">TaftLivin'</h1>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="index.html#hero" class="active">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#dorms">Dorms</a></li>
+                    <li><a href="index.html#reviews">Reviews</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+            <a class="btn-getstarted" href="index.html#about">Get Started</a>
+
+        </div>
+    </header>
+
+    <main class="main">
+
+        <!-- Hero Section -->
+        <section id="hero" class="hero section">
+            <div class="hero-bg">
+                <img src="assets/img/hero-bg-light.webp" alt="">
+            </div>
+            <div class="container text-center">
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <h1 data-aos="fade-up">Welcome to <span>TaftLivin'</span></h1>
+                    <p data-aos="fade-up" data-aos-delay="100">Rate and review dormitories around DLSU<br></p>
+                    <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
+                        <a href="#about" class="btn-get-started">View Dorms</a>
+                    </div>
+                </div>
+            </div>
+
+        </section><!-- /Hero Section -->
+
+        <!-- About Section -->
+        <section id="about" class="about section">
+
+            <div class="container">
+
+                <div class="row gy-4">
+
+                    <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
+                        <h3>Connecting Students with the Best Dorms</h3>
+                        <p class="fst-italic">
+                            TaftLivin' is dedicated to helping students find the best dormitories around DLSU. Share your experiences and read reviews from fellow students.
+                        </p>
+                        <ul>
+                            <li><i class="bi bi-check-circle"></i> <span>Comprehensive dormitory listings.</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span>Real reviews from real students.</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span>Find the perfect place to live near DLSU.</span></li>
+                        </ul>
+                        <a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+                    </div>
+
+                    <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
+                        <div class="row gy-4">
+                            <div class="col-lg-6"></div>
+                                <img src="assets/img/about-dorm-1.jpg" class="img-fluid" alt="">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row gy-4">
+                                    <div class="col-lg-12">
+                                        <img src="assets/img/about-dorm-2.jpg" class="img-fluid" alt="">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <img src="assets/img/about-dorm-3.jpg" class="img-fluid" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section><!-- /About Section -->
+
+        <!-- Dorms Section -->
+        <section id="dorms" class="dorms section light-background">
+
+            <div class="container">
+
+                <div class="row gy-4">
+
+                    <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="dorm-item d-flex">
+                            <div class="icon flex-shrink-0"><i class="bi bi-house-door"></i></div>
+                            <div>
+                                <h4 class="title"><a href="#" class="stretched-link">Dormitory 1</a></h4>
+                                <p class="description">Affordable and close to campus.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Dorm Item -->
+
+                    <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                        <div class="dorm-item d-flex">
+                            <div class="icon flex-shrink-0"><i class="bi bi-building"></i></div>
+                            <div>
+                                <h4 class="title"><a href="#" class="stretched-link">Dormitory 2</a></h4>
+                                <p class="description">Modern amenities and great location.</p>
+                            </div>
+                        </div>
+                    </div><!-- End Dorm Item -->
+
+                    <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="300">
+                        <div class="dorm-item d-flex">
+                            <div class="icon flex-shrink-0"><i class="bi bi-house"></i></div>
+                            <div>
+                                <h4 class="title"><a href="#" class="stretched-link">Dormitory 3</a></h4>
+                                <p class="description">Spacious rooms and friendly community.</p>
+                            </div>
+                        </div>
+                    </div><!-- End Dorm Item -->
+
+                </div>
+
+            </div>
+
+        </section><!-- /Dorms Section -->
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="reviews section">
+
+            <div class="container" data-aos="fade-up">
+
+                <div class="row gy-4">
+
+                    <div class="col-xl-4 col-md-6 col-12 review-item">
+                        <div class="review-content">
+                            <h4>Juan Dela Cruz</h4>
+                            <p>"Great place to stay! Very close to campus and affordable."</p>
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+                            </div>
+                        </div>
+                    </div><!-- End Review Item -->
+
+                    <div class="col-xl-4 col-md-6 col-12 review-item">
+                        <div class="review-content">
+                            <h4>John DIe</h4>
+                            <p>"Modern amenities and a great community. Highly recommend!"</p>
+                            <div class="stars"></div>
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                    </div><!-- End Review Item -->
+
+
+                </div>
+
+            </div>
+
+        </section><!-- /Reviews Section -->
+
+    
+    </main>
+
+
+  </main>
+
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
 </body>
+
 </html>
