@@ -8,54 +8,90 @@
         <title>Home </title>
         <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
         <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   </head>
   <body>
-        <header>
-            <div class="collapse bg-dark" id="navbarHeader">
-                <div class="container">
-                <div class="row">
-                    <div class="col-sm-8 col-md-7 py-4">
-                    <h4 class="text-white">About</h4>
-                    <p class="text-muted">TaftLivin' is a web application designed to help students and young professionals find the best accommodations around the De La Salle University (DLSU) area. Whether you're searching for a condo, dorm, or apartment, TaftLivin' offers a reliable platform where users can browse, review, and share honest opinions about various establishments. Our mission is to make the search for the perfect living space easier by providing detailed ratings, real reviews, and helpful insights from fellow students and tenants.</p>
-                    </div>
-                    <div class="col-sm-4 offset-md-1 py-4">
-                    <h4 class="text-white">Contact</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">Follow on Twitter</a></li>
-                        <li><a href="#" class="text-white">Like on Facebook</a></li>
-                        <li><a href="#" class="text-white">Email me</a></li>
-                    </ul>
-                    </div>
-                </div>
-                </div>
-            </div>
-            <div class="navbar navbar-dark bg-dark shadow-sm">
-                <div class="container">
-                <a href="#" class="navbar-brand d-flex align-items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                    <strong>TaftLivin'</strong>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">TaftLivin'</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Condos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Reviews</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </header>
+        </nav>
 
         <main>
-            <section class="py-5 text-center container bg-image-container">
-                <div class="row py-lg-5">
-                    <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="mt-5 py-5 text-center container bg-image-container">
+                <div class="row py-5">
+                    <div class="col-6 col-md-8 mx-auto">
                         <h1 class="fw-light">Welcome to TaftLivin'</h1>
                         <p class="lead text-muted">Your ultimate guide to living and thriving in Taft.</p>
-                        <p>
-                            <a href="#" class="btn btn-primary my-2">View Reviews</a>
-                            <a href="#" class="btn btn-secondary my-2">View Condos</a>
-                        </p>
+                       <form action="">
+                            <div class = "input-group">
+                                <input type="text" class="form-control" placeholder="Search for a condo, dorm, or apartment">
+                            </div>
+                       </form>
                     </div>
                 </div>
-            </section>
+            </div>
+
+            <div class="py-4 container-fluid bg-light mx-auto">
+                  <h2 class = "p-3 fw-light text-center">Condos</h2>      
+
+                <div class = "row">
+                    <div class = "col-4">
+                        <div class="card" style="width:400px">
+                            <img class="card-img-top" src="img1.png" alt="Card image" style="width:100%">
+                            <div class="card-body">
+                              <h4 class="card-title">Condo</h4>
+                              <p class="card-text">Some example text some example text. </p>
+                              <a href="#" class="btn btn-success">View</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class = "col-4">
+                        <div class="card" style="width:400px">
+                            <img class="card-img-top" src="img2.png" alt="Card image" style="width:100%">
+                            <div class="card-body">
+                              <h4 class="card-title">Condo</h4>
+                              <p class="card-text">Some example text some example text. </p>
+                              <a href="#" class="btn btn-success">View</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class = "col-4">
+                        <div class="card" style="width:400px">
+                            <img class="card-img-top" src="img3..png" alt="Card image" style="width:100%">
+                            <div class="card-body">
+                              <h4 class="card-title">Condo</h4>
+                              <p class="card-text">Some example text some example text. </p>
+                              <a href="#" class="btn btn-success">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
         </main>
 
         <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>       
