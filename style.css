@@ -18,10 +18,29 @@ user-select: none;
 }
 
 @media (min-width: 768px) {
-.bd-placeholder-img-lg {
-    font-size: 3.5rem;
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+
 }
+
+#bg-image-container {
+    background: url("images/ls-bg-blur.png");
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+
 }
 
+.card-img-container {
+    height: 250px; /* Fixed height for uniformity */
+    overflow: hidden; /* Ensures content outside the container is hidden */
+  }
 
+  .card-img-top {
+    object-fit: cover; /* Makes the image fill the container without distortion */
+    height: 100%; /* Ensures the image fully covers the height */
+    width: 100%; /* Ensures the image fully covers the width */
+  }
 
+  
