@@ -11,10 +11,11 @@
         <link rel="stylesheet" href="style.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        
 
   </head>
   <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
+    <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">TaftLivin'</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,8 +36,6 @@
                         <a class="nav-link" href="#">Reviews</a>
                     </li>
                 </ul>
-                
-                <!-- Right-aligned Sign In and Sign Up buttons -->
                 <div class="d-flex">
                     <a href="#" class="btn btn-light ms-2">Sign In</a>
                     <a href="#" class="btn btn-outline-light ms-2">Sign Up</a>
@@ -46,6 +45,7 @@
     </nav>
 
         <main>
+            <!-- Start of Hero section -->
             <div class="mt-5 py-5 text-center container-fluid" id="bg-image-container">
                 <div class="row py-5">
                     <div class="col-6 col-md-8 mx-auto">
@@ -59,13 +59,15 @@
                     </div>
                 </div>
             </div>
+            <!-- End of Hero section -->
 
+            <!-- Start of Popular Condos and Dorms section -->
             <div class="pb-5 py-4 container-fluid bg-light mx-auto">
                 <h2 class="p-3 fw-light text-center">Popular Condos and Dorms</h2>
               
                 <div class="row">
                   <div class="col-md-4">
-                    <div class="card h-100">
+                    <div class="card h-100 d-flex flex-column">
                       <div class="card-img-container">
                         <img src="images/green1.jpg" alt="Green Residences by SMDC" class="card-img-top img-fluid">
                       </div>
@@ -79,8 +81,7 @@
                           <i class="far fa-star text-warning"></i>
                           <span class="text-muted">(3.0)</span>
                         </div>
-                        <p class="card-text"><i class="fas fa-walking"></i> 450m from DLSU (6min. walk)<p></p>
-
+                        <p class="card-text"><i class="fas fa-walking"></i> 450m from DLSU (6min. walk)</p>
                         <p class="card-text">"Numerous units available, but the elevators are very slow." - Anonymous</p>
                         <a href="#" class="btn btn-success">View</a>
                       </div>
@@ -95,15 +96,15 @@
                       <div class="card-body">
                         <h4 class="card-title">Vista Taft Residences</h4>
                         <div class="star-rating">
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="far fa-star text-warning"></i>
-                            <span class="text-muted">(4.0)</span>
-                          </div>
-                        <p class="card-text"><i class="fas fa-walking"></i> 500m from DLSU (7min. walk)<p></p>
-                        <p class="card-text">"Good place to stay, but can get noisy at times." - Maria P.</p>
+                          <i class="fas fa-star text-warning"></i>
+                          <i class="fas fa-star text-warning"></i>
+                          <i class="fas fa-star text-warning"></i>
+                          <i class="fas fa-star text-warning"></i>
+                          <i class="far fa-star text-warning"></i>
+                          <span class="text-muted">(4.0)</span>
+                        </div>
+                        <p class="card-text"><i class="fas fa-walking"></i> 500m from DLSU (7min. walk)</p>
+                        <p class="card-text">"Good place to stay, but can get noisy at times. They are also strict with guests" - Maria P.</p>
                         <a href="#" class="btn btn-success">View</a>
                       </div>
                     </div>
@@ -117,13 +118,13 @@
                       <div class="card-body">
                         <h4 class="card-title">One Archers' Place</h4>
                         <div class="star-rating">
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <span class="text-muted">(5.0)</span>
-                          </div>
+                          <i class="fas fa-star text-warning"></i>
+                          <i class="fas fa-star text-warning"></i>
+                          <i class="fas fa-star text-warning"></i>
+                          <i class="fas fa-star text-warning"></i>
+                          <i class="fas fa-star text-warning"></i>
+                          <span class="text-muted">(5.0)</span>
+                        </div>
                         <p class="card-text"><i class="fas fa-walking"></i> 300m from DLSU (4min. walk)</p>
                         <p class="card-text">"Great place to stay, very convenient and close to campus!" - Anton L.</p>
                         <a href="#" class="btn btn-success">View</a>
@@ -131,9 +132,88 @@
                     </div>
                   </div>
                 </div>
-              </div>
+            </div>
+            <!-- End of Popular Condos and Dorms section -->
+
+            <!-- Start of Features Section -->
+            <div class="container-fluid" style="height: 60vh;">
+                <div class="row">
+                    <div class="p-5 col-6  fixed-height text-center ">
+                        <h1>Submit A Review</h1>
+                        <p class="px-5">Share your experiences and help others make informed decisions by submitting a review of your current or past residence. Your insights can provide valuable information to prospective residents about the living conditions, amenities, and overall environment of the place. </p>
+                        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                            Submit a Review
+                        </button>
+                    </div>
 
 
+                    
+                    <div class="p-5 col-6  fixed-height text-center bg-success">
+                        <h1 class="text-white">Discussion Forum</h1>
+                        <div class="container my-5">
+                            <div class="row bg-light rounded p-3" >
+                                <!-- Recent Topics -->
+                                <div class="col-md-8">
+                                    <h4>Latest Topics</h4>
+                                    <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a href="#" class="text-decoration-none text-dark">
+                                                What's the best condo in Taft?
+                                            </a>
+                                            <span class="badge bg-success rounded-pill">12 Replies</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a href="#" class="text-decoration-none text-dark">
+                                                Moving tips for new residents
+                                            </a>
+                                            <span class="badge bg-success rounded-pill">8 Replies</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a href="#" class="text-decoration-none text-dark">
+                                                How to negotiate rent prices?
+                                            </a>
+                                            <span class="badge bg-success rounded-pill">15 Replies</span>
+                                        </li>
+                                    </ul>
+                                    <a href="forum.html" class="btn btn-outline-success mt-3">View All Discussions</a>
+                                </div>
+                                
+                                <!-- Forum Screenshot or Promo -->
+                                <div class="col-md-4 text-center">
+                                    <h4>Join the Community</h4>
+                                    <p class="mt-3">Share your thoughts, ask questions, and connect with fellow residents.</p>
+                                    <a href="signup.html" class="btn btn-success">Sign Up Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- End of Features Section -->
+
+            <!-- Start of Maps Section -->
+            <div class="container-fluid bg-light">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <!-- Embedded Map -->
+                        <iframe 
+                            id="map-container"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1930.305815973246!2d120.99261125808168!3d14.563525049365448!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c9d2f8a92abf%3A0x22925665f180e0c8!2sVito%20Cruz%20Station%2C%20Taft%20Avenue%2C%20Malate%2C%20Manila%2C%201004%2C%20Philippines!5e0!3m2!1sen!2sph!4v1696512641023!5m2!1sen!2sph" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Maps Section -->
+            
         </main>
 
         <footer class="bg-dark text-white py-4">
@@ -152,5 +232,15 @@
         </footer>
 
         <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>       
+        <script>
+            document.addEventListener("scroll", function() {
+                const navbar = document.getElementById("navbar");
+                if (window.scrollY > 50) { // Adjust the scroll threshold as needed
+                    navbar.classList.add("scrolled");
+                } else {
+                    navbar.classList.remove("scrolled");
+                }
+            });
+        </script>
   </body>
 </html>
