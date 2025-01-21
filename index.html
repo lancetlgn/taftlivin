@@ -14,37 +14,43 @@
 
   </head>
   <body>
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">TaftLivin'</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Condos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Reviews</a>
-                        </li>
-                    </ul>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">TaftLivin'</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Condos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Reviews</a>
+                    </li>
+                </ul>
+                
+                <!-- Right-aligned Sign In and Sign Up buttons -->
+                <div class="d-flex">
+                    <a href="#" class="btn btn-light ms-2">Sign In</a>
+                    <a href="#" class="btn btn-outline-light ms-2">Sign Up</a>
                 </div>
             </div>
-        </nav>
+        </div>
+    </nav>
 
         <main>
             <div class="mt-5 py-5 text-center container-fluid" id="bg-image-container">
                 <div class="row py-5">
                     <div class="col-6 col-md-8 mx-auto">
                         <h1 class="fw-light">Welcome to TaftLivin'</h1>
-                        <p class="lead text-muted">Your ultimate guide to living and thriving in Taft.</p>
+                        <p class="lead text-muted">Discover the best places to live near DLSU with reviews and ratings from the DLSU community</p>
                        <form action="">
                             <div class = "input-group">
                                 <input type="text" class="form-control" placeholder="Search for a condo, dorm, or apartment">
@@ -55,7 +61,7 @@
             </div>
 
             <div class="pb-5 py-4 container-fluid bg-light mx-auto">
-                <h2 class="p-3 fw-light text-center">Condos</h2>
+                <h2 class="p-3 fw-light text-center">Popular Condos and Dorms</h2>
               
                 <div class="row">
                   <div class="col-md-4">
@@ -66,16 +72,16 @@
                       <div class="card-body">
                         <h4 class="card-title">Green Residences by SMDC</h4>
                         <div class="star-rating">
-                          <!-- Using Font Awesome -->
-                          <i class="fas fa-star text-warning"></i>
                           <i class="fas fa-star text-warning"></i>
                           <i class="fas fa-star text-warning"></i>
                           <i class="fas fa-star text-warning"></i>
                           <i class="far fa-star text-warning"></i>
-                          <!-- Add rating text if desired -->
-                          <span class="text-muted">(4.0)</span>
+                          <i class="far fa-star text-warning"></i>
+                          <span class="text-muted">(3.0)</span>
                         </div>
-                        <p class="card-text">Some example text some example text.</p>
+                        <p class="card-text"><i class="fas fa-walking"></i> 450m from DLSU (6min. walk)<p></p>
+
+                        <p class="card-text">"Numerous units available, but the elevators are very slow." - Anonymous</p>
                         <a href="#" class="btn btn-success">View</a>
                       </div>
                     </div>
@@ -89,16 +95,15 @@
                       <div class="card-body">
                         <h4 class="card-title">Vista Taft Residences</h4>
                         <div class="star-rating">
-                            <!-- Using Font Awesome -->
                             <i class="fas fa-star text-warning"></i>
                             <i class="fas fa-star text-warning"></i>
                             <i class="fas fa-star text-warning"></i>
                             <i class="fas fa-star text-warning"></i>
                             <i class="far fa-star text-warning"></i>
-                            <!-- Add rating text if desired -->
                             <span class="text-muted">(4.0)</span>
                           </div>
-                        <p class="card-text">Some example text some example text.</p>
+                        <p class="card-text"><i class="fas fa-walking"></i> 500m from DLSU (7min. walk)<p></p>
+                        <p class="card-text">"Good place to stay, but can get noisy at times." - Maria P.</p>
                         <a href="#" class="btn btn-success">View</a>
                       </div>
                     </div>
@@ -112,16 +117,15 @@
                       <div class="card-body">
                         <h4 class="card-title">One Archers' Place</h4>
                         <div class="star-rating">
-                            <!-- Using Font Awesome -->
                             <i class="fas fa-star text-warning"></i>
                             <i class="fas fa-star text-warning"></i>
                             <i class="fas fa-star text-warning"></i>
                             <i class="fas fa-star text-warning"></i>
-                            <i class="far fa-star text-warning"></i>
-                            <!-- Add rating text if desired -->
-                            <span class="text-muted">(4.0)</span>
+                            <i class="fas fa-star text-warning"></i>
+                            <span class="text-muted">(5.0)</span>
                           </div>
-                        <p class="card-text">Some example text some example text.</p>
+                        <p class="card-text"><i class="fas fa-walking"></i> 300m from DLSU (4min. walk)</p>
+                        <p class="card-text">"Great place to stay, very convenient and close to campus!" - Anton L.</p>
                         <a href="#" class="btn btn-success">View</a>
                       </div>
                     </div>
@@ -131,6 +135,21 @@
 
 
         </main>
+
+        <footer class="bg-dark text-white py-4">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-md-6 text-md-start mb-3 mb-md-0">
+                        <p class="mb-0">&copy; 2025 TaftLivin'. All rights reserved.</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="#" class="text-white me-3">Privacy Policy</a>
+                        <a href="#" class="text-white me-3">Terms of Service</a>
+                        <a href="#" class="text-white">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
 
         <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>       
   </body>

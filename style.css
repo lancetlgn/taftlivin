@@ -43,4 +43,26 @@ user-select: none;
     width: 100%; /* Ensures the image fully covers the width */
   }
 
-  
+/* Make the scrollable container horizontally scrollable */
+.scroll-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px; /* Add some space below */
+}
+
+/* Ensure cards have consistent spacing and sizing */
+.scroll-container .card {
+    display: inline-block;
+    vertical-align: top;
+    width: 16rem; /* Adjust width as needed */
+    flex: none; /* Prevent cards from resizing */
+}
+
+footer a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #ffc107; /* Add a hover effect, e.g., a gold color */
+}
