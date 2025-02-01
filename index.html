@@ -152,120 +152,120 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Modal (Pop-up Form) -->
-                    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="reviewModalLabel">Submit a Review</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Modal (Pop-up Form) -->
+            <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="reviewModalLabel">Submit a Review</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="reviewForm" method="POST" action="/submit-review" enctype="multipart/form-data">
+                                <!-- Condo Dropdown -->
+                                <div class="mb-3">
+                                    <label for="condoSelect" class="form-label">Select Condo</label>
+                                    <select class="form-select" id="condoSelect" name="condo" required>
+                                        <option value="" disabled selected>Select a condo...</option>
+                                        <option value="Green Residences by SMDC">Green Residences by SMDC</option>
+                                        <option value="Vista Taft Residences">Vista Taft Residences</option>
+                                        <option value="One Archers' Place">One Archers' Place</option>
+                                    </select>
                                 </div>
-                                <div class="modal-body">
-                                    <form id="reviewForm" method="POST" action="/submit-review" enctype="multipart/form-data">
-                                        <!-- Condo Dropdown -->
-                                        <div class="mb-3">
-                                            <label for="condoSelect" class="form-label">Select Condo</label>
-                                            <select class="form-select" id="condoSelect" name="condo" required>
-                                                <option value="" disabled selected>Select a condo...</option>
-                                                <option value="Green Residences by SMDC">Green Residences by SMDC</option>
-                                                <option value="Vista Taft Residences">Vista Taft Residences</option>
-                                                <option value="One Archers' Place">One Archers' Place</option>
-                                            </select>
-                                        </div>
 
-                                        <!-- Star Rating -->
-                                        <div class="mb-3">
-                                            <label class="form-label">Your Rating</label>
-                                            <div id="starRating" class="star-rating">
-                                                <i class="far fa-star text-warning" data-value="1"></i>
-                                                <i class="far fa-star text-warning" data-value="2"></i>
-                                                <i class="far fa-star text-warning" data-value="3"></i>
-                                                <i class="far fa-star text-warning" data-value="4"></i>
-                                                <i class="far fa-star text-warning" data-value="5"></i>
-                                            </div>
-                                            <input type="hidden" id="ratingInput" name="rating" required>
-                                        </div>
-
-                                        <!-- Review Text -->
-                                        <div class="mb-3">
-                                            <label for="reviewText" class="form-label">Your Review</label>
-                                            <textarea class="form-control" id="reviewText" name="review" rows="3" placeholder="Write your review here..." required></textarea>
-                                        </div>
-
-                                        <!-- Image Upload -->
-                                        <div class="mb-3">
-                                            <label for="reviewImage" class="form-label">Upload an Image</label>
-                                            <input type="file" class="form-control" id="reviewImage" name="image" accept="image/*">
-                                        </div>
-
-                                        <!-- Additional Ratings (Optional) -->
-                                        <div class="mb-3">
-                                            <label class="form-label">Cleanliness</label>
-                                            <select class="form-select" name="cleanliness" required>
-                                                <option value="1">1 - Poor</option>
-                                                <option value="2">2 - Fair</option>
-                                                <option value="3">3 - Good</option>
-                                                <option value="4">4 - Very Good</option>
-                                                <option value="5">5 - Excellent</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Location</label>
-                                            <select class="form-select" name="location" required>
-                                                <option value="1">1 - Poor</option>
-                                                <option value="2">2 - Fair</option>
-                                                <option value="3">3 - Good</option>
-                                                <option value="4">4 - Very Good</option>
-                                                <option value="5">5 - Excellent</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Amenities</label>
-                                            <select class="form-select" name="amenities" required>
-                                                <option value="1">1 - Poor</option>
-                                                <option value="2">2 - Fair</option>
-                                                <option value="3">3 - Good</option>
-                                                <option value="4">4 - Very Good</option>
-                                                <option value="5">5 - Excellent</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Value for Money</label>
-                                            <select class="form-select" name="value_for_money" required>
-                                                <option value="1">1 - Poor</option>
-                                                <option value="2">2 - Fair</option>
-                                                <option value="3">3 - Good</option>
-                                                <option value="4">4 - Very Good</option>
-                                                <option value="5">5 - Excellent</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Would Recommend Question -->
-                                        <div class="mb-3">
-                                            <label class="form-label">Would you recommend this condo?</label>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="recommend" id="recommendYes" value="Yes" required>
-                                                <label class="form-check-label" for="recommendYes">Yes</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="recommend" id="recommendNo" value="No" required>
-                                                <label class="form-check-label" for="recommendNo">No</label>
-                                            </div>
-                                        </div>
-
-                                        <!-- Submit Button -->
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-success px-4 py-2">Submit Review</button>
-                                        </div>
-                                    </form>
+                                <!-- Star Rating -->
+                                <div class="mb-3">
+                                    <label class="form-label">Your Rating</label>
+                                    <div id="starRating" class="star-rating">
+                                        <i class="far fa-star text-warning" data-value="1"></i>
+                                        <i class="far fa-star text-warning" data-value="2"></i>
+                                        <i class="far fa-star text-warning" data-value="3"></i>
+                                        <i class="far fa-star text-warning" data-value="4"></i>
+                                        <i class="far fa-star text-warning" data-value="5"></i>
+                                    </div>
+                                    <input type="hidden" id="ratingInput" name="rating" required>
                                 </div>
-                            </div>
+
+                                <!-- Review Text -->
+                                <div class="mb-3">
+                                    <label for="reviewText" class="form-label">Your Review</label>
+                                    <textarea class="form-control" id="reviewText" name="review" rows="3" placeholder="Write your review here..." required></textarea>
+                                </div>
+
+                                <!-- Image Upload -->
+                                <div class="mb-3">
+                                    <label for="reviewImage" class="form-label">Upload an Image</label>
+                                    <input type="file" class="form-control" id="reviewImage" name="image" accept="image/*">
+                                </div>
+
+                                <!-- Additional Ratings (Optional) -->
+                                <div class="mb-3">
+                                    <label class="form-label">Cleanliness</label>
+                                    <select class="form-select" name="cleanliness" required>
+                                        <option value="1">1 - Poor</option>
+                                        <option value="2">2 - Fair</option>
+                                        <option value="3">3 - Good</option>
+                                        <option value="4">4 - Very Good</option>
+                                        <option value="5">5 - Excellent</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Location</label>
+                                    <select class="form-select" name="location" required>
+                                        <option value="1">1 - Poor</option>
+                                        <option value="2">2 - Fair</option>
+                                        <option value="3">3 - Good</option>
+                                        <option value="4">4 - Very Good</option>
+                                        <option value="5">5 - Excellent</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Amenities</label>
+                                    <select class="form-select" name="amenities" required>
+                                        <option value="1">1 - Poor</option>
+                                        <option value="2">2 - Fair</option>
+                                        <option value="3">3 - Good</option>
+                                        <option value="4">4 - Very Good</option>
+                                        <option value="5">5 - Excellent</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Value for Money</label>
+                                    <select class="form-select" name="value_for_money" required>
+                                        <option value="1">1 - Poor</option>
+                                        <option value="2">2 - Fair</option>
+                                        <option value="3">3 - Good</option>
+                                        <option value="4">4 - Very Good</option>
+                                        <option value="5">5 - Excellent</option>
+                                    </select>
+                                </div>
+
+                                <!-- Would Recommend Question -->
+                                <div class="mb-3">
+                                    <label class="form-label">Would you recommend this condo?</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="recommend" id="recommendYes" value="Yes" required>
+                                        <label class="form-check-label" for="recommendYes">Yes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="recommend" id="recommendNo" value="No" required>
+                                        <label class="form-check-label" for="recommendNo">No</label>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-success px-4 py-2">Submit Review</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <!-- End of Modal -->
+                </div>
+            </div>
+            <!-- End of Modal -->
 
 
                     <div class="p-5 col-6  fixed-height text-center bg-success">
