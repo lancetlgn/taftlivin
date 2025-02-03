@@ -54,6 +54,11 @@
     flex: 1;
 }
 
+footer {
+    position: relative;
+    width: 100%
+}
+
 footer a {
     text-decoration: none;
     transition: color 0.3s ease;
