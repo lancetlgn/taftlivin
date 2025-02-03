@@ -55,8 +55,7 @@
 
 footer {
     position: relative;
-    width: 100%;
-    margin-top: auto;
+    width: 100%
 }
 
 footer a {
@@ -143,7 +142,6 @@ footer a:hover {
 /* Add to your style.css */
 main {
     margin-top: 80px; /* Height of your navbar */
-    flex: 1;
 }
 
 .user-info {
@@ -177,11 +175,4 @@ main {
 .navbar .user-info:hover {
     text-decoration: none;
     color: rgba(255, 255, 255, 0.8);
-}
-
-/* Add these styles for sticky footer */
-body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
