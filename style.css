@@ -129,3 +129,8 @@ footer a:hover {
     bottom: 15px;
     left: 15px;
 }
+
+/* Add to your style.css */
+main {
+    margin-top: 80px; /* Height of your navbar */
+  }
