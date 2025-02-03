@@ -10,18 +10,17 @@
 }
 
 .bd-placeholder-img {
-font-size: 1.125rem;
-text-anchor: middle;
--webkit-user-select: none;
--moz-user-select: none;
-user-select: none;
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 @media (min-width: 768px) {
     .bd-placeholder-img-lg {
         font-size: 3.5rem;
     }
-
 }
 
 #bg-image-container {
@@ -29,33 +28,30 @@ user-select: none;
     background-size: cover;
     background-position: center;
     width: 100%;
-
 }
 
 .card-img-container {
-    height: 250px; /* Fixed height for uniformity */
-    overflow: hidden; /* Ensures content outside the container is hidden */
-  }
+    height: 250px; 
+    overflow: hidden; 
+}
 
-  .card-img-top {
-    object-fit: cover; /* Makes the image fill the container without distortion */
-    height: 100%; /* Ensures the image fully covers the height */
-    width: 100%; /* Ensures the image fully covers the width */
-  }
+.card-img-top {
+    object-fit: cover;
+    height: 100%; 
+    width: 100%;
+}
 
-/* Make the scrollable container horizontally scrollable */
 .scroll-container {
     overflow-x: auto;
     white-space: nowrap;
-    padding-bottom: 10px; /* Add some space below */
+    padding-bottom: 10px;
 }
 
-/* Ensure cards have consistent spacing and sizing */
 .scroll-container .card {
     display: inline-block;
     vertical-align: top;
-    width: 16rem; /* Adjust width as needed */
-    flex: none; /* Prevent cards from resizing */
+    width: 16rem;
+    flex: 1;
 }
 
 footer a {
@@ -64,7 +60,7 @@ footer a {
 }
 
 footer a:hover {
-    color: #ffc107; /* Add a hover effect, e.g., a gold color */
+    color: #ffc107; 
 }
 
 .fixed-height {
@@ -82,6 +78,49 @@ footer a:hover {
 }
 
 .navbar.scrolled {
-    background-color: #004d40 !important; /* Example color: dark teal */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds shadow for distinction */
+    background-color: #004d40 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.scrollable-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+    scrollbar-color: #28a745 #f5f5f5;
+}
+
+.scrollable-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.scrollable-container::-webkit-scrollbar-track {
+    background: #f5f5f5;
+    border-radius: 10px;
+}
+
+.scrollable-container::-webkit-scrollbar-thumb {
+    background: #28a745;
+    border-radius: 10px;
+}
+
+.row.flex-nowrap {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.flex-shrink-0 {
+    flex-shrink: 0;
+}
+
+.card-text {
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.view-button {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
 }
