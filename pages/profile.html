@@ -32,10 +32,6 @@
                     </li>
                 </ul>
                 <div class="d-flex">
-                    <a href="#" class="text-decoration-none">
-                        <i class="fas fa-user-circle text-white me-2"></i>
-                        <span class="text-white me-3">Guest User</span>
-                    </a>
                     <button class="btn btn-outline-light" id="logout-btn">Sign Out</button>
                 </div>
             </div>
@@ -54,14 +50,14 @@
                                 <span class="visually-hidden">Loading...</span>
                             </div>
                         </div>
-                        <div class="position-relative d-inline-block">
-                            <img id="profile-image" src="../images/profile.png" class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;" alt="Profile Picture">
+                        <div class="position-relative d-inline-block mb-3">
+                            <img id="profile-image" src="../images/profile.png" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Profile Picture">
                             <label for="profile-pic-input" class="position-absolute bottom-0 end-0 btn btn-sm btn-success rounded-circle">
                                 <i class="fas fa-camera"></i>
                                 <input type="file" id="profile-pic-input" class="d-none" accept="image/*">
                             </label>
                         </div>
-                        <h3 class="my-5" id="display-name">Lance Morrison Tulagan</h3>
+                        <h3 class="mb-2">Lance Morrison Tulagan</h3>
                         <p class="text-muted">Student</p>
                     </div>
                 </div>
@@ -98,11 +94,17 @@
                                 </button>
                                 <div class="collapse mt-3" id="passwordSection">
                                     <div class="card card-body bg-light">
-                                        <small class="text-muted mb-3">
-                                            Password must be at least 8 characters long and contain at least one uppercase letter, one number, and one special character.
-                                        </small>
                                         <div class="mb-3">
                                             <label class="form-label">Current Password</label>
+                                            <input type="password" class="form-control" id="currentPassword">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">New Password</label>
+                                            <input type="password" class="form-control" id="newPassword">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Confirm New Password</label>
+                                            <input type="password" class="form-control" id="confirmPassword">
                                         </div>
                                     </div>
                                 </div>

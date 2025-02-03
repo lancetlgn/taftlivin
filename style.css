@@ -55,7 +55,8 @@
 
 footer {
     position: relative;
-    width: 100%
+    width: 100%;
+    margin-top: auto;
 }
 
 footer a {
@@ -142,14 +143,45 @@ footer a:hover {
 /* Add to your style.css */
 main {
     margin-top: 80px; /* Height of your navbar */
+    flex: 1;
 }
 
 .user-info {
     display: flex;
     align-items: center;
+    padding: 0.5rem 1rem;
     margin-right: 1rem;
 }
 
 .user-info i {
-    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+.navbar .d-flex {
+    align-items: center;
+}
+
+/* Update user info styles */
+.navbar .user-section {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .user-info {
+    display: inline-flex;
+    align-items: center;
+    color: white;
+    padding: 0.5rem 0;
+}
+
+.navbar .user-info:hover {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Add these styles for sticky footer */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
