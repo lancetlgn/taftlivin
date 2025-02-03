@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - TaftLivin'</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html">TaftLivin'</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="condos.html">Condos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="forum.html">Forum</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="#" class="text-decoration-none">
+                        <i class="fas fa-user-circle text-white me-2"></i>
+                        <span class="text-white me-3">Guest User</span>
+                    </a>
+                    <button class="btn btn-outline-light" id="logout-btn">Sign Out</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-5 pt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Profile Picture Section -->
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <!-- Add loading spinner -->
+                        <div id="upload-spinner" class="d-none">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="position-relative d-inline-block">
+                            <img id="profile-image" src="../images/profile.png" class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;" alt="Profile Picture">
+                            <label for="profile-pic-input" class="position-absolute bottom-0 end-0 btn btn-sm btn-success rounded-circle">
+                                <i class="fas fa-camera"></i>
+                                <input type="file" id="profile-pic-input" class="d-none" accept="image/*">
+                            </label>
+                        </div>
+                        <h3 class="my-5" id="display-name">Lance Morrison Tulagan</h3>
+                        <p class="text-muted">Student</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <!-- Profile Information Section -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Profile Information</h5>
+                        <form id="profile-form">
+                            <!-- Full Name -->
+                            <div class="mb-3">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullname" value="Lance Morrison Tulagan" readonly>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" value="lance_tulagan@dlsu.edu.ph" readonly>
+                            </div>
+
+                            <!-- Bio -->
+                            <div class="mb-3">
+                                <label class="form-label">Bio</label>
+                                <textarea class="form-control" id="bio" rows="3">A DLSU student living in Taft Avenue.</textarea>
+                            </div>
+
+                            <!-- Change Password Section -->
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-outline-success" data-bs-toggle="collapse" data-bs-target="#passwordSection">
+                                    Change Password
+                                </button>
+                                <div class="collapse mt-3" id="passwordSection">
+                                    <div class="card card-body bg-light">
+                                        <small class="text-muted mb-3">
+                                            Password must be at least 8 characters long and contain at least one uppercase letter, one number, and one special character.
+                                        </small>
+                                        <div class="mb-3">
+                                            <label class="form-label">Current Password</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Save Button -->
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-6 text-md-start mb-3 mb-md-0">
+                    <p class="mb-0">&copy; 2025 TaftLivin'. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-white me-3">Privacy Policy</a>
+                    <a href="#" class="text-white me-3">Terms of Service</a>
+                    <a href="#" class="text-white">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Profile Picture Upload
+        document.getElementById('profile-pic-input').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-image').src = e.target.result;
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Form Submission
+        document.getElementById('profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const bio = document.getElementById('bio').value;
+            const currentPassword = document.getElementById('currentPassword')?.value;
+            const newPassword = document.getElementById('newPassword')?.value;
+            const confirmPassword = document.getElementById('confirmPassword')?.value;
+
+            // Validate password change if attempted
+            if (currentPassword || newPassword || confirmPassword) {
+                if (newPassword !== confirmPassword) {
+                    alert('New passwords do not match!');
+                    return;
+                }
+                // Add password change logic here
+            }
+
+            // Add your save logic here
+            alert('Profile updated successfully!');
+        });
+
+        // Navbar scroll effect
+        document.addEventListener("scroll", function() {
+            const navbar = document.getElementById("navbar");
+            if (window.scrollY > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+        });
+    </script>
+</body>
+</html>

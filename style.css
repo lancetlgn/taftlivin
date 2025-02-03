@@ -31,14 +31,13 @@
 }
 
 .card-img-container {
-    height: 250px; 
+    height: 350px; 
     overflow: hidden; 
 }
 
 .card-img-top {
     object-fit: cover;
-    height: 100%; 
-    width: 100%;
+    
 }
 
 .scroll-container {
@@ -130,7 +129,27 @@ footer a:hover {
     left: 15px;
 }
 
+/* Card positioning styles */
+.card {
+    position: relative;
+    height: 100%;
+}
+
+.card-body {
+    height: 100%;
+}
+
 /* Add to your style.css */
 main {
     margin-top: 80px; /* Height of your navbar */
-  }
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.user-info i {
+    font-size: 1.2rem;
+}

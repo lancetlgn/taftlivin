@@ -1,6 +1,6 @@
-<!doctype html>
-<html lang="en">
-  <head>
+<!-- Start of Features Section -->
+<div class="container-fluid" style="height: 60vh;">
+    <div class="row"></div>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
@@ -39,16 +39,18 @@
                     <!-- Default buttons for guests -->
                     <a href="pages/signin.html" class="btn btn-light ms-2">Sign In</a>
                     <a href="pages/signup.html" class="btn btn-outline-light ms-2">Sign Up</a>
-                  </div>
+                </div>
                   
                   <!-- Hidden until user is "logged in" -->
-                  <div id="logged-in-user" class="d-none">
-                    <a href="pages/profile.html" class="text-decoration-none">
-                      <i class="fas fa-user-circle text-white me-2"></i>
-                      <span class="text-white me-3">Guest User</span>
-                    </a>
-                    <button class="btn btn-outline-light" id="logout-btn">Sign Out</button>
-                  </div>
+                <div id="logged-in-user" class="d-none">
+                    <div class="d-flex align-items-center">
+                        <div class="user-info">
+                            <i class="fas fa-user-circle text-white me-2"></i>
+                            <span class="text-white">Guest User</span>
+                        </div>
+                        <button class="btn btn-outline-light" id="logout-btn">Sign Out</button>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -95,7 +97,7 @@
                                 </div>
                                 <p class="card-text"><i class="fas fa-walking"></i> 450m from DLSU (6min. walk)</p>
                                 <p class="card-text">"Numerous units available, but the elevators are very slow." - Anonymous</p>
-                                <a href="#" class="btn btn-success">View</a>
+                                <a href="#" class="btn btn-success view-button">View</a>
                             </div>
                         </div>
                     </div>
@@ -118,7 +120,7 @@
                                 </div>
                                 <p class="card-text"><i class="fas fa-walking"></i> 500m from DLSU (7min. walk)</p>
                                 <p class="card-text">"Good place to stay, but can get noisy at times. They are also strict with guests" - Maria P.</p>
-                                <a href="#" class="btn btn-success">View</a>
+                                <a href="#" class="btn btn-success view-button">View</a>
                             </div>
                         </div>
                     </div>
@@ -141,7 +143,7 @@
                                 </div>
                                 <p class="card-text"><i class="fas fa-walking"></i> 300m from DLSU (4min. walk)</p>
                                 <p class="card-text">"Great place to stay, very convenient and close to campus!" - Anton L.</p>
-                                <a href="#" class="btn btn-success">View</a>
+                                <a href="#" class="btn btn-success view-button">View</a>
                             </div>
                         </div>
                     </div>
@@ -165,7 +167,7 @@
                                 </div>
                                 <p class="card-text"><i class="fas fa-walking"></i> 400m from DLSU (5min. walk)</p>
                                 <p class="card-text">"Great amenities and friendly staff!" - John D.</p>
-                                <a href="#" class="btn btn-success">View</a>
+                                <a href="#" class="btn btn-success view-button">View</a>
                             </div>
                         </div>
                     </div>
@@ -188,7 +190,7 @@
                                 </div>
                                 <p class="card-text"><i class="fas fa-walking"></i> 600m from DLSU (8min. walk)</p>
                                 <p class="card-text">"Affordable but a bit far from campus." - Sarah T.</p>
-                                <a href="#" class="btn btn-success">View</a>
+                                <a href="#" class="btn btn-success view-button">View</a>
                             </div>
                         </div>
                     </div>
@@ -211,7 +213,7 @@
                                 </div>
                                 <p class="card-text"><i class="fas fa-walking"></i> 200m from DLSU (3min. walk)</p>
                                 <p class="card-text">"Perfect location and great facilities!" - Emily R.</p>
-                                <a href="#" class="btn btn-success ">View</a>
+                                <a href="#" class="btn btn-success view-button">View</a>
                             </div>
                         </div>
                     </div>
@@ -231,12 +233,26 @@
                                 <p class="px-5 text-success text-center">
                                     Share your experiences and help others make informed decisions by submitting a review of your current or past residence. Your insights can provide valuable information to prospective residents about the living conditions, amenities, and overall environment of the place.
                                 </p>
-                                <button type="button" class="btn btn-outline-success mt-3" data-bs-toggle="modal" data-bs-target="#reviewModal">
-                                    Submit a Review
-                                </button>
+                                <div class="text-center">
+                                    <div class="d-flex justify-content-center" id="review-auth-buttons">
+                                        <a href="pages/signin.html" class="btn btn-outline-success mt-3">
+                                            Sign In / Sign up
+                                        </a>     
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <div id="review-logged-in-user" class="d-none">
+                                        <button type="button" class="btn btn-outline-success mt-3" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                                            Submit a Review
+                                        </button>                                    
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
+
             <!-- Modal (Pop-up Form) -->
             <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -461,6 +477,20 @@
                 localStorage.removeItem('mockLoggedIn');
                 window.location.reload();
             });
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const reviewAuthButtons = document.getElementById('review-auth-buttons');
+                const reviewLoggedInUser = document.getElementById('review-logged-in-user');
+                
+                const isLoggedIn = localStorage.getItem('mockLoggedIn') === 'true';
+            
+                if (isLoggedIn) {
+                    reviewAuthButtons.classList.add('d-none');
+                    reviewLoggedInUser.classList.remove('d-none');
+                }
             });
         </script>
   </body>
