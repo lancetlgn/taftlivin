@@ -35,10 +35,20 @@
                         <a class="nav-link" href="pages/forum.html">Forum</a>
                     </li>
                 </ul>
-                <div class="d-flex">
+                <div class="d-flex" id="auth-buttons">
+                    <!-- Default buttons for guests -->
                     <a href="pages/signin.html" class="btn btn-light ms-2">Sign In</a>
                     <a href="pages/signup.html" class="btn btn-outline-light ms-2">Sign Up</a>
-                </div>
+                  </div>
+                  
+                  <!-- Hidden until user is "logged in" -->
+                  <div id="logged-in-user" class="d-none">
+                    <a href="pages/profile.html" class="text-decoration-none">
+                      <i class="fas fa-user-circle text-white me-2"></i>
+                      <span class="text-white me-3">Guest User</span>
+                    </a>
+                    <button class="btn btn-outline-light" id="logout-btn">Sign Out</button>
+                  </div>
             </div>
         </div>
     </nav>
@@ -51,7 +61,7 @@
                         <h1 class="fw-light">Welcome to TaftLivin'</h1>
                         <p class="lead text-muted">Discover the best places to live near DLSU with reviews and ratings from the DLSU community</p>
                        <form action="">
-                            <div class="input-group"></div>
+                            <div class="input-group">
                                 <input type="search" class="form-control" placeholder="Search for a condo, dorm, or apartment">
                             </div>
                        </form>
@@ -429,6 +439,28 @@
                 } else {
                     navbar.classList.remove("scrolled");
                 }
+            });
+        </script>
+
+        <script>
+            // Mock login state (delete this later when you add real authentication)
+            document.addEventListener('DOMContentLoaded', function() {
+            const authButtons = document.getElementById('auth-buttons');
+            const loggedInUser = document.getElementById('logged-in-user');
+            
+            // Check if "logged in" (for demo purposes only)
+            const isLoggedIn = localStorage.getItem('mockLoggedIn') === 'true';
+        
+            if (isLoggedIn) {
+                authButtons.classList.add('d-none');
+                loggedInUser.classList.remove('d-none');
+            }
+        
+            // Mock logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                localStorage.removeItem('mockLoggedIn');
+                window.location.reload();
+            });
             });
         </script>
   </body>
