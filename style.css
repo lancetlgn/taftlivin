@@ -10,9 +10,17 @@
     scroll-behavior: smooth;
 }
 
+/* Add/update these styles for sticky footer */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 /* Layout and Main Content */
 main {
     margin-top: 80px;
+    flex: 1 0 auto; /* This makes main content take up available space */
 }
 
 /* Navigation Styles */
@@ -148,7 +156,9 @@ main {
 /* Footer Styles */
 footer {
     position: relative;
-    width: 100%
+    width: 100%;
+    flex-shrink: 0; /* Prevents footer from shrinking */
+    margin-top: auto; /* Pushes footer to bottom when content is short */
 }
 
 footer a {
