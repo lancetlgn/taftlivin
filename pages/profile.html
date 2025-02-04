@@ -166,16 +166,13 @@
             const newPassword = document.getElementById('newPassword')?.value;
             const confirmPassword = document.getElementById('confirmPassword')?.value;
 
-            // Validate password change if attempted
             if (currentPassword || newPassword || confirmPassword) {
                 if (newPassword !== confirmPassword) {
                     alert('New passwords do not match!');
                     return;
                 }
-                // Add password change logic here
             }
 
-            // Add your save logic here
             alert('Profile updated successfully!');
         });
 
