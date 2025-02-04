@@ -35,6 +35,7 @@ main {
 
 .navbar .d-flex {
     align-items: center;
+    gap: 0.5rem;
 }
 
 /* User Information Styles */
@@ -46,8 +47,6 @@ main {
 .user-info {
     display: flex;
     align-items: center;
-    padding: 0.5rem 1rem;
-    margin-right: 1rem;
     color: white;
 }
 
