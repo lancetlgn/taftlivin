@@ -5,6 +5,13 @@ localStorage.setItem('mockLoggedIn', 'true');
 window.location.reload();
 -->
 
+<!-- Add this comment for admin login: -->
+<!-- 
+localStorage.setItem('mockAdminLoggedIn', 'true');
+localStorage.setItem('mockLoggedIn', 'true');
+window.location.reload();
+-->
+
 <div class="container-fluid" style="height: 60vh;">
     <div class="row"></div>
         <meta charset="utf-8">
@@ -51,10 +58,12 @@ window.location.reload();
                   <!-- Hidden until user is "logged in" -->
                 <div id="logged-in-user" class="d-none">
                     <div class="d-flex align-items-center">
-                        <a href="pages/profile.html" class="text-decoration-none d-flex align-items-center me-3">
-                            <i class="fas fa-user-circle text-white me-2"></i>
-                            <span class="text-white">Guest User</span>
+                        <a href="pages/profile.html" class="d-flex align-items-center me-3">
+                            <i class="fas fa-user-circle text-white me-2"></i> <!-- show profile pic -->
+                            <span class="px-0 mx-0 text-white">Lance</span>
                         </a>
+                        <!-- Add this admin-only link -->
+                        <a href="pages/admin-dashboard.html" class="btn btn-warning me-2 d-none" id="admin-dashboard-btn">Dashboard</a>
                         <button id="logout-btn" class="btn btn-outline-light">Sign Out</button>
                     </div>
                 </div>
@@ -470,18 +479,24 @@ window.location.reload();
             document.addEventListener('DOMContentLoaded', function() {
             const authButtons = document.getElementById('auth-buttons');
             const loggedInUser = document.getElementById('logged-in-user');
+            const adminDashboardBtn = document.getElementById('admin-dashboard-btn');
             
             // Check if "logged in" (for demo purposes only)
             const isLoggedIn = localStorage.getItem('mockLoggedIn') === 'true';
+            const isAdmin = localStorage.getItem('mockAdminLoggedIn') === 'true';
         
             if (isLoggedIn) {
                 authButtons.classList.add('d-none');
                 loggedInUser.classList.remove('d-none');
+                if (isAdmin) {
+                    adminDashboardBtn.classList.remove('d-none');
+                }
             }
         
             // Mock logout
             document.getElementById('logout-btn').addEventListener('click', function() {
                 localStorage.removeItem('mockLoggedIn');
+                localStorage.removeItem('mockAdminLoggedIn');
                 window.location.reload();
             });
             });

@@ -95,5 +95,17 @@
 			<p class="mt-4 text-muted">&copy; 2025 TaftLivin</p>
 		</form>
 	</main>
+	<!-- Add to form submit handler -->
+	<script>
+		document.querySelector('form').addEventListener('submit', function(e) {
+			e.preventDefault();
+			localStorage.setItem('mockLoggedIn', 'true');
+			 // Set admin login if email contains 'admin'
+			if (document.getElementById('floatingInput').value.includes('admin')) {
+				localStorage.setItem('mockAdminLoggedIn', 'true');
+			}
+			window.location.href = '../index.html';
+		});
+	</script>
 </body>
 </html>

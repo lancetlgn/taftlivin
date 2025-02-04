@@ -38,26 +38,17 @@ main {
     gap: 0.5rem;
 }
 
+.navbar a {
+    text-decoration: none;
+}
+
 /* User Information Styles */
 .user-section {
     display: flex;
     align-items: center;
 }
 
-.user-info {
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.user-info i {
-    margin-right: 0.5rem;
-}
-
-.user-info:hover {
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.8);
-}
+/* Remove or comment out any .user-info styles if they exist */
 
 /* Background and Images */
 #bg-image-container {
