@@ -51,7 +51,7 @@
     <body>
         <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="../index.html">TaftLivin'</a>
+                <a class="navbar-brand" href="#">TaftLivin'</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -67,12 +67,26 @@
                             <a class="nav-link" href="condos.html">Condos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"  href="#">Forum</a>
+                            <a class="nav-link active" aria-current="page" href="#">Forum</a>
                         </li>
                     </ul>
-                    <div class="d-flex">
-                        <a href="signin.html" class="btn btn-light ms-2">Sign In</a>
-                        <a href="signup.html" class="btn btn-outline-light ms-2">Sign Up</a>
+                    <div class="d-flex" id="auth-buttons">
+                        <!-- Default buttons for guests -->
+                        <a href="pages/signin.html" class="btn btn-light ms-2">Sign In</a>
+                        <a href="pages/signup.html" class="btn btn-outline-light ms-2">Sign Up</a>
+                    </div>
+                      
+                      <!-- Hidden until user is "logged in" -->
+                    <div id="logged-in-user" class="d-none">
+                        <div class="d-flex align-items-center">
+                            <a href="pages/profile.html" class="d-flex align-items-center me-3">
+                                <i class="fas fa-user-circle text-white me-2"></i> <!-- show profile pic -->
+                                <span class="px-0 mx-0 text-white">Lance</span>
+                            </a>
+                            <!-- Add this admin-only link -->
+                            <a href="pages/admin-dashboard.html" class="btn btn-warning me-2 d-none" id="admin-dashboard-btn">Dashboard</a>
+                            <button id="logout-btn" class="btn btn-outline-light">Sign Out</button>
+                        </div>
                     </div>
                 </div>
             </div>
