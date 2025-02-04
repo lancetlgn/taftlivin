@@ -1,12 +1,63 @@
+/* Import Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap');
-*
 
-{
+/* Reset and Global Styles */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Josefin Sans', sans-serif;
     scroll-behavior: smooth;
+}
+
+/* Layout and Main Content */
+main {
+    margin-top: 80px;
+}
+
+/* Navigation Styles */
+.navbar {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar.scrolled {
+    background-color: #31604a !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .d-flex {
+    align-items: center;
+}
+
+/* User Information Styles */
+.user-section {
+    display: flex;
+    align-items: center;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    margin-right: 1rem;
+    color: white;
+}
+
+.user-info i {
+    margin-right: 0.5rem;
+}
+
+.user-info:hover {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Background and Images */
+#bg-image-container {
+    background: url("images/ls-bg-blur.png");
+    background-size: cover;
+    background-position: center;
+    width: 100%;
 }
 
 .bd-placeholder-img {
@@ -17,29 +68,39 @@
     user-select: none;
 }
 
-@media (min-width: 768px) {
-    .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-    }
+/* Card Styles */
+.card {
+    position: relative;
+    height: 100%;
 }
 
-#bg-image-container {
-    background: url("images/ls-bg-blur.png");
-    background-size: cover;
-    background-position: center;
-    width: 100%;
+.card-body {
+    height: 80%;
 }
 
 .card-img-container {
-    height: 350px; 
+    height: 400px; 
     overflow: hidden; 
 }
 
 .card-img-top {
     object-fit: cover;
-    
 }
 
+.card-text {
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.view-button {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+}
+
+/* Scrollable Container Styles */
 .scroll-container {
     overflow-x: auto;
     white-space: nowrap;
@@ -51,39 +112,6 @@
     vertical-align: top;
     width: 16rem;
     flex: 1;
-}
-
-footer {
-    position: relative;
-    width: 100%
-}
-
-footer a {
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-footer a:hover {
-    color: #ffc107; 
-}
-
-.fixed-height {
-    height: 500px;
-}
-
-#map-container {
-    width: 100%;
-    height: 500px;
-    border: 1px solid #ddd;
-}
-
-.navbar {
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.navbar.scrolled {
-    background-color: #31604a !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .scrollable-container {
@@ -107,6 +135,7 @@ footer a:hover {
     border-radius: 10px;
 }
 
+/* Flex Utilities */
 .row.flex-nowrap {
     display: flex;
     flex-wrap: nowrap;
@@ -116,63 +145,36 @@ footer a:hover {
     flex-shrink: 0;
 }
 
-.card-text {
-    word-wrap: break-word;
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.view-button {
-    position: absolute;
-    bottom: 15px;
-    left: 15px;
-}
-
-/* Card positioning styles */
-.card {
+/* Footer Styles */
+footer {
     position: relative;
-    height: 100%;
+    width: 100%
 }
 
-.card-body {
-    height: 100%;
-}
-
-/* Add to your style.css */
-main {
-    margin-top: 80px; /* Height of your navbar */
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    margin-right: 1rem;
-}
-
-.user-info i {
-    margin-right: 0.5rem;
-}
-
-.navbar .d-flex {
-    align-items: center;
-}
-
-/* Update user info styles */
-.navbar .user-section {
-    display: flex;
-    align-items: center;
-}
-
-.navbar .user-info {
-    display: inline-flex;
-    align-items: center;
-    color: white;
-    padding: 0.5rem 0;
-}
-
-.navbar .user-info:hover {
+footer a {
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #ffc107; 
+}
+
+/* Map Styles */
+#map-container {
+    width: 100%;
+    height: 500px;
+    border: 1px solid #ddd;
+}
+
+/* Utility Classes */
+.fixed-height {
+    height: 500px;
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
 }
