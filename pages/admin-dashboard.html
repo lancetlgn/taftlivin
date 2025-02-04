@@ -14,7 +14,6 @@
     </script>
 </head>
 <body>
-    <!-- Navigation Bar (same as other pages but with active dashboard link) -->
     <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html">TaftLivin'</a>
@@ -42,25 +41,23 @@
         <!-- Dashboard Tabs -->
         <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#condos">
+                <button class="nav-link active text-success" data-bs-toggle="tab" data-bs-target="#condos">
                     Manage Condos
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#users">
+                <button class="nav-link text-success" data-bs-toggle="tab" data-bs-target="#users">
                     Manage Users
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#forum">
+                <button class="nav-link text-success" data-bs-toggle="tab" data-bs-target="#forum">
                     Moderate Forum
                 </button>
             </li>
         </ul>
 
-        <!-- Tab Content -->
         <div class="tab-content mt-4">
-            <!-- Condos Tab -->
             <div class="tab-pane fade show active" id="condos">
                 <div class="d-flex justify-content-between mb-3">
                     <h3>Manage Condos</h3>
@@ -79,32 +76,32 @@
                             </tr>
                         </thead>
                         <tbody id="condosList">
-                            <!-- Sample row -->
+
                             <tr>
                                 <td>Green Residences</td>
                                 <td>Taft Avenue</td>
-                                <td>4.5 ⭐</td>
+                                <td>4.5</td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-success btn-edit-condo"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Vista Taft</td>
                                 <td>Taft Avenue</td>
-                                <td>4.0 ⭐</td>
+                                <td>4.0</td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-success btn-edit-condo"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>One Archers Place</td>
                                 <td>Taft Avenue</td>
-                                <td>4.8 ⭐</td>
+                                <td>4.8</td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-success btn-edit-condo"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -112,9 +109,13 @@
                 </div>
             </div>
 
-            <!-- Users Tab -->
             <div class="tab-pane fade" id="users">
-                <h3 class="mb-3">Manage Users</h3>
+                <div class="d-flex justify-content-between mb-3">
+                    <h3>Manage Users</h3>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                        <i class="fas fa-plus"></i> Add New User
+                    </button>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -132,29 +133,35 @@
                                 <td>lance_tulagan@dlsu.edu.ph</td>
                                 <td><span class="badge bg-success">Active</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-warning"><i class="fas fa-ban"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-success btn-edit-user"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                             <tr>
-                                <td>John Smith</td>
-                                <td>john_smith@dlsu.edu.ph</td>
+                                <td>Yuyang Guo</td>
+                                <td>yuyang_guo@dlsu.edu.ph</td>
                                 <td><span class="badge bg-warning">Suspended</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-success"><i class="fas fa-check"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-success btn-edit-user"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Maria Garcia</td>
-                                <td>maria_garcia@dlsu.edu.ph</td>
+                                <td>Ivan Boado</td>
+                                <td>ivan_boado@dlsu.edu.ph</td>
                                 <td><span class="badge bg-success">Active</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-warning"><i class="fas fa-ban"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-success btn-edit-user"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Mark Pineda</td>
+                                <td>mark_pinda@dlsu.edu.ph</td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-success btn-edit-user"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -162,7 +169,6 @@
                 </div>
             </div>
 
-            <!-- Forum Tab -->
             <div class="tab-pane fade" id="forum">
                 <h3 class="mb-3">Forum Moderation</h3>
                 <div class="table-responsive">
@@ -184,9 +190,9 @@
                                 <td>2023-10-15</td>
                                 <td><span class="badge bg-success">Active</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-eye"></i></button>
                                     <button class="btn btn-sm btn-warning"><i class="fas fa-lock"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -195,9 +201,9 @@
                                 <td>2023-10-14</td>
                                 <td><span class="badge bg-warning">Locked</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-eye"></i></button>
                                     <button class="btn btn-sm btn-success"><i class="fas fa-unlock"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -206,9 +212,9 @@
                                 <td>2023-10-13</td>
                                 <td><span class="badge bg-success">Active</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-eye"></i></button>
                                     <button class="btn btn-sm btn-warning"><i class="fas fa-lock"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -253,6 +259,138 @@
         </div>
     </div>
 
+    <div class="modal fade" id="editCondoModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Condo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editCondoForm">
+                        <div class="mb-3">
+                            <label class="form-label">Condo Name</label>
+                            <input type="text" class="form-control" id="editCondoName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" id="editCondoLocation" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" id="editCondoDescription" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Current Image</label>
+                            <img id="currentCondoImage" src="" alt="Current condo image" class="img-fluid mb-2" style="max-height: 200px;">
+                            <input type="file" class="form-control" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rating</label>
+                            <input type="number" class="form-control" id="editCondoRating" min="0" max="5" step="0.1">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="editCondoForm" class="btn btn-success">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editUserForm">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="editUserName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editUserEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" id="editUserStatus">
+                                <option value="active">Active</option>
+                                <option value="suspended">Suspended</option>
+                                <option value="banned">Banned</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            <select class="form-select" id="editUserRole">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="editUserForm" class="btn btn-success">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            <select class="form-select">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-select">
+                                <option value="active">Active</option>
+                                <option value="suspended">Suspended</option>
+                                <option value="banned">Banned</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="addUserForm" class="btn btn-success">Add User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Check if admin is logged in
@@ -265,6 +403,29 @@
             localStorage.removeItem('mockLoggedIn');
             localStorage.removeItem('mockAdminLoggedIn');
             window.location.href = '../index.html';
+        });
+
+        // Edit condo button handler
+        document.querySelectorAll('.btn-edit-condo').forEach(button => {
+            button.addEventListener('click', function() {
+                const modal = new bootstrap.Modal(document.getElementById('editCondoModal'));
+                modal.show();
+            });
+        });
+
+        // Edit user button handler
+        document.querySelectorAll('.btn-edit-user').forEach(button => {
+            button.addEventListener('click', function() {
+                const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+                modal.show();
+            });
+        });
+
+        document.getElementById('addUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('User added successfully!');
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+            modal.hide();
         });
     </script>
 </body>
