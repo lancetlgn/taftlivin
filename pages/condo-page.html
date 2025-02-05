@@ -9,13 +9,6 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <link rel="stylesheet" href="../style.css">
-        <!-- <style>
-            .container { margin-top: 80px; }
-            .main-img { width: 100%; height: 380px; border-radius: 10px; border-bottom: 10px }
-            .small-img { width: 100%; height: 185px; object-fit: cover; border-radius: 10px; border-top: 10px }
-            .card { border: none; }
-            .review { border-bottom: 1px solid #f0f0f0; /* Gray bar */padding-bottom: 15px; margin-bottom: 15px; }
-        </style> -->
     
   </head>
   <body>
@@ -49,17 +42,37 @@
     </nav>
 
     <main>
+        <div class="overlay" id="overlay" onclick="closePopup()"></div>
         <div class="container">
             <h3 class="fw-bold">Green Residences</h3>
             <div class="image-gallery">
                 <div class="main-image">
-                    <img src="../images/green1.jpg" alt="Main Image">
+                    <img src="../images/green1.jpg" alt="Main Image" onclick="openPopup()">
+                    <div class="popup" id="popup">
+                        <img src="../images/green1.jpg" alt="Image 1" >
+                    </div>
                 </div>
                 <div class="side-images">
-                    <img src="../images/green1.jpg" alt="Image 1">
-                    <img src="../images/green1.jpg" alt="Image 2">
-                    <img src="../images/green1.jpg" alt="Image 3">
-                    <img src="../images/green1.jpg" alt="Image 4">
+                    <img src="../images/green1.jpg" alt="Image 1" onclick="openPopup()">
+                    <div class="popup" id="popup">
+                        <img src="../images/green1.jpg" alt="Image 1" >
+                    </div>
+
+                    <img src="../images/green1.jpg" alt="Image 2" onclick="openPopup()">
+                    <div class="popup" id="popup">
+                        <img src="../images/green1.jpg" alt="Image 2" >
+                    </div>
+
+                    <img src="../images/green1.jpg" alt="Image 3" onclick="openPopup()">
+                    <div class="popup" id="popup">
+                        <img src="../images/green1.jpg" alt="Image 3" >
+                    </div>
+
+                    <img src="../images/green1.jpg" alt="Image 4" onclick="openPopup()">
+                    <div class="popup" id="popup">
+                        <img src="../images/green1.jpg" alt="Image 4" >
+                    </div>
+
                 </div>
             </div>
 
@@ -120,6 +133,21 @@
         </div>
     </footer>
 
+    <script>
+        let popup = document.getElementById("popup");
+        const overlay = document.getElementById("overlay");
+
+        function openPopup(){
+            popup.classList.add("open-popup");
+            overlay.style.display = "block";
+        }
+
+        function closePopup(){
+            popup.classList.remove("open-popup");
+            overlay.style.display = "none";
+        }
+
+    </script>
     <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>       
     <script>
         document.addEventListener("scroll", function() {
