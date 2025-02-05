@@ -15,33 +15,33 @@
 
             .list-group-item.active{
 
-                background-color: #169754;    
+            background-color: #169754;    
 
             }
 
             .list-group-item:hover{
 
-                color: green;
+            color: green;
 
             }
 
             .text-muted.active {
 
-                color: white ;
-                opacity: 1 ; 
+            color: white ;
+            opacity: 1 ; 
 
             }
 
             .page-link{
 
-                color:#169754;
+            color:#169754;
 
             }
 
             .btn.btn-outline-success:hover{
 
-                background-color:#169754;
-                color: white;
+            background-color:#169754;
+            color: white;
 
             }
 
@@ -53,39 +53,115 @@
 
             .jumbotron.jumbotron-fluid{
 
-                background-color: aliceblue;
+            background-color: aliceblue;
 
             }
 
             .d-flex.p-2{
 
-                background-color: rgb(247, 247, 247);
-                margin: 100px;
-                margin-top: 10px;
-                margin-bottom: 0;
-                font-size: large;
-                border-radius: 10px;
-                box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); 
+            background-color: rgb(255, 255, 255);
+            margin: 100px;
+            margin-top: 10px;
+            margin-bottom: 0;
+            font-size: large;
+            border-radius: 10px;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); 
+            width: 70%;
 
             }
 
             .d-flex.p-2.first{
 
-                background-color: rgb(247, 247, 247);
-                margin: 100px;
-                margin-top: 30px;
-                margin-bottom: 0;
-                font-size: large;
-                border-radius: 10px;
-                box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); 
+            background-color: rgb(255, 255, 255);
+            margin: 100px;
+            margin-top: 30px;
+            margin-bottom: 0;
+            font-size: large;
+            border-radius: 10px;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); 
+            width: 70%;
 
+            }
+
+            .d-flex.p-2.side{
+            position: fixed;
+            background-color: rgb(255, 255, 255);
+            margin: 100px;
+            margin-top: 30px;
+            margin-bottom: 0;
+            right: 0;
+            top: 145px;
+            font-size: medium;
+            border-radius: 10px;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); 
+            width: 15%;    
+            height: 50%;
             }
 
             .rounded-circle.pfp{
 
-                width: 5%;
-                height: 5%;
-                padding-top: 3px;
+            width: 5%;
+            height: 5%;
+            padding-top: 3px;
+
+            }
+
+            .forum-background{
+
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100;
+                min-height: 100vh;
+                background-image: url("../../images/ls-bg-blur.png");
+
+            }
+
+            html, body {
+                overflow-y: auto; /* Enables vertical scrolling */
+                overflow-x: hidden; /* Prevents horizontal scrolling */
+                height: 100vh;
+            }
+
+            .flex-container{
+
+                display: flex;
+                flex-wrap: wrap; /* Allows items to wrap */
+                max-height: 600px; /* Prevents clipping */
+                overflow-y: auto; /* Enables scrolling */
+
+            }
+
+            .text-field.reply{
+
+                font-size: 16px;
+                border: 1px solid #ffffff;
+                border-radius: 0px;
+                width: 100%;
+                height: 100%;
+
+            }
+
+            .post-button {
+                font-size: larger;
+                position: fixed;
+                right: 100px;
+                top: 600px;
+                padding: 20px 36px;
+                font-size: 16px;
+                background-color: #3f9c42;
+                color: white;
+                border: 2px solid #ffffff;
+                border-radius: 15px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .post-button:hover {
+
+                background-color: white;
+                color:black;
+                border: 2px solid rgb(27, 111, 27);
 
             }
 
@@ -123,28 +199,147 @@
         </nav>
 
 
-        <br>
-        <br>
-        <br>
-        <br>
-        <div>
-            <div class="topic">
-                <h1>
-                    How to negotiate rent prices?
-                </h1>
-            </div>
-            <div class="flex-container" style="align-items: flex-start;">
-                
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <h3 style=" padding-left: 620px;">Nothing to see here!</h3>
+        <div class="forum-background" id="bg-image-container">
+            <br>
+            <br>
+            <br>
+            <br>
+                <div class="topic">
+                    <h1>
+                        Safety Concerns in Green Residences
+                    </h1>
+                </div>
+                <div class="d-flex p-2 side">
 
-                
+                    <textarea type="text" class="text-field reply" placeholder="Enter your reply here"></textarea>
+    
+                </div>
+                <button class="post-button">Reply</button>
+                <div class="flex-container" style="align-items: flex-start;">
+    
+                    <div class="d-flex p-2 first">
+                        
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                        <p style="padding-left: 10px;">John:<br>The airtight insulation makes my unit feel stuffy. Anyone else noticing mold issues?.</p>
+                        <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">29 days ago</p>
+    
+                    </div>
+    
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">Alice:<br>Same here. I had to get an air purifier and open windows more often, which kinda defeats the purpose of energy efficiency.</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">27 days ago</p>
+    
+                    </div>
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">Paul:<br>Fire safety worries me. Some recycled materials used in green buildings aren't as fire-resistant. Anyone checked their building's fire safety ratings?</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">26 days ago</p>
+    
+                    </div>
+    
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">Emma:<br>Our management does monthly fire safety checks. If yours doesn't, you should push for regular inspections.</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">24 days ago</p>
+    
+                    </div>
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">Michael:<br>Smart security is a concern. Our building's access app was almost hacked last month. How secure are these systems?</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">24 days ago</p>
+    
+                    </div>
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">Sophia:<br>I set up 2FA for our smart home system and use a personal security camera inside my unit. Better safe than sorry.</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">24 days ago</p>
+    
+                    </div>
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">David:<br>Anyone dealing with pests? Chemical-free treatments sound great, but I feel like we have more cockroaches than usual.</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">23 days ago</p>
+    
+                    </div>
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">Olivia:<br>Yes! I've been sealing up cracks and using natural repellents, but it's not perfect.</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">19 days ago</p>
+    
+                    </div>
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">James:<br>Green buildings often skimp on soundproofing. My neighbors are way too loud, and the walls seem thinner than in traditional apartments.</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">19 days ago</p>
+    
+                    </div>
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">Linda:<br>Good point! Eco-friendly materials are sometimes lightweight, which means less noise insulation.</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">19 days ago</p>
+    
+                    </div>
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">Mark:<br>I love the energy savings, but the water pressure in my building is terrible. Low-flow systems are great for conservation but annoying for showers.</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">19 days ago</p>
+    
+                    </div>
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">Jessica:<br>Same issue. I had to install a water-saving but high-pressure showerhead to compensate.</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">19 days ago</p>
+    
+                    </div>
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">Daniel:<br>Do green residences really save money? My electricity bill is lower, but HOA fees for maintenance are high.</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">19 days ago</p>
+    
+                    </div>
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">Emily:<br>It depends on the building. Some green condos have expensive upkeep, but mine balances out with energy savings.</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">19 days ago</p>
+    
+                    </div>
+                    <div class="d-flex p-2">
+                    
+                        <img src="../../images/anonymous.png" class="rounded-circle pfp">
+    
+                    <p style="padding-left: 10px;">Brian:<br>Despite these concerns, I'd still choose a green residence. Just make sure fire safety, ventilation, and security are solid before moving in.</p>
+                    <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">19 days ago</p>
+    
+                    </div>
+    
+                </div> 
             </div>
-        </div> 
-    </body>
+        </body>
