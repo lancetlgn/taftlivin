@@ -11,8 +11,8 @@ localStorage.setItem('mockLoggedIn', 'true');
 window.location.reload();
 -->
 
-<div class="container-fluid ">
-    <div class="row">
+<div class="container-fluid">
+    <div class="row"></div>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
@@ -22,7 +22,7 @@ window.location.reload();
         <link rel="stylesheet" href="style.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    </div>
+        
 
   </head>
   
@@ -92,144 +92,142 @@ window.location.reload();
             <h2 class="p-3 fw-light text-center">Popular Condos and Dorms</h2>
 
             <!-- Scrollable container -->
-            <div class="scrollable-container">
-                <div class="row flex-nowrap overflow-auto pb-3">
-                    <!-- Card 1 -->
-                    <div class="col-md-4 col-sm-6 col-12 flex-shrink-0">
-                        <div class="card h-100 d-flex flex-column">
-                            <div class="card-img-container">
-                                <img src="images/green1.jpg" alt="Green Residences by SMDC" class="card-img-top img-fluid">
+            <div class="row flex-nowrap overflow-auto pb-3 mx-0">
+                <!-- Card 1 -->
+                <div class="col-md-4 col-sm-6 col-12 flex-shrink-0">
+                    <div class="card h-100 d-flex flex-column">
+                        <div class="card-img-container">
+                            <img src="images/green1.jpg" alt="Green Residences by SMDC" class="card-img-top img-fluid">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Green Residences by SMDC</h4>
+                            <div class="star-rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="far fa-star text-warning"></i>
+                                <i class="far fa-star text-warning"></i>
+                                <span class="text-muted">(3.0)</span>
                             </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Green Residences by SMDC</h4>
-                                <div class="star-rating">
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="far fa-star text-warning"></i>
-                                    <i class="far fa-star text-warning"></i>
-                                    <span class="text-muted">(3.0)</span>
-                                </div>
-                                <p class="card-text"><i class="fas fa-walking"></i> 450m from DLSU (6min. walk)</p>
-                                <p class="card-text">"Numerous units available, but the elevators are very slow." - Anonymous</p>
-                                <a href="#" class="btn btn-success view-button">View</a>
-                            </div>
+                            <p class="card-text"><i class="fas fa-walking"></i> 450m from DLSU (6min. walk)</p>
+                            <p class="card-text">"Numerous units available, but the elevators are very slow." - Anonymous</p>
+                            <a href="#" class="btn btn-success view-button">View</a>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Card 2 -->
-                    <div class="col-md-4 col-sm-6 col-12 flex-shrink-0">
-                        <div class="card h-100">
-                            <div class="card-img-container">
-                                <img src="images/vista.png" alt="Vista Taft Residences" class="card-img-top img-fluid">
+                <!-- Card 2 -->
+                <div class="col-md-4 col-sm-6 col-12 flex-shrink-0">
+                    <div class="card h-100">
+                        <div class="card-img-container">
+                            <img src="images/vista.png" alt="Vista Taft Residences" class="card-img-top img-fluid">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Vista Taft Residences</h4>
+                            <div class="star-rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="far fa-star text-warning"></i>
+                                <span class="text-muted">(4.0)</span>
                             </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Vista Taft Residences</h4>
-                                <div class="star-rating">
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="far fa-star text-warning"></i>
-                                    <span class="text-muted">(4.0)</span>
-                                </div>
-                                <p class="card-text"><i class="fas fa-walking"></i> 500m from DLSU (7min. walk)</p>
-                                <p class="card-text">"Good place to stay, but can get noisy at times. They are also strict with guests" - Maria P.</p>
-                                <a href="#" class="btn btn-success view-button">View</a>
-                            </div>
+                            <p class="card-text"><i class="fas fa-walking"></i> 500m from DLSU (7min. walk)</p>
+                            <p class="card-text">"Good place to stay, but can get noisy at times. They are also strict with guests" - Maria P.</p>
+                            <a href="#" class="btn btn-success view-button">View</a>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Card 3 -->
-                    <div class="col-md-4 col-sm-6 col-12 flex-shrink-0">
-                        <div class="card h-100">
-                            <div class="card-img-container">
-                                <img src="images/archers.jpg" alt="One Archers' Place" class="card-img-top img-fluid">
+                <!-- Card 3 -->
+                <div class="col-md-4 col-sm-6 col-12 flex-shrink-0">
+                    <div class="card h-100">
+                        <div class="card-img-container">
+                            <img src="images/archers.jpg" alt="One Archers' Place" class="card-img-top img-fluid">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">One Archers' Place</h4>
+                            <div class="star-rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <span class="text-muted">(5.0)</span>
                             </div>
-                            <div class="card-body">
-                                <h4 class="card-title">One Archers' Place</h4>
-                                <div class="star-rating">
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <span class="text-muted">(5.0)</span>
-                                </div>
-                                <p class="card-text"><i class="fas fa-walking"></i> 300m from DLSU (4min. walk)</p>
-                                <p class="card-text">"Great place to stay, very convenient and close to campus!" - Anton L.</p>
-                                <a href="#" class="btn btn-success view-button">View</a>
-                            </div>
+                            <p class="card-text"><i class="fas fa-walking"></i> 300m from DLSU (4min. walk)</p>
+                            <p class="card-text">"Great place to stay, very convenient and close to campus!" - Anton L.</p>
+                            <a href="#" class="btn btn-success view-button">View</a>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Add 3 more cards for the next set -->
-                    <!-- Card 4 -->
-                    <div class="col-md-4 col-sm-6 col-12 flex-shrink-0">
-                        <div class="card h-100">
-                            <div class="card-img-container">
-                                <img src="images/2torre.jpg" alt="2 Torre Lorenzo" class="card-img-top img-fluid">
+                <!-- Add 3 more cards for the next set -->
+                <!-- Card 4 -->
+                <div class="col-md-4 col-sm-6 col-12 flex-shrink-0">
+                    <div class="card h-100">
+                        <div class="card-img-container">
+                            <img src="images/2torre.jpg" alt="2 Torre Lorenzo" class="card-img-top img-fluid">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">2 Torre Lorenzo</h4>
+                            <div class="star-rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="far fa-star text-warning"></i>
+                                <span class="text-muted">(4.0)</span>
                             </div>
-                            <div class="card-body">
-                                <h4 class="card-title">2 Torre Lorenzo</h4>
-                                <div class="star-rating">
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="far fa-star text-warning"></i>
-                                    <span class="text-muted">(4.0)</span>
-                                </div>
-                                <p class="card-text"><i class="fas fa-walking"></i> 400m from DLSU (5min. walk)</p>
-                                <p class="card-text">"Great amenities and friendly staff!" - John D.</p>
-                                <a href="#" class="btn btn-success view-button">View</a>
-                            </div>
+                            <p class="card-text"><i class="fas fa-walking"></i> 400m from DLSU (5min. walk)</p>
+                            <p class="card-text">"Great amenities and friendly staff!" - John D.</p>
+                            <a href="#" class="btn btn-success view-button">View</a>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Card 5 -->
-                    <div class="col-md-4 col-sm-6 col-12 flex-shrink-0">
-                        <div class="card h-100">
-                            <div class="card-img-container">
-                                <img src="images/egi.jpg" alt="Condo 5" class="card-img-top img-fluid">
+                <!-- Card 5 -->
+                <div class="col-md-4 col-sm-6 col-12 flex-shrink-0">
+                    <div class="card h-100">
+                        <div class="card-img-container">
+                            <img src="images/egi.jpg" alt="Condo 5" class="card-img-top img-fluid">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">EGI Taft Towers</h4>
+                            <div class="star-rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="far fa-star text-warning"></i>
+                                <i class="far fa-star text-warning"></i>
+                                <span class="text-muted">(3.0)</span>
                             </div>
-                            <div class="card-body">
-                                <h4 class="card-title">EGI Taft Towers</h4>
-                                <div class="star-rating">
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="far fa-star text-warning"></i>
-                                    <i class="far fa-star text-warning"></i>
-                                    <span class="text-muted">(3.0)</span>
-                                </div>
-                                <p class="card-text"><i class="fas fa-walking"></i> 600m from DLSU (8min. walk)</p>
-                                <p class="card-text">"Affordable but a bit far from campus." - Sarah T.</p>
-                                <a href="#" class="btn btn-success view-button">View</a>
-                            </div>
+                            <p class="card-text"><i class="fas fa-walking"></i> 600m from DLSU (8min. walk)</p>
+                            <p class="card-text">"Affordable but a bit far from campus." - Sarah T.</p>
+                            <a href="#" class="btn btn-success view-button">View</a>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Card 6 -->
-                    <div class="col-md-4 col-sm-6 col-12 flex-shrink-0">
-                        <div class="card h-100">
-                            <div class="card-img-container">
-                                <img src="images/rsquare.jpg" alt="Condo 6" class="card-img-top img-fluid">
+                <!-- Card 6 -->
+                <div class="col-md-4 col-sm-6 col-12 flex-shrink-0">
+                    <div class="card h-100">
+                        <div class="card-img-container">
+                            <img src="images/rsquare.jpg" alt="Condo 6" class="card-img-top img-fluid">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">R Square Residences</h4>
+                            <div class="star-rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <span class="text-muted">(5.0)</span>
                             </div>
-                            <div class="card-body">
-                                <h4 class="card-title">R Square Residences</h4>
-                                <div class="star-rating">
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <span class="text-muted">(5.0)</span>
-                                </div>
-                                <p class="card-text"><i class="fas fa-walking"></i> 200m from DLSU (3min. walk)</p>
-                                <p class="card-text">"Perfect location and great facilities!" - Emily R.</p>
-                                <a href="#" class="btn btn-success view-button">View</a>
-                            </div>
+                            <p class="card-text"><i class="fas fa-walking"></i> 200m from DLSU (3min. walk)</p>
+                            <p class="card-text">"Perfect location and great facilities!" - Emily R.</p>
+                            <a href="#" class="btn btn-success view-button">View</a>
                         </div>
                     </div>
                 </div>
