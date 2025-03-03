@@ -112,23 +112,21 @@ main {
     flex: 1;
 }
 
-.scrollable-container {
-    overflow-x: auto;
-    white-space: nowrap;
+.row.flex-nowrap.overflow-auto {
     scrollbar-width: thin;
     scrollbar-color: #28a745 #f5f5f5;
 }
 
-.scrollable-container::-webkit-scrollbar {
+.row.flex-nowrap.overflow-auto::-webkit-scrollbar {
     height: 8px;
 }
 
-.scrollable-container::-webkit-scrollbar-track {
+.row.flex-nowrap.overflow-auto::-webkit-scrollbar-track {
     background: #f5f5f5;
     border-radius: 10px;
 }
 
-.scrollable-container::-webkit-scrollbar-thumb {
+.row.flex-nowrap.overflow-auto::-webkit-scrollbar-thumb {
     background: #28a745;
     border-radius: 10px;
 }
