@@ -91,21 +91,81 @@ const auth = {
       return localStorage.getItem('token') !== null;
     },
     
+    // Check if user is admin
+    isAdmin: () => {
+      const user = auth.getUser();
+      return user && user.userType === 'admin';
+    },
+    
     // Get current user
     getUser: () => {
       const user = localStorage.getItem('user');
       return user ? JSON.parse(user) : null;
     },
     
-    // Check if user is admin
-    isAdmin: () => {
-      const user = auth.getUser();
-      return user && user.userType === 'admin';
+    // Change password
+    changePassword: async (passwordData) => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        const response = await fetch(`${API_URL}/users/change-password`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(passwordData)
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to change password');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Password change error:', error);
+        throw error;
+      }
+    },
+    
+    // Update user profile
+    updateProfile: async (profileData) => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        const response = await fetch(`${API_URL}/users/profile`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(profileData)
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to update profile');
+        }
+        
+        // Update local storage user data
+        const user = auth.getUser();
+        if (user && profileData.bio) {
+          user.bio = profileData.bio;
+          localStorage.setItem('user', JSON.stringify(user));
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Profile update error:', error);
+        throw error;
+      }
     }
-  };
-
-
-  // Add this code before the window.api line:
+};
 
 // Admin API functions
 const admin = {
@@ -210,39 +270,41 @@ const admin = {
         console.error('Error fetching stats:', error);
         throw error;
       }
-    }
-  };
+    },
 
-    // Change password
-    changePassword: async (passwordData) => {
+    // Create new user
+    createUser: async (userData) => {
         try {
         const token = localStorage.getItem('token');
         if (!token) throw new Error('Not authenticated');
         
-        const response = await fetch(`${API_URL}/users/change-password`, {
+        const response = await fetch(`${API_URL}/admin/users`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(passwordData)
+            body: JSON.stringify(userData)
         });
         
         const data = await response.json();
-        
         if (!response.ok) {
-            throw new Error(data.message || 'Failed to change password');
+            throw new Error(data.message || 'Failed to create user');
         }
         
         return data;
         } catch (error) {
-        console.error('Password change error:', error);
+        console.error('Error creating user:', error);
         throw error;
         }
     }
-  
-  window.api = { 
-    API_URL, 
-    auth, 
-    admin 
-  };
+
+    
+};
+
+// Export the API
+window.api = { 
+  API_URL, 
+  auth, 
+  admin 
+};

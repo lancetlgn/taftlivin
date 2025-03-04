@@ -55,31 +55,36 @@ router.get('/users', async (req, res) => {
 
 // Update user
 router.put('/users/:id', async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    try {
+      const user = await User.findById(req.params.id);
+      
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      // Update user type if provided
+      if (req.body.userType) {
+        user.userType = req.body.userType;
+      }
+      
+      // Add this section to handle password updates
+      if (req.body.password) {
+        user.password = req.body.password;
+      }
+      
+      await user.save();
+      
+      res.json({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        userType: user.userType
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
     }
-    
-    // Only allow updating userType
-    if (req.body.userType) {
-      user.userType = req.body.userType;
-    }
-    
-    const updatedUser = await user.save();
-    
-    res.json({
-      _id: updatedUser._id,
-      username: updatedUser.username,
-      email: updatedUser.email,
-      userType: updatedUser.userType
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
+  });
 
 // Delete user
 router.delete('/users/:id', async (req, res) => {
@@ -119,5 +124,49 @@ router.get('/stats', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// Create user (admin only)
+router.post('/users', async (req, res) => {
+    try {
+      const { username, email, password, userType } = req.body;
+      
+      // Validate required fields
+      if (!username || !email || !password) {
+        return res.status(400).json({ message: 'Please provide all required fields' });
+      }
+      
+      // Check if user already exists
+      const userExists = await User.findOne({ 
+        $or: [
+          { email },
+          { username }
+        ]
+      });
+      
+      if (userExists) {
+        return res.status(400).json({ message: 'User already exists' });
+      }
+      
+      // Create new user
+      const user = new User({
+        username,
+        email,
+        password,
+        userType: userType || 'user'
+      });
+      
+      await user.save();
+      
+      res.status(201).json({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        userType: user.userType
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
 
 module.exports = router;
