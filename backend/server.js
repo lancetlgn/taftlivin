@@ -1,14 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const connectDB = require('./config/db');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 // Initialize express
 const app = express();
 
-// Connect to database
-connectDB();
+// Direct MongoDB connection (bypass config)
+mongoose.connect("mongodb+srv://tulaganlance:zPUawtjoJawH5MUE@cluster0.r9b2e.mongodb.net/taftlivin?retryWrites=true&w=majority&appName=Cluster0")
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.error('MongoDB Connection Error:', err));
 
 // Middleware
 app.use(cors());
