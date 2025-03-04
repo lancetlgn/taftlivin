@@ -41,13 +41,34 @@
                         <a class="nav-link" href="../index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Dashboard</a>
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="condos.html">Condos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="forum.html">Forum</a>
+                    </li>
+                    <!-- Admin-only menu item -->
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="admin-dashboard.html">Dashboard</a>
                     </li>
                 </ul>
-                <div class="d-flex">
-                    <span class="text-white me-3">Admin</span>
-                    <button id="logout-btn" class="btn btn-outline-light">Sign Out</button>
-                </div>
+                
+                <!-- Right side of navbar -->
+                <ul class="navbar-nav">
+                    <!-- Show when logged in -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            Welcome, <span class="username-display">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -411,6 +432,7 @@
         // Logout handler - use real authentication
         document.getElementById('logout-btn').addEventListener('click', function() {
             api.auth.logout();
+            window.location.href = '../index.html';
         });
     
         // Keep the rest of your existing script
@@ -575,6 +597,13 @@
             loadUsers();
         }
     });
+
+    
+
+    
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/auth-ui.js"></script>
 </body>
 </html>

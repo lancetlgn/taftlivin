@@ -41,6 +41,12 @@ window.location.reload();
               <li class="nav-item">
                 <a class="nav-link" href="pages/about.html">About</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="pages/condos.html">Condos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="pages/forum.html">Forum</a>
+              </li>
               <!-- Admin-only menu item -->
               <li class="nav-item admin-only d-none">
                 <a class="nav-link" href="pages/admin-dashboard.html">Dashboard</a>
@@ -51,10 +57,10 @@ window.location.reload();
             <ul class="navbar-nav">
               <!-- Show when logged out -->
               <li class="nav-item logged-out-only">
-                <a class="nav-link" href="pages/signin.html">Sign In</a>
+                <a class="nav-link auth-btn signin-btn" href="pages/signin.html">Sign In</a>
               </li>
               <li class="nav-item logged-out-only">
-                <a class="nav-link" href="pages/signup.html">Sign Up</a>
+                <a class="nav-link auth-btn signup-btn" href="pages/signup.html">Sign Up</a>
               </li>
               
               <!-- Show when logged in -->
@@ -478,48 +484,6 @@ window.location.reload();
             });
         </script>
 
-        <script>
-            // Mock login state (delete this later when you add real authentication)
-            document.addEventListener('DOMContentLoaded', function() {
-            const authButtons = document.getElementById('auth-buttons');
-            const loggedInUser = document.getElementById('logged-in-user');
-            const adminDashboardBtn = document.getElementById('admin-dashboard-btn');
-            
-            // Check if "logged in" (for demo purposes only)
-            const isLoggedIn = localStorage.getItem('mockLoggedIn') === 'true';
-            const isAdmin = localStorage.getItem('mockAdminLoggedIn') === 'true';
-        
-            if (isLoggedIn) {
-                authButtons.classList.add('d-none');
-                loggedInUser.classList.remove('d-none');
-                if (isAdmin) {
-                    adminDashboardBtn.classList.remove('d-none');
-                }
-            }
-        
-            // Mock logout
-            document.getElementById('logout-btn').addEventListener('click', function() {
-                localStorage.removeItem('mockLoggedIn');
-                localStorage.removeItem('mockAdminLoggedIn');
-                window.location.reload();
-            });
-            });
-        </script>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const reviewAuthButtons = document.getElementById('review-auth-buttons');
-                const reviewLoggedInUser = document.getElementById('review-logged-in-user');
-                
-                const isLoggedIn = localStorage.getItem('mockLoggedIn') === 'true';
-            
-                if (isLoggedIn) {
-                    reviewAuthButtons.classList.add('d-none');
-                    reviewLoggedInUser.classList.remove('d-none');
-                }
-            });
-        </script>
-
         <style>
             @media (max-width: 768px) {
                 .fixed-height {
@@ -531,5 +495,6 @@ window.location.reload();
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="js/api.js"></script>
         <script src="js/auth-ui.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

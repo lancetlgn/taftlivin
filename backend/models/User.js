@@ -28,7 +28,11 @@ const userSchema = new mongoose.Schema({
   dateJoined: {
     type: Date,
     default: Date.now
-  }
+  },
+  bio: {
+    type: String,
+    default: 'This is your default bio. You can edit this in your profile settings.'
+  },
 });
 
 // Hash password before saving
@@ -45,6 +49,9 @@ userSchema.pre('save', async function(next) {
 // Method to compare passwords
 userSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
+  
 };
+
+
 
 module.exports = mongoose.model('User', userSchema);

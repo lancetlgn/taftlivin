@@ -14,32 +14,55 @@
   <body>
     <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">TaftLivin'</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="condos.html">Condos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="forum.html">Forum</a>
-                    </li>
+          <a class="navbar-brand" href="../index.html">TaftLivin'</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item">
+                <a class="nav-link" href="../index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="condos.html">Condos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="forum.html">Forum</a>
+              </li>
+              <!-- Admin-only menu item -->
+              <li class="nav-item admin-only d-none">
+                <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
+              </li>
+            </ul>
+            
+            <!-- Right side of navbar -->
+            <ul class="navbar-nav">
+              <!-- Show when logged out -->
+              <li class="nav-item logged-out-only">
+                <a class="nav-link auth-btn signin-btn" href="signin.html">Sign In</a>
+              </li>
+              <li class="nav-item logged-out-only">
+                <a class="nav-link auth-btn signup-btn" href="signup.html">Sign Up</a>
+              </li>
+              
+              <!-- Show when logged in -->
+              <li class="nav-item dropdown logged-in-only d-none">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                  Welcome, <span class="username-display">User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
                 </ul>
-                <div class="d-flex">
-                    <a href="signin.html" class="btn btn-light ms-2">Sign In</a>
-                    <a href="#" class="btn btn-outline-light ms-2">Sign Up</a>
-                </div>
-            </div>
+              </li>
+            </ul>
+          </div>
         </div>
-    </nav>
+      </nav>
 
     <main>
         <div class="overlay" id="overlay" onclick="closePopup()"></div>
@@ -155,5 +178,9 @@
             }
         });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth-ui.js"></script>
   </body>
 </html>

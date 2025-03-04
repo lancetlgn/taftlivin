@@ -11,46 +11,55 @@
 
     <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">TaftLivin'</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Condos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="forum.html">Forum</a>
-                    </li>
+          <a class="navbar-brand" href="../index.html">TaftLivin'</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item">
+                <a class="nav-link" href="../index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="condos.html">Condos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="forum.html">Forum</a>
+              </li>
+              <!-- Admin-only menu item -->
+              <li class="nav-item admin-only d-none">
+                <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
+              </li>
+            </ul>
+            
+            <!-- Right side of navbar -->
+            <ul class="navbar-nav">
+              <!-- Show when logged out -->
+              <li class="nav-item logged-out-only">
+                <a class="nav-link auth-btn signin-btn" href="signin.html">Sign In</a>
+              </li>
+              <li class="nav-item logged-out-only">
+                <a class="nav-link auth-btn signup-btn" href="signup.html">Sign Up</a>
+              </li>
+              
+              <!-- Show when logged in -->
+              <li class="nav-item dropdown logged-in-only d-none">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                  Welcome, <span class="username-display">User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
                 </ul>
-                <div class="d-flex" id="auth-buttons">
-                    <!-- Default buttons for guests -->
-                    <a href="pages/signin.html" class="btn btn-light ms-2">Sign In</a>
-                    <a href="pages/signup.html" class="btn btn-outline-light ms-2">Sign Up</a>
-                </div>
-                  
-                  <!-- Hidden until user is "logged in" -->
-                <div id="logged-in-user" class="d-none">
-                    <div class="d-flex align-items-center">
-                        <a href="pages/profile.html" class="d-flex align-items-center me-3">
-                            <i class="fas fa-user-circle text-white me-2"></i> <!-- show profile pic -->
-                            <span class="px-0 mx-0 text-white">Lance</span>
-                        </a>
-                        <!-- Add this admin-only link -->
-                        <a href="pages/admin-dashboard.html" class="btn btn-warning me-2 d-none" id="admin-dashboard-btn">Dashboard</a>
-                        <button id="logout-btn" class="btn btn-outline-light">Sign Out</button>
-                    </div>
-                </div>
-            </div>
+              </li>
+            </ul>
+          </div>
         </div>
-    </nav>
+      </nav>
 
 
     <div class="container mt-4 py-5">
@@ -174,5 +183,9 @@
         <a href="#">6</a>
         <a href="#">&raquo;</a>
       </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="../js/api.js"></script>
+      <script src="../js/auth-ui.js"></script>
 </body>
 </html>

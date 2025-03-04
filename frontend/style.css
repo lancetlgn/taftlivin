@@ -42,6 +42,34 @@ main {
     text-decoration: none;
 }
 
+/* Navigation bar auth button styling */
+.navbar .nav-item .nav-link.auth-btn {
+  color: white;
+  margin-left: 5px;
+  padding: 5px 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.navbar .nav-item .signin-btn {
+  background-color: transparent;
+  border: 1px solid white;
+}
+
+.navbar .nav-item .signin-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.navbar .nav-item .signup-btn {
+  background-color: white;
+  color: #198754 !important;
+  border: 1px solid white;
+}
+
+.navbar .nav-item .signup-btn:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
 /* User Information Styles */
 .user-section {
     display: flex;

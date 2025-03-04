@@ -73,13 +73,36 @@ router.post('/login', async (req, res) => {
 
 // Get current user profile
 router.get('/me', protect, async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id).select('-password');
-    res.json(user);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server Error' });
-  }
-});
+    try {
+      const user = await User.findById(req.user._id).select('-password');
+      
+      res.json({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        userType: user.userType,
+        bio: user.bio || '',
+        dateJoined: user.dateJoined
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
+
+// Verify token endpoint
+router.get('/verify', protect, (req, res) => {
+    res.json({ 
+      valid: true, 
+      user: {
+        _id: req.user._id,
+        username: req.user.username,
+        email: req.user.email,
+        userType: req.user.userType
+      }
+    });
+  });
+
+  
 
 module.exports = router;

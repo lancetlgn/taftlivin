@@ -28,6 +28,7 @@ app.use('/api/condos', require('./routes/condos'));
 app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/forum', require('./routes/forum'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/users', require('./routes/users'));
 
 // Catch-all route to return the main index.html
 app.get('*', (req, res) => {

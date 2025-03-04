@@ -1,3 +1,4 @@
+/profile.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,40 +8,70 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
+    <script src="../js/api.js"></script>
+    <script src="../js/auth-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        if (!localStorage.getItem('mockLoggedIn')) {
-            window.location.href = '../index.html';
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!api.auth.isLoggedIn()) {
+                window.location.href = 'signin.html';
+                return;
+            }
+            updateAuthUI();
+        });
     </script>
 </head>
 <body>
     <!-- Navigation Bar -->
-    <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
+    <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success">
         <div class="container-fluid">
-            <a class="navbar-brand" href="../index.html">TaftLivin'</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="condos.html">Condos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="forum.html">Forum</a>
-                    </li>
+          <a class="navbar-brand" href="../index.html">TaftLivin'</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item">
+                <a class="nav-link" href="../index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="condos.html">Condos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="forum.html">Forum</a>
+              </li>
+              <!-- Admin-only menu item -->
+              <li class="nav-item admin-only d-none">
+                <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
+              </li>
+            </ul>
+            
+            <!-- Right side of navbar -->
+            <ul class="navbar-nav">
+              <!-- Show when logged out -->
+              <li class="nav-item logged-out-only">
+                <a class="nav-link" href="signin.html">Sign In</a>
+              </li>
+              <li class="nav-item logged-out-only">
+                <a class="nav-link" href="signup.html">Sign Up</a>
+              </li>
+              
+              <!-- Show when logged in -->
+              <li class="nav-item dropdown logged-in-only d-none">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                  Welcome, <span class="username-display">User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
                 </ul>
-                <div class="d-flex">
-                    <a href="admin-dashboard.html" class="btn btn-warning me-2 d-none" id="admin-dashboard-btn">Dashboard</a>
-                    <button class="btn btn-outline-light" id="logout-btn">Sign Out</button>
-                </div>
-            </div>
+              </li>
+            </ul>
+          </div>
         </div>
     </nav>
 
@@ -50,12 +81,15 @@
                 <!-- Profile Picture Section -->
                 <div class="card mb-4">
                     <div class="card-body text-center">
-                        <!-- Add loading spinner -->
-                        <div id="upload-spinner" class="d-none">
+                        <!-- Loading spinner -->
+                        <div id="profile-loading" class="d-none">
                             <div class="spinner-border text-success" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
                         </div>
+                        <!-- Error message -->
+                        <div id="profile-error" class="alert alert-danger d-none"></div>
+                        
                         <div class="position-relative d-inline-block mb-3">
                             <img id="profile-image" src="../images/profile.png" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Profile Picture">
                             <label for="profile-pic-input" class="position-absolute bottom-0 end-0 btn btn-sm btn-success rounded-circle">
@@ -63,8 +97,8 @@
                                 <input type="file" id="profile-pic-input" class="d-none" accept="image/*">
                             </label>
                         </div>
-                        <h3 class="mb-2">Lance Morrison Tulagan</h3>
-                        <p class="text-muted">Student</p>
+                        <h3 class="profile-username mb-2">Loading...</h3>
+                        <p class="text-muted profile-role">User</p>
                     </div>
                 </div>
             </div>
@@ -77,20 +111,20 @@
                         <form id="profile-form">
                             <!-- Full Name -->
                             <div class="mb-3">
-                                <label class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="fullname" value="Lance Morrison Tulagan" readonly>
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" id="fullname" readonly>
                             </div>
 
                             <!-- Email -->
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" value="lance_tulagan@dlsu.edu.ph" readonly>
+                                <input type="email" class="form-control" id="email" readonly>
                             </div>
 
                             <!-- Bio -->
                             <div class="mb-3">
                                 <label class="form-label">Bio</label>
-                                <textarea class="form-control" id="bio" rows="3">A DLSU student living in Taft Avenue.</textarea>
+                                <textarea class="form-control" id="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
                             </div>
 
                             <!-- Change Password Section -->
@@ -145,54 +179,158 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Profile Picture Upload
-        document.getElementById('profile-pic-input').addEventListener('change', function(e) {
+        // Profile page functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show loading state
+            document.getElementById('profile-loading').classList.remove('d-none');
+            
+            // Load user profile
+            loadUserProfile();
+            
+            // Set up form submission
+            document.getElementById('profile-form').addEventListener('submit', updateProfile);
+            
+            // Set up image upload
+            document.getElementById('profile-pic-input').addEventListener('change', uploadProfileImage);
+        });
+        
+        // Load user profile data
+        async function loadUserProfile() {
+            try {
+                // Get token
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error('Not authenticated');
+                }
+                
+                // Fetch user profile
+                const response = await fetch(`${api.API_URL}/auth/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch profile');
+                }
+                
+                const user = await response.json();
+                
+                // Hide loading, show profile
+                document.getElementById('profile-loading').classList.add('d-none');
+                
+                // Update profile information
+                document.getElementById('fullname').value = user.username;
+                document.getElementById('email').value = user.email;
+                document.querySelector('.profile-username').textContent = user.username;
+                
+                if (user.bio) {
+                    document.getElementById('bio').value = user.bio;
+                }
+                
+                // Update user role display if present
+                const role = user.userType.charAt(0).toUpperCase() + user.userType.slice(1);
+                document.querySelector('.profile-role').textContent = role;
+                
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                document.getElementById('profile-loading').classList.add('d-none');
+                document.getElementById('profile-error').classList.remove('d-none');
+                document.getElementById('profile-error').textContent = 'Error loading profile: ' + error.message;
+            }
+        }
+        
+        // Handle profile update
+        async function updateProfile(event) {
+            event.preventDefault();
+            
+            try {
+                // Get form values
+                const bio = document.getElementById('bio').value;
+                const currentPassword = document.getElementById('currentPassword')?.value;
+                const newPassword = document.getElementById('newPassword')?.value;
+                const confirmPassword = document.getElementById('confirmPassword')?.value;
+
+                // Update profile data
+                const profileData = { bio };
+                
+                // Update profile
+                const token = localStorage.getItem('token');
+                const profileResponse = await fetch(`${api.API_URL}/users/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(profileData)
+                });
+                
+                if (!profileResponse.ok) {
+                    throw new Error('Failed to update profile');
+                }
+                
+                // Check if password needs to be updated
+                if (currentPassword && newPassword && confirmPassword) {
+                    if (newPassword !== confirmPassword) {
+                        alert('New passwords do not match!');
+                        return;
+                    }
+                    
+                    const passwordResponse = await fetch(`${api.API_URL}/users/change-password`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            currentPassword,
+                            newPassword
+                        })
+                    });
+                    
+                    if (!passwordResponse.ok) {
+                        const errorData = await passwordResponse.json();
+                        throw new Error(errorData.message || 'Failed to change password');
+                    }
+                    
+                    // Clear password fields
+                    document.getElementById('currentPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                    
+                    // Close password section
+                    const passwordCollapse = bootstrap.Collapse.getInstance(document.getElementById('passwordSection'));
+                    if (passwordCollapse) {
+                        passwordCollapse.hide();
+                    }
+                }
+                
+                alert('Profile updated successfully!');
+                
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('Error updating profile: ' + error.message);
+            }
+        }
+        
+        // Handle profile image upload
+        function uploadProfileImage(e) {
+            // This is just a placeholder for now since we don't have image upload API yet
             if (e.target.files && e.target.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('profile-image').src = e.target.result;
                 }
                 reader.readAsDataURL(e.target.files[0]);
+                alert('Note: Image upload is just for preview currently. The image will not be saved to the server.');
             }
-        });
-
-        // Form Submission
-        document.getElementById('profile-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const bio = document.getElementById('bio').value;
-            const currentPassword = document.getElementById('currentPassword')?.value;
-            const newPassword = document.getElementById('newPassword')?.value;
-            const confirmPassword = document.getElementById('confirmPassword')?.value;
-
-            if (currentPassword || newPassword || confirmPassword) {
-                if (newPassword !== confirmPassword) {
-                    alert('New passwords do not match!');
-                    return;
-                }
-            }
-
-            alert('Profile updated successfully!');
-        });
-
-        // Navbar scroll effect
-        document.addEventListener("scroll", function() {
-            const navbar = document.getElementById("navbar");
-            if (window.scrollY > 50) {
-                navbar.classList.add("scrolled");
-            } else {
-                navbar.classList.remove("scrolled");
-            }
-        });
-        
-        // Admin Dashboard Button
-        document.addEventListener('DOMContentLoaded', function() {
-            const adminDashboardBtn = document.getElementById('admin-dashboard-btn');
-            if (localStorage.getItem('mockAdminLoggedIn') === 'true') {
-                adminDashboardBtn.classList.remove('d-none');
-            }
-        });
+        }
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth-ui.js"></script>
+
+    
 </body>
 </html>
