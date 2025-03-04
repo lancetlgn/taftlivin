@@ -77,5 +77,5 @@ const auth = {
   }
 };
 
-// Make auth available globally
+// Export API functions globally
 window.api = { auth };

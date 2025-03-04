@@ -1,111 +1,132 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Sign in page for TaftLivin">
-	<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-	<title>Sign In</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sign in page for TaftLivin">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <title>Sign In</title>
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap');
+        *
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+            font-family: 'Josefin Sans', sans-serif;
+        }
 
-	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap');
-		*
-		body {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 100vh;
-			background-color: #f8f9fa;
-			font-family: 'Josefin Sans', sans-serif;
-		}
+        .form-signin {
+            width: 100%;
+            max-width: 350px;
+            padding: 30px;
+            border-radius: 10px;
+            background: #ffffff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
 
-		.form-signin {
-			width: 100%;
-			max-width: 350px;
-			padding: 30px;
-			border-radius: 10px;
-			background: #ffffff;
-			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-		}
+        .form-signin img {
+            margin-bottom: 20px;
+            width: 180px;
+        }
 
-		.form-signin img {
-			margin-bottom: 20px;
-			width: 180px;
-		}
+        .form-signin h1 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
 
-		.form-signin h1 {
-			font-size: 22px;
-			font-weight: 600;
-			margin-bottom: 20px;
-		}
+        .form-floating input {
+            border-radius: 8px;
+        }
 
-		.form-floating input {
-			border-radius: 8px;
-		}
+        .btn-custom {
+            background-color: #28a745;
+            border: none;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 8px;
+        }
 
-		.btn-custom {
-			background-color: #28a745;
-			border: none;
-			font-weight: 600;
-			padding: 12px;
-			border-radius: 8px;
-		}
+        .btn-custom:hover {
+            background-color: #218838;
+        }
 
-		.btn-custom:hover {
-			background-color: #218838;
-		}
+        .signup-link {
+            display: block;
+            margin-top: 15px;
+            font-size: 14px;
+        }
 
-		.signup-link {
-			display: block;
-			margin-top: 15px;
-			font-size: 14px;
-		}
-
-		.text-muted {
-			font-size: 12px;
-		}
-	</style>
+        .text-muted {
+            font-size: 12px;
+        }
+    </style>
 </head>
 <body>
-	<main class="form-signin text-center">
-		<form>
-			<a class="underline link-underline link-underline-opacity-0" href="../index.html"><h1 class="text-success fs-1">TaftLivin'</h1></a>
-			<h1 class="h3 fw-normal">Sign in to your account</h1>
+    <main class="form-signin text-center">
+        <form id="loginForm">
+            <a class="underline link-underline link-underline-opacity-0" href="../index.html"><h1 class="text-success fs-1">TaftLivin'</h1></a>
+            <h1 class="h3 fw-normal">Sign in to your account</h1>
 
-			<div class="form-floating mb-3">
-				<input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
-				<label for="floatingInput">Email address</label>
-			</div>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+                <label for="floatingInput">Email address</label>
+            </div>
 
-			<div class="form-floating mb-3">
-				<input type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
-				<label for="floatingPassword">Password</label>
-			</div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+                <label for="floatingPassword">Password</label>
+            </div>
 
-			<div class="form-check text-start mb-3">
-				<input class="form-check-input" type="checkbox" value="remember-me" id="rememberMe">
-				<label class="form-check-label" for="rememberMe">Remember me</label>
-			</div>
+            <div class="form-check text-start mb-3">
+                <input class="form-check-input" type="checkbox" value="remember-me" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
 
-			<button class="w-100 btn btn-lg btn-success" type="submit">Sign in</button>
-			
-			<a href="signup.html" class="signup-link">Don't have an account? Sign up</a>
-			<p class="mt-4 text-muted">&copy; 2025 TaftLivin</p>
-		</form>
-	</main>
-	<!-- Add to form submit handler -->
-	<script>
-		document.querySelector('form').addEventListener('submit', function(e) {
-			e.preventDefault();
-			localStorage.setItem('mockLoggedIn', 'true');
-			 // Set admin login if email contains 'admin'
-			if (document.getElementById('floatingInput').value.includes('admin')) {
-				localStorage.setItem('mockAdminLoggedIn', 'true');
-			}
-			window.location.href = '../index.html';
-		});
-	</script>
+            <!-- Add error message div -->
+            <div id="loginError" class="alert alert-danger mb-3 d-none">
+                <!-- Error messages will appear here -->
+            </div>
+
+            <button class="w-100 btn btn-lg btn-success" type="submit">Sign in</button>
+            
+            <a href="signup.html" class="signup-link">Don't have an account? Sign up</a>
+            <p class="mt-4 text-muted">&copy; 2025 TaftLivin</p>
+        </form>
+    </main>
+    
+    <!-- Add your API script -->
+    <script src="../js/api.js"></script>
+    
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('floatingInput').value;
+            const password = document.getElementById('floatingPassword').value;
+            const errorElement = document.getElementById('loginError');
+            
+            try {
+                // Clear any previous errors
+                errorElement.classList.add('d-none');
+                
+                // Call the real login API
+                await api.auth.login({ email, password });
+                
+                // Redirect on successful login
+                window.location.href = '../index.html';
+                
+            } catch (error) {
+                // Show error message
+                errorElement.textContent = error.message || 'Login failed. Please try again.';
+                errorElement.classList.remove('d-none');
+            }
+        });
+    </script>
 </body>
 </html>
