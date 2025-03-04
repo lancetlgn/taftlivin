@@ -77,5 +77,115 @@ const auth = {
   }
 };
 
-// Export API functions globally
-window.api = { auth };
+
+// Add these admin functions after your existing auth functions
+
+// Admin API functions
+const admin = {
+    // Get all users
+    getUsers: async (page = 1, search = '') => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        let url = `${API_URL}/admin/users?page=${page}`;
+        if (search) url += `&search=${encodeURIComponent(search)}`;
+        
+        const response = await fetch(url, {
+          headers: { 
+            'Authorization': `Bearer ${token}` 
+          }
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch users');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        throw error;
+      }
+    },
+    
+    // Update a user
+    updateUser: async (userId, userData) => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        const response = await fetch(`${API_URL}/admin/users/${userId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(userData)
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to update user');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Error updating user:', error);
+        throw error;
+      }
+    },
+    
+    // Delete a user
+    deleteUser: async (userId) => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        const response = await fetch(`${API_URL}/admin/users/${userId}`, {
+          method: 'DELETE',
+          headers: { 
+            'Authorization': `Bearer ${token}` 
+          }
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to delete user');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        throw error;
+      }
+    },
+    
+    // Get dashboard stats
+    getStats: async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        const response = await fetch(`${API_URL}/admin/stats`, {
+          headers: { 
+            'Authorization': `Bearer ${token}` 
+          }
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch stats');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+        throw error;
+      }
+    }
+  };
+  
+
+  //global API object
+  window.api = { auth, admin };

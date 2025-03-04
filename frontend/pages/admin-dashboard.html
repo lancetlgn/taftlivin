@@ -1,18 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - TaftLivin'</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css">
-    <script>
-        if (localStorage.getItem('mockAdminLoggedIn') !== 'true') {
-            window.location.href = '../index.html';
-        }
-    </script>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Dashboard - TaftLivin'</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="../style.css">
+        <!-- Replace this script -->
+        <script src="../js/api.js"></script>
+        <script>
+            // Check if user is logged in and is admin
+            document.addEventListener('DOMContentLoaded', function() {
+                if (!api.auth.isLoggedIn()) {
+                    window.location.href = 'signin.html';
+                    return;
+                }
+                
+                if (!api.auth.isAdmin()) {
+                    window.location.href = '../index.html';
+                    return;
+                }
+                
+                // Update username display
+                const user = api.auth.getUser();
+                document.querySelector('.text-white.me-3').textContent = user.username;
+            });
+        </script>
+    </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
         <div class="container-fluid">
@@ -393,18 +408,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Check if admin is logged in
-        if (localStorage.getItem('mockAdminLoggedIn') !== 'true') {
-            window.location.href = '../index.html';
-        }
-
-        // Logout handler
+        // Logout handler - use real authentication
         document.getElementById('logout-btn').addEventListener('click', function() {
-            localStorage.removeItem('mockLoggedIn');
-            localStorage.removeItem('mockAdminLoggedIn');
-            window.location.href = '../index.html';
+            api.auth.logout();
         });
-
+    
+        // Keep the rest of your existing script
         // Edit condo button handler
         document.querySelectorAll('.btn-edit-condo').forEach(button => {
             button.addEventListener('click', function() {
@@ -412,7 +421,7 @@
                 modal.show();
             });
         });
-
+    
         // Edit user button handler
         document.querySelectorAll('.btn-edit-user').forEach(button => {
             button.addEventListener('click', function() {
@@ -420,7 +429,7 @@
                 modal.show();
             });
         });
-
+    
         document.getElementById('addUserForm').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('User added successfully!');
@@ -428,5 +437,144 @@
             modal.hide();
         });
     </script>
+
+    <!-- Add this script just before the closing </body> tag -->
+<script>
+    // Load users from API
+    async function loadUsers() {
+        try {
+            const usersList = document.getElementById('usersList');
+            usersList.innerHTML = '<tr><td colspan="4" class="text-center">Loading users...</td></tr>';
+            
+            const data = await api.admin.getUsers();
+            
+            if (data.users.length === 0) {
+                usersList.innerHTML = '<tr><td colspan="4" class="text-center">No users found</td></tr>';
+                return;
+            }
+            
+            usersList.innerHTML = '';
+            
+            data.users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.username}</td>
+                    <td>${user.email}</td>
+                    <td><span class="badge bg-success">${user.userType}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-success btn-edit-user" data-user-id="${user._id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-success btn-delete-user" data-user-id="${user._id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                usersList.appendChild(row);
+            });
+            
+            // Set up edit user buttons
+            document.querySelectorAll('.btn-edit-user').forEach(button => {
+                button.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-user-id');
+                    editUser(userId);
+                });
+            });
+            
+            // Set up delete user buttons
+            document.querySelectorAll('.btn-delete-user').forEach(button => {
+                button.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-user-id');
+                    deleteUser(userId);
+                });
+            });
+            
+        } catch (error) {
+            console.error('Error loading users:', error);
+            document.getElementById('usersList').innerHTML = 
+                `<tr><td colspan="4" class="text-center text-danger">Error: ${error.message}</td></tr>`;
+        }
+    }
+    
+    // Edit user
+    async function editUser(userId) {
+        try {
+            const data = await api.admin.getUsers();
+            const user = data.users.find(u => u._id === userId);
+            
+            if (!user) {
+                throw new Error('User not found');
+            }
+            
+            // Fill the form
+            document.getElementById('editUserName').value = user.username;
+            document.getElementById('editUserEmail').value = user.email;
+            document.getElementById('editUserRole').value = user.userType;
+            
+            // Store the user ID for the save action
+            document.getElementById('editUserForm').setAttribute('data-user-id', userId);
+            
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+            modal.show();
+            
+        } catch (error) {
+            console.error('Error editing user:', error);
+            alert('Error: ' + error.message);
+        }
+    }
+    
+    // Delete user
+    async function deleteUser(userId) {
+        if (confirm('Are you sure you want to delete this user?')) {
+            try {
+                await api.admin.deleteUser(userId);
+                loadUsers();
+                alert('User deleted successfully');
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+    }
+    
+    // Set up form submissions
+    document.getElementById('editUserForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const userId = this.getAttribute('data-user-id');
+        const userData = {
+            userType: document.getElementById('editUserRole').value
+        };
+        
+        try {
+            await api.admin.updateUser(userId, userData);
+            
+            // Hide modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
+            modal.hide();
+            
+            // Reload users
+            loadUsers();
+            alert('User updated successfully');
+        } catch (error) {
+            console.error('Error updating user:', error);
+            alert('Error: ' + error.message);
+        }
+    });
+    
+    // Load data when users tab is shown
+    document.querySelector('button[data-bs-target="#users"]').addEventListener('click', function() {
+        loadUsers();
+    });
+    
+    // Load data on page load if users tab is active
+    document.addEventListener('DOMContentLoaded', function() {
+        // If users tab is active on page load
+        if (document.querySelector('#users').classList.contains('show')) {
+            loadUsers();
+        }
+    });
+</script>
 </body>
 </html>

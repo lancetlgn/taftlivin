@@ -1,11 +1,14 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const protect = async (req, res, next) => {
+// Protect routes
+exports.protect = async (req, res, next) => {
   let token;
 
-  // Check for token in headers
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
     try {
       // Get token from header
       token = req.headers.authorization.split(' ')[1];
@@ -13,7 +16,7 @@ const protect = async (req, res, next) => {
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // Get user from the token (exclude password)
+      // Get user from the token
       req.user = await User.findById(decoded.id).select('-password');
 
       next();
@@ -29,12 +32,10 @@ const protect = async (req, res, next) => {
 };
 
 // Admin middleware
-const admin = (req, res, next) => {
+exports.admin = (req, res, next) => {
   if (req.user && req.user.userType === 'admin') {
     next();
   } else {
-    res.status(401).json({ message: 'Not authorized as admin' });
+    res.status(401).json({ message: 'Not authorized as an admin' });
   }
 };
-
-module.exports = { protect, admin };
