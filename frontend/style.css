@@ -465,3 +465,20 @@ footer a:hover {
     font-size: 0.9em;
     opacity: 0.8;
 }
+
+.d-inline-flex.align-items-center {
+    display: inline-flex !important;
+}
+
+.fa-star, .fa-star-half-alt, .far.fa-star {
+    font-size: 16px;
+    margin-right: 2px;
+}
+
+.dorm-info p .text-secondary {
+    font-size: 0.9em;
+}
+
+.fas, .far, .fa-solid, .fa-regular {
+    vertical-align: middle;
+}

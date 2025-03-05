@@ -274,6 +274,7 @@ function updateCondoDetails() {
     }
 }
 
+
 // Load reviews for this condo with infinite scroll
 async function loadCondoReviews(page = 1, append = false) {
     try {
@@ -723,6 +724,13 @@ async function deleteReview() {
             deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Delete';
         }
     }
+}
+
+function calculateWalkingTime(meters) {
+    // Average walking speed is about 1.4 meters per second or 84 meters per minute
+    const walkingSpeedMetersPerMinute = 84;
+    // Calculate minutes and round to nearest integer
+    return Math.round(meters / walkingSpeedMetersPerMinute);
 }
 
 
