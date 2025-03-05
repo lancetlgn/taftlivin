@@ -727,6 +727,202 @@
         }
     }
 
+    // Add these functions to the script section of your admin-dashboard.html file
+
+// Set up navigation events for condos tab
+document.querySelector('button[data-bs-target="#condos"]').addEventListener('click', function() {
+    loadCondos();
+});
+
+// Load condos if condos tab is active on page load
+if (document.querySelector('#condos').classList.contains('show')) {
+    loadCondos();
+}
+
+// Load condos from API
+async function loadCondos() {
+    try {
+        const condosList = document.getElementById('condosList');
+        condosList.innerHTML = '<tr><td colspan="5" class="text-center">Loading condos...</td></tr>';
+        
+        const data = await api.admin.getCondos();
+        
+        if (data.condos.length === 0) {
+            condosList.innerHTML = '<tr><td colspan="5" class="text-center">No condos found</td></tr>';
+            return;
+        }
+        
+        condosList.innerHTML = '';
+        
+        data.condos.forEach(condo => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${condo.name}</td>
+                <td>${condo.address}</td>
+                <td>${condo.price}</td>
+                <td>${condo.averageRating || 'No ratings'}</td>
+                <td>
+                    <button class="btn btn-sm btn-success btn-edit-condo" data-condo-id="${condo._id}">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-success btn-delete-condo" data-condo-id="${condo._id}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            condosList.appendChild(row);
+        });
+        
+        // Set up edit condo buttons
+        document.querySelectorAll('.btn-edit-condo').forEach(button => {
+            button.addEventListener('click', function() {
+                const condoId = this.getAttribute('data-condo-id');
+                editCondo(condoId);
+            });
+        });
+        
+        // Set up delete condo buttons
+        document.querySelectorAll('.btn-delete-condo').forEach(button => {
+            button.addEventListener('click', function() {
+                const condoId = this.getAttribute('data-condo-id');
+                deleteCondo(condoId);
+            });
+        });
+        
+    } catch (error) {
+        console.error('Error loading condos:', error);
+        document.getElementById('condosList').innerHTML = 
+            `<tr><td colspan="5" class="text-center text-danger">Error: ${error.message}</td></tr>`;
+    }
+}
+
+// Edit condo
+async function editCondo(condoId) {
+    try {
+        const data = await api.admin.getCondos();
+        const condo = data.condos.find(c => c._id === condoId);
+        
+        if (!condo) {
+            throw new Error('Condo not found');
+        }
+        
+        // Fill the form
+        document.getElementById('editCondoName').value = condo.name;
+        document.getElementById('editCondoAddress').value = condo.address;
+        document.getElementById('editCondoDescription').value = condo.description;
+        document.getElementById('editCondoPrice').value = condo.price;
+        document.getElementById('editCondoDistance').value = condo.distance;
+        
+        if (condo.contactInfo) {
+            document.getElementById('editCondoPhone').value = condo.contactInfo.phone || '';
+            document.getElementById('editCondoEmail').value = condo.contactInfo.email || '';
+        }
+        
+        // Handle amenities (assuming it's a comma-separated list in a text field)
+        document.getElementById('editCondoAmenities').value = condo.amenities.join(', ');
+        
+        // Store the condo ID for the save action
+        document.getElementById('editCondoForm').setAttribute('data-condo-id', condoId);
+        
+        // Show the modal
+        const modal = new bootstrap.Modal(document.getElementById('editCondoModal'));
+        modal.show();
+        
+    } catch (error) {
+        console.error('Error editing condo:', error);
+        alert('Error: ' + error.message);
+    }
+}
+
+// Delete condo
+async function deleteCondo(condoId) {
+    if (confirm('Are you sure you want to delete this condo?')) {
+        try {
+            await api.admin.deleteCondo(condoId);
+            loadCondos();
+            alert('Condo deleted successfully');
+        } catch (error) {
+            console.error('Error deleting condo:', error);
+            alert('Error: ' + error.message);
+        }
+    }
+}
+
+    // Set up add condo form submission
+    document.getElementById('addCondoForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const condoData = {
+            name: document.getElementById('addCondoName').value,
+            address: document.getElementById('addCondoAddress').value,
+            description: document.getElementById('addCondoDescription').value,
+            price: parseFloat(document.getElementById('addCondoPrice').value),
+            distance: parseFloat(document.getElementById('addCondoDistance').value),
+            amenities: document.getElementById('addCondoAmenities').value.split(',').map(item => item.trim()),
+            contactInfo: {
+                phone: document.getElementById('addCondoPhone').value,
+                email: document.getElementById('addCondoEmail').value
+            }
+        };
+        
+        try {
+            // Create condo via API
+            await api.admin.createCondo(condoData);
+            
+            // Hide modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addCondoModal'));
+            modal.hide();
+            
+            // Clear form
+            this.reset();
+            
+            // Reload condos
+            loadCondos();
+            
+            alert('Condo added successfully!');
+        } catch (error) {
+            console.error('Error creating condo:', error);
+            alert('Error: ' + error.message);
+        }
+    });
+
+    // Set up edit condo form submission
+    document.getElementById('editCondoForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const condoId = this.getAttribute('data-condo-id');
+        
+        // Get form values
+        const condoData = {
+            name: document.getElementById('editCondoName').value,
+            address: document.getElementById('editCondoAddress').value,
+            description: document.getElementById('editCondoDescription').value,
+            price: parseFloat(document.getElementById('editCondoPrice').value),
+            distance: parseFloat(document.getElementById('editCondoDistance').value),
+            amenities: document.getElementById('editCondoAmenities').value.split(',').map(item => item.trim()),
+            contactInfo: {
+                phone: document.getElementById('editCondoPhone').value,
+                email: document.getElementById('editCondoEmail').value
+            }
+        };
+        
+        try {
+            await api.admin.updateCondo(condoId, condoData);
+            
+            // Hide modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editCondoModal'));
+            modal.hide();
+            
+            // Reload condos
+            loadCondos();
+            alert('Condo updated successfully');
+        } catch (error) {
+            console.error('Error updating condo:', error);
+            alert('Error: ' + error.message);
+        }
+    });
+
     
 </script>
 </body>

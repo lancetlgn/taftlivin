@@ -4,15 +4,13 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
-require('dotenv').config();
+const connectDB = require('./config/db');
 
 // Initialize express
 const app = express();
 
-// Direct MongoDB connection (bypass config)
-mongoose.connect("mongodb+srv://tulaganlance:zPUawtjoJawH5MUE@cluster0.r9b2e.mongodb.net/taftlivin?retryWrites=true&w=majority&appName=Cluster0")
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.error('MongoDB Connection Error:', err));
+// Connect to MongoDB (using config file)
+connectDB();
 
 // Middleware
 app.use(cors());
@@ -24,15 +22,17 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Define routes
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/admin', require('./routes/admin'));
 app.use('/api/condos', require('./routes/condos'));
 app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/forum', require('./routes/forum'));
-app.use('/api/admin', require('./routes/admin'));
-app.use('/api/users', require('./routes/users'));
+app.use('/api/condos', require('./routes/condos'));
 
-// Catch-all route to return the main index.html
+
+// Catch-all route to serve the frontend
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../frontend', 'index.html'));
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
 // Start server

@@ -1,3 +1,4 @@
+vin/frontend/pages/condos.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,83 +68,22 @@
             <!-- Left Section: Search & Dorm Listings -->
             <div class="col-md-8">
                 <div class="search-bar">
-                    <input type="text" class="form-control" placeholder="Search for your dorm">
+                    <div class="input-group mb-3">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search for your dorm">
+                        <button class="btn btn-success" type="button" id="searchBtn">
+                            <i class="fas fa-search">Search</i>
+                        </button>
+                    </div>
                 </div>
 
-                <div class="dorm-list mt-3">
-                    <!-- Dorm Item -->
-                    <div class="dorm-item d-flex align-items-center">
-                        <img src="../images/green1.jpg" alt="Green Residences by SMDC">
-                        <div class="dorm-info">
-                            <a  class='text-dark link-underline link-underline-opacity-0' href="condo-page.html"><h5>Green Residences</h5></a>
-                            <p><span class="badge bg-warning text-dark">★★★☆☆</span> 88 reviews</p>
+                <!-- Loading indicator and condos will be inserted here -->
+                <div class="dorm-list mt-3" id="dormList">
+                    <div class="text-center py-3">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Loading...</span>
                         </div>
+                        <p class="mt-2">Loading condos...</p>
                     </div>
-
-                    <div class="dorm-item d-flex align-items-center">
-                        <img src="../images/vista.png" alt="Vista Taft Residences" >
-                        <div class="dorm-info">
-                            <a  class='text-dark link-underline link-underline-opacity-0' href="condo-page.html"><h5>Vista Taft Residences</h5></a>
-                            <p><span class="badge bg-warning text-dark">★★★★☆</span> 40 reviews</p>
-                        </div>
-                    </div>
-
-                    <div class="dorm-item d-flex align-items-center">
-                        <img src="../images/archers.jpg" alt="One Archers' Place">
-                        <div class="dorm-info">
-                            <a  class='text-dark link-underline link-underline-opacity-0' href="condo-page.html"><h5>One Archers' Place</h5></a>
-                            <p><span class="badge bg-warning text-dark">★★★★★</span> 37 reviews</p>
-                        </div>
-                    </div>
-
-                    <div class="dorm-item d-flex align-items-center">
-                        <img src="../images/green1.jpg" alt="Green Residences by SMDC">
-                        <div class="dorm-info">
-                            <a  class='text-dark link-underline link-underline-opacity-0' href="condo-page.html"><h5>Green Residences</h5></a>
-                            <p><span class="badge bg-warning text-dark">★★★☆☆</span> 88 reviews</p>
-                        </div>
-                    </div>
-
-                    <div class="dorm-item d-flex align-items-center">
-                        <img src="../images/vista.png" alt="Vista Taft Residences" >
-                        <div class="dorm-info">
-                            <a  class='text-dark link-underline link-underline-opacity-0' href="condo-page.html"><h5>Vista Taft Residences</h5></a>
-                            <p><span class="badge bg-warning text-dark">★★★★☆</span> 40 reviews</p>
-                        </div>
-                    </div>
-
-                    <div class="dorm-item d-flex align-items-center">
-                        <img src="../images/archers.jpg" alt="One Archers' Place">
-                        <div class="dorm-info">
-                            <a  class='text-dark link-underline link-underline-opacity-0' href="condo-page.html"><h5>One Archers' Place</h5></a>
-                            <p><span class="badge bg-warning text-dark">★★★★★</span> 37 reviews</p>
-                        </div>
-                    </div>
-
-                    <div class="dorm-item d-flex align-items-center">
-                        <img src="../images/green1.jpg" alt="Green Residences by SMDC">
-                        <div class="dorm-info">
-                            <a  class='text-dark link-underline link-underline-opacity-0' href="condo-page.html"><h5>Green Residences</h5></a>
-                            <p><span class="badge bg-warning text-dark">★★★☆☆</span> 88 reviews</p>
-                        </div>
-                    </div>
-
-                    <div class="dorm-item d-flex align-items-center">
-                        <img src="../images/vista.png" alt="Vista Taft Residences" >
-                        <div class="dorm-info">
-                            <a  class='text-dark link-underline link-underline-opacity-0' href="condo-page.html"><h5>Vista Taft Residences</h5></a>
-                            <p><span class="badge bg-warning text-dark">★★★★☆</span> 40 reviews</p>
-                        </div>
-                    </div>
-
-                    <div class="dorm-item d-flex align-items-center">
-                        <img src="../images/archers.jpg" alt="One Archers' Place">
-                        <div class="dorm-info">
-                            <a  class='text-dark link-underline link-underline-opacity-0' href="condo-page.html"><h5>One Archers' Place</h5></a>
-                            <p><span class="badge bg-warning text-dark">★★★★★</span> 37 reviews</p>
-                        </div>
-                    </div>
-                    <!-- Add more dorms as needed -->
                 </div>
             </div>
 
@@ -155,7 +95,7 @@
                     <p><strong>Best dorms at DLSU?</strong><br>Vista Taft Residences... <a href="#">See more</a></p>
                     <p><strong>Worst dorms at DLSU?</strong><br>Green Residences by... <a href="#">See more</a></p>
                     <p><strong>Best freshmen dorms?</strong><br>Vista Taft Residences... <a href="#">See more</a></p>
-                    <a href="#">View All</a>
+                    <a href="forum.html">View All</a>
                 </div>
 
                 <!-- Links Section -->
@@ -171,21 +111,201 @@
                 </div>
             </div>    
         </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4">
+            <div class="pagination" id="paginationContainer">
+                <!-- Pagination links will be inserted here -->
+            </div>
+        </div>
     </div>
 
-    <div class="pagination py-5">
-        <a href="#">&laquo;</a>
-        <a class="active" href="#">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">4</a>
-        <a href="#">5</a>
-        <a href="#">6</a>
-        <a href="#">&raquo;</a>
-      </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth-ui.js"></script>
+    <script>
+        // Current page and search term
+        let currentPage = 1;
+        let currentSearchTerm = '';
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="../js/api.js"></script>
-      <script src="../js/auth-ui.js"></script>
+        // Load condos on DOM content loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update authentication UI if the function is available
+            if (typeof updateAuthUI === 'function') {
+                updateAuthUI();
+            }
+            
+            // Load initial condos
+            loadCondos();
+            
+            // Setup search button
+            document.getElementById('searchBtn').addEventListener('click', function() {
+                const searchTerm = document.getElementById('searchInput').value.trim();
+                currentSearchTerm = searchTerm;
+                currentPage = 1;
+                loadCondos();
+            });
+            
+            // Setup search on Enter key
+            document.getElementById('searchInput').addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim();
+                    currentSearchTerm = searchTerm;
+                    currentPage = 1;
+                    loadCondos();
+                }
+            });
+        });
+
+        // Function to load condos from API
+        async function loadCondos() {
+            try {
+                // Show loading state
+                const dormList = document.getElementById('dormList');
+                dormList.innerHTML = `
+                    <div class="text-center py-3">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading condos...</p>
+                    </div>
+                `;
+                
+                // Build query parameters
+                let queryParams = `page=${currentPage}`;
+                if (currentSearchTerm) {
+                    queryParams += `&search=${encodeURIComponent(currentSearchTerm)}`;
+                }
+                
+                // Fetch condos from API
+                const response = await fetch(`${api.API_URL}/condos?${queryParams}`);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to load condos');
+                }
+                
+                // Display condos
+                displayCondos(data.condos);
+                
+                // Update pagination
+                updatePagination(data.currentPage, data.totalPages);
+                
+            } catch (error) {
+                console.error('Error loading condos:', error);
+                document.getElementById('dormList').innerHTML = `
+                    <div class="alert alert-danger">
+                        Error loading condos: ${error.message}
+                        <button class="btn btn-sm btn-danger ms-2" onclick="loadCondos()">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Function to display condos in the UI
+        function displayCondos(condos) {
+            const dormList = document.getElementById('dormList');
+            
+            if (!condos || condos.length === 0) {
+                dormList.innerHTML = `
+                    <div class="alert alert-info">
+                        No condos found matching your criteria. Try adjusting your search.
+                    </div>
+                `;
+                return;
+            }
+            
+            // Clear container
+            dormList.innerHTML = '';
+            
+            // Add each condo
+            condos.forEach(condo => {
+                const condoItem = document.createElement('div');
+                condoItem.className = 'dorm-item d-flex align-items-center';
+                
+                const rating = condo.averageRating || 0;
+                const ratingDisplay = generateStarRating(rating);
+                
+                condoItem.innerHTML = `
+                    <img src="${condo.image || '../images/green1.jpg'}" alt="${condo.name}">
+                    <div class="dorm-info">
+                        <a class="text-dark link-underline link-underline-opacity-0" href="condo-page.html?id=${condo._id}">
+                            <h5>${condo.name}</h5>
+                        </a>
+                        <p><span class="badge bg-warning text-dark">${ratingDisplay}</span> ${condo.reviews?.length || 0} reviews</p>
+                    </div>
+                `;
+                
+                dormList.appendChild(condoItem);
+            });
+        }
+
+        // Function to generate star rating display
+        function generateStarRating(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            
+            let stars = '';
+            
+            // Full stars
+            for (let i = 0; i < fullStars; i++) {
+                stars += '★';
+            }
+            
+            // Half star
+            if (hasHalfStar) {
+                stars += '★';
+            }
+            
+            // Empty stars
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '☆';
+            }
+            
+            return stars;
+        }
+
+        // Function to update pagination
+        function updatePagination(currentPage, totalPages) {
+            const paginationContainer = document.getElementById('paginationContainer');
+            
+            if (!totalPages || totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // Previous button
+            paginationHTML += `<a href="#" class="${currentPage === 1 ? 'disabled' : ''}" data-page="${currentPage - 1}">&laquo;</a>`;
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `<a href="#" class="${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`;
+            }
+            
+            // Next button
+            paginationHTML += `<a href="#" class="${currentPage === totalPages ? 'disabled' : ''}" data-page="${currentPage + 1}">&raquo;</a>`;
+            
+            paginationContainer.innerHTML = paginationHTML;
+            
+            // Add event listeners to pagination links
+            paginationContainer.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (this.classList.contains('disabled')) return;
+                    
+                    const page = parseInt(this.getAttribute('data-page'));
+                    if (!isNaN(page)) {
+                        currentPage = page;
+                        loadCondos();
+                        // Scroll to top of condos list
+                        document.getElementById('dormList').scrollIntoView();
+                    }
+                });
+            });
+        }
+    </script>
 </body>
 </html>

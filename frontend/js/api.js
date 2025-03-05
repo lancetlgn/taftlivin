@@ -297,10 +297,124 @@ const admin = {
         console.error('Error creating user:', error);
         throw error;
         }
+    },
+
+    // Add these methods to your admin object
+
+    // Get all condos
+    getCondos: async (page = 1, search = '') => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        let url = `${API_URL}/condos?page=${page}`;
+        if (search) url += `&search=${encodeURIComponent(search)}`;
+        
+        const response = await fetch(url, {
+          headers: { 
+            'Authorization': `Bearer ${token}` 
+          }
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch condos');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Error fetching condos:', error);
+        throw error;
+      }
+    },
+
+    // Create a condo
+    createCondo: async (condoData) => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        const response = await fetch(`${API_URL}/condos`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(condoData)
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to create condo');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Error creating condo:', error);
+        throw error;
+      }
+    },
+
+    // Update a condo
+    updateCondo: async (condoId, condoData) => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        const response = await fetch(`${API_URL}/condos/${condoId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(condoData)
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to update condo');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Error updating condo:', error);
+        throw error;
+      }
+    },
+
+    // Delete a condo
+    deleteCondo: async (condoId) => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        const response = await fetch(`${API_URL}/condos/${condoId}`, {
+          method: 'DELETE',
+          headers: { 
+            'Authorization': `Bearer ${token}` 
+          }
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to delete condo');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Error deleting condo:', error);
+        throw error;
+      }
     }
+
+
+
+    
 
     
 };
+
+
 
 // Export the API
 window.api = { 

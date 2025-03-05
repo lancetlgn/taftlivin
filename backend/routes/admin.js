@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const Condo = require('../models/Condo');
 const { protect, admin } = require('../middleware/auth');
 
 // Admin middleware - checks if user is admin
@@ -113,11 +114,12 @@ router.delete('/users/:id', async (req, res) => {
 router.get('/stats', async (req, res) => {
   try {
     const userCount = await User.countDocuments();
+    const condoCount = await Condo.countDocuments(); // Add this line
     
     res.json({
       userCount,
-      condoCount: 0,  // You can update this when you have a Condo model
-      reviewCount: 0  // You can update this when you have a Review model
+      condoCount,  // Now returns real count
+      reviewCount: 0  // update this for Review model
     });
   } catch (error) {
     console.error(error);
