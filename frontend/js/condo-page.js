@@ -217,25 +217,27 @@ function updateCondoDetails() {
     // Update address
     const addressElement = document.getElementById('condoAddress');
     if (addressElement && currentCondo.address) {
-        addressElement.textContent = currentCondo.address;
-    }
-    
-    // Update phone
-    const phoneElement = document.getElementById('condoPhone');
-    if (phoneElement && currentCondo.contactInfo && currentCondo.contactInfo.phone) {
-        phoneElement.textContent = `Phone: ${currentCondo.contactInfo.phone}`;
-    }
-    
-    // Update contact info card
-    const contactPhone = document.getElementById('contactPhone');
-    const contactEmail = document.getElementById('contactEmail');
-    
-    if (contactPhone && currentCondo.contactInfo && currentCondo.contactInfo.phone) {
-        contactPhone.textContent = currentCondo.contactInfo.phone;
-    }
-    
-    if (contactEmail && currentCondo.contactInfo && currentCondo.contactInfo.email) {
-        contactEmail.textContent = currentCondo.contactInfo.email;
+        // Create a flex container for address and distance
+        const addressContainer = document.createElement('div');
+        addressContainer.className = 'd-flex justify-content-between align-items-center mb-2';
+        
+        // Create address span
+        const addressSpan = document.createElement('span');
+        addressSpan.textContent = currentCondo.address;
+        
+        // Create distance span
+        const distance = currentCondo.distance || 150; // Default to 150m if not specified
+        const walkingTimeMinutes = calculateWalkingTime(distance);
+        const distanceSpan = document.createElement('span');
+        distanceSpan.className = 'text-dark ms-3';
+        distanceSpan.innerHTML = `<i class="fas fa-walking me-1"></i> ${distance}m (${walkingTimeMinutes}min. walk)`;
+        
+        // Add both to the container
+        addressContainer.appendChild(addressSpan);
+        addressContainer.appendChild(distanceSpan);
+        
+        // Replace the address element with our container
+        addressElement.parentNode.replaceChild(addressContainer, addressElement);
     }
     
     // Update rating display
@@ -732,5 +734,7 @@ function calculateWalkingTime(meters) {
     // Calculate minutes and round to nearest integer
     return Math.round(meters / walkingSpeedMetersPerMinute);
 }
+
+
 
 
