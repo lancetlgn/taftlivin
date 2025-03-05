@@ -65,6 +65,10 @@ const condoSchema = new mongoose.Schema({
   averageRating: {
     type: Number,
     default: 0
+  },
+  reviewCount: {
+    type: Number,
+    default: 0
   }
 });
 

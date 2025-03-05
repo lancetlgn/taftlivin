@@ -25,9 +25,9 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/condos', require('./routes/condos'));
-app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/forum', require('./routes/forum'));
 app.use('/api/condos', require('./routes/condos'));
+app.use('/api/reviews', require('./routes/reviews'));
 
 
 // Catch-all route to serve the frontend

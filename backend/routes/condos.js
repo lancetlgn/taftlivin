@@ -50,6 +50,10 @@ router.get('/', async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
+
+
+
+  
 });
 
 // @route   GET /api/condos/:id
@@ -216,5 +220,41 @@ router.post('/:id/rating', protect, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// @route   POST /api/condos/recalculate-reviews
+// @desc    Recalculate review counts for all condos
+// @access  Private/Admin
+router.post('/recalculate-reviews', protect, admin, async (req, res) => {
+  try {
+    const Review = require('../models/Review');
+    // Get all condos
+    const condos = await Condo.find({});
+    
+    // For each condo, count its reviews and update
+    for (const condo of condos) {
+      const reviews = await Review.find({ condo: condo._id });
+      
+      if (reviews.length === 0) {
+        // No reviews, set average to 0
+        condo.averageRating = 0;
+        condo.reviewCount = 0;
+      } else {
+        // Calculate average rating
+        const sum = reviews.reduce((total, review) => total + review.rating, 0);
+        condo.averageRating = sum / reviews.length;
+        condo.reviewCount = reviews.length;
+      }
+      
+      await condo.save();
+    }
+    
+    res.json({ message: 'Review counts recalculated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+module.exports = router;
 
 module.exports = router;

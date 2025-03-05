@@ -232,7 +232,7 @@ vin/frontend/pages/condos.html -->
                         <a class="text-dark link-underline link-underline-opacity-0" href="condo-page.html?id=${condo._id}">
                             <h5>${condo.name}</h5>
                         </a>
-                        <p><span class="badge bg-warning text-dark">${ratingDisplay}</span> ${condo.reviews?.length || 0} reviews</p>
+                        <p>${ratingDisplay} <span class="text-secondary">(${condo.reviewCount || 0} reviews)</span></p>
                     </div>
                 `;
                 
@@ -246,24 +246,28 @@ vin/frontend/pages/condos.html -->
             const hasHalfStar = rating % 1 >= 0.5;
             const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
             
-            let stars = '';
+            let starsHtml = '<div class="d-inline-flex align-items-center">';
             
             // Full stars
             for (let i = 0; i < fullStars; i++) {
-                stars += '★';
+                starsHtml += '<i class="fas fa-star text-warning"></i>';
             }
             
             // Half star
             if (hasHalfStar) {
-                stars += '★';
+                starsHtml += '<i class="fas fa-star-half-alt text-warning"></i>';
             }
             
             // Empty stars
             for (let i = 0; i < emptyStars; i++) {
-                stars += '☆';
+                starsHtml += '<i class="far fa-star text-warning"></i>';
             }
             
-            return stars;
+            // Add numerical rating
+            starsHtml += `<span class="ms-2 text-dark fw-bold">${rating.toFixed(1)}</span>`;
+            starsHtml += '</div>';
+            
+            return starsHtml;
         }
 
         // Function to update pagination

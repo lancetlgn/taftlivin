@@ -19,20 +19,23 @@ const reviewSchema = new mongoose.Schema({
   },
   comment: {
     type: String,
-    required: true
+    required: false
   },
-  images: [String],
-  ratings: {
-    cleanliness: Number,
-    location: Number,
-    amenities: Number,
-    valueForMoney: Number
+  recommend: {
+    type: Boolean,
+    default: true
   },
-  recommend: Boolean,
   datePosted: {
     type: Date,
     default: Date.now
+  },
+  location: {
+    type: String,
+    default: ''
   }
 });
+
+// Prevent users from submitting multiple reviews for the same condo
+reviewSchema.index({ user: 1, condo: 1 }, { unique: true });
 
 module.exports = mongoose.model('Review', reviewSchema);
