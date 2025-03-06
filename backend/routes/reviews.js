@@ -208,4 +208,52 @@ router.delete('/:id', protect, async (req, res) => {
   }
 });
 
+// @route   PUT /api/reviews/:id
+// @desc    Update an existing review
+// @access  Private
+router.put('/:id', protect, async (req, res) => {
+  try {
+    const { rating, comment, recommend } = req.body;
+    
+    // Validate input
+    if (!rating) {
+      return res.status(400).json({ message: 'Rating is required' });
+    }
+    
+    if (rating < 1 || rating > 5) {
+      return res.status(400).json({ message: 'Rating must be between 1 and 5' });
+    }
+    
+    // Find the review
+    const review = await Review.findById(req.params.id);
+    
+    if (!review) {
+      return res.status(404).json({ message: 'Review not found' });
+    }
+    
+    // Check if user owns the review
+    if (review.user.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: 'Not authorized to update this review' });
+    }
+    
+    // Update review
+    review.rating = rating;
+    review.comment = comment || review.comment;
+    review.recommend = recommend !== undefined ? recommend : review.recommend;
+    review.datePosted = Date.now();
+    
+    await review.save();
+    
+    // Update condo average rating
+    await updateCondoRating(review.condo);
+    
+    res.json({ message: 'Review updated successfully' });
+    
+  } catch (error) {
+    console.error('Error updating review:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
 module.exports = router;

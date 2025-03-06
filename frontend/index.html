@@ -287,54 +287,81 @@ window.location.reload();
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="homeReviewForm">
-                                        <!-- Condo Dropdown -->
+                                    <!-- Step 1: Search and Select Condo -->
+                                    <div id="step1Container">
                                         <div class="mb-3">
-                                            <label for="condoSelect" class="form-label">Select Condo</label>
-                                            <select class="form-select" id="condoSelect" name="condoId" required>
-                                                <option value="" disabled selected>Select a condo...</option>
-                                                <!-- Options will be populated by JavaScript -->
-                                            </select>
-                                        </div>
-
-                                        <!-- Rating Selection -->
-                                        <div class="mb-3">
-                                            <label class="form-label">Your Rating</label>
-                                            <div class="star-rating-input">
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="rating" id="homeRating1" value="1">
-                                                    <label class="form-check-label" for="homeRating1">1</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="rating" id="homeRating2" value="2">
-                                                    <label class="form-check-label" for="homeRating2">2</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="rating" id="homeRating3" value="3">
-                                                    <label class="form-check-label" for="homeRating3">3</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="rating" id="homeRating4" value="4">
-                                                    <label class="form-check-label" for="homeRating4">4</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="rating" id="homeRating5" value="5">
-                                                    <label class="form-check-label" for="homeRating5">5</label>
-                                                </div>
+                                            <label class="form-label">Search for a Condo</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="condoSearchInput"
+                                                    placeholder="Type to search condos...">
+                                                <button class="btn btn-outline-secondary" type="button" id="searchCondoBtn">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
                                             </div>
                                         </div>
-
-                                        <!-- Review Comment -->
-                                        <div class="mb-3">
-                                            <label for="reviewComment" class="form-label">Your Review</label>
-                                            <textarea class="form-control" id="reviewComment" name="comment" rows="3" placeholder="Share your experience..."></textarea>
+                                        <div id="searchResults" class="list-group mb-3">
+                                            <!-- Search results will be displayed here -->
                                         </div>
-
-                                        <!-- Submit Button -->
-                                        <div class="text-end">
-                                            <button type="submit" class="btn btn-success" id="reviewSubmitBtn">Submit Review</button>
+                                    </div>
+                    
+                                    <!-- Step 2: Review Form (initially hidden) -->
+                                    <div id="step2Container" class="d-none">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 id="selectedCondoName">Reviewing: <span></span></h5>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" id="backToSearch">
+                                                <i class="fas fa-arrow-left"></i> Back to Search
+                                            </button>
                                         </div>
-                                    </form>
+                    
+                                        <form id="homeReviewForm">
+                                            <input type="hidden" id="reviewId" value="">
+                                            <input type="hidden" id="condoId" value="">
+                    
+                                            <!-- Rating Selection -->
+                                            <div class="mb-3">
+                                                <label class="form-label">Your Rating</label>
+                                                <div class="star-rating-input">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="rating" id="homeRating1"
+                                                            value="1" required>
+                                                        <label class="form-check-label" for="homeRating1">1</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="rating" id="homeRating2"
+                                                            value="2">
+                                                        <label class="form-check-label" for="homeRating2">2</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="rating" id="homeRating3"
+                                                            value="3">
+                                                        <label class="form-check-label" for="homeRating3">3</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="rating" id="homeRating4"
+                                                            value="4">
+                                                        <label class="form-check-label" for="homeRating4">4</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="rating" id="homeRating5"
+                                                            value="5">
+                                                        <label class="form-check-label" for="homeRating5">5</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                    
+                                            <!-- Review Comment -->
+                                            <div class="mb-3">
+                                                <label for="reviewComment" class="form-label">Your Review</label>
+                                                <textarea class="form-control" id="reviewComment" name="comment" rows="3"
+                                                    placeholder="Share your experience..." required></textarea>
+                                            </div>
+                    
+                                            <!-- Submit Button -->
+                                            <div class="text-end">
+                                                <button type="submit" class="btn btn-success" id="reviewSubmitBtn">Submit Review</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -580,6 +607,266 @@ window.location.reload();
             }
             
             return html;
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Variables to store state
+        let allCondos = [];
+        let typingTimer;
+
+        // Set up review modal
+        const reviewModal = document.getElementById('reviewModal');
+        if (reviewModal) {
+            reviewModal.addEventListener('show.bs.modal', function (event) {
+                // Check if user is logged in
+                if (!api.auth.isLoggedIn()) {
+                    window.location.href = 'pages/signin.html';
+                    return;
+                }
+
+                // Reset to step 1 when modal opens
+                showStep(1);
+                document.getElementById('condoSearchInput').value = '';
+                document.getElementById('searchResults').innerHTML = '';
+
+                // Fetch all condos
+                fetchCondos();
+            });
+        }
+
+        // Fetch all condos
+        async function fetchCondos() {
+            try {
+                const response = await fetch(`${api.API_URL}/condos`);
+                const data = await response.json();
+                allCondos = data.condos || [];
+            } catch (error) {
+                console.error('Error fetching condos:', error);
+                showAlert('Error', 'Failed to load condos. Please try again later.', 'error');
+            }
+        }
+
+        // Search input handler with debounce
+        const searchInput = document.getElementById('condoSearchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                clearTimeout(typingTimer);
+                if (this.value.trim().length >= 2) {
+                    typingTimer = setTimeout(searchCondos, 300);
+                } else {
+                    document.getElementById('searchResults').innerHTML = '';
+                }
+            });
+
+            // Search button click handler
+            document.getElementById('searchCondoBtn').addEventListener('click', function () {
+                if (searchInput.value.trim().length >= 2) {
+                    searchCondos();
+                }
+            });
+        }
+
+        // Function to search condos
+        function searchCondos() {
+            const searchTerm = document.getElementById('condoSearchInput').value.trim().toLowerCase();
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = '';
+
+            if (searchTerm.length < 2) return;
+
+            // Filter condos based on search term
+            const results = allCondos
+                .filter(condo =>
+                    condo.name.toLowerCase().includes(searchTerm) ||
+                    condo.address.toLowerCase().includes(searchTerm)
+                )
+                .slice(0, 5);
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<div class="list-group-item text-center text-muted">No matching condos found</div>';
+                return;
+            }
+
+            // Display results
+            results.forEach(condo => {
+                const item = document.createElement('button');
+                item.type = 'button';
+                item.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+                item.innerHTML = `
+                    <div>
+                        <strong>${condo.name}</strong>
+                        <br><small class="text-muted">${condo.address}</small>
+                    </div>
+                `;
+                item.addEventListener('click', () => selectCondo(condo));
+                resultsContainer.appendChild(item);
+            });
+        }
+
+        // Function to select a condo and move to step 2
+        async function selectCondo(condo) {
+            // Set condo ID and name
+            document.getElementById('condoId').value = condo._id;
+            document.getElementById('selectedCondoName').querySelector('span').textContent = condo.name;
+
+            try {
+                // Check if user has already reviewed this condo
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${api.API_URL}/reviews/user/condo/${condo._id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+                const hasReview = response.ok && data.review;
+
+                // Reset form
+                document.getElementById('homeReviewForm').reset();
+                document.getElementById('reviewId').value = '';
+
+                // Update submit button text
+                const submitBtn = document.getElementById('reviewSubmitBtn');
+                submitBtn.textContent = hasReview ? 'Update Review' : 'Submit Review';
+
+                // If existing review, prefill the form
+                if (hasReview) {
+                    const review = data.review;
+                    document.getElementById('reviewId').value = review._id;
+
+                    // Set rating
+                    const ratingInput = document.querySelector(`input[name="rating"][value="${review.rating}"]`);
+                    if (ratingInput) ratingInput.checked = true;
+
+                    // Set comment
+                    document.getElementById('reviewComment').value = review.comment || '';
+                }
+
+                // Show step 2
+                showStep(2);
+
+            } catch (error) {
+                console.error('Error checking if user has reviewed:', error);
+                showAlert('Error', 'Failed to check review status. Please try again.', 'error');
+            }
+        }
+
+        // Back button handler
+        document.getElementById('backToSearch').addEventListener('click', function () {
+            showStep(1);
+        });
+
+        // Show the specified step
+        function showStep(step) {
+            if (step === 1) {
+                document.getElementById('step1Container').classList.remove('d-none');
+                document.getElementById('step2Container').classList.add('d-none');
+            } else {
+                document.getElementById('step1Container').classList.add('d-none');
+                document.getElementById('step2Container').classList.remove('d-none');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('homeReviewForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const condoId = document.getElementById('condoId').value;
+            const reviewId = document.getElementById('reviewId').value;
+            const rating = document.querySelector('input[name="rating"]:checked')?.value;
+            const comment = document.getElementById('reviewComment').value;
+
+            // Validate required fields
+            if (!condoId) {
+                showAlert('Error', 'Please select a condo', 'error');
+                return;
+            }
+
+            if (!rating) {
+                showAlert('Error', 'Please select a rating', 'error');
+                return;
+            }
+
+            // Show loading state
+            const submitBtn = document.getElementById('reviewSubmitBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Submitting...';
+
+            try {
+                // Get token
+                const token = localStorage.getItem('token');
+
+                // Prepare review data
+                const reviewData = {
+                    condoId,
+                    rating: Number(rating),
+                    comment
+                };
+
+                // Determine if this is a new review or an update
+                const isUpdate = !!reviewId;
+                let url = `${api.API_URL}/reviews`;
+                let method = 'POST';
+
+                if (isUpdate) {
+                    url = `${api.API_URL}/reviews/${reviewId}`;
+                    method = 'PUT';
+                }
+
+                // Submit review to API
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(reviewData)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to submit review');
+                }
+
+                // Hide modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
+                modal.hide();
+
+                // Show success notification
+                showAlert(
+                    'Success!',
+                    isUpdate ? 'Your review has been updated successfully.' : 'Your review has been submitted successfully.',
+                    'success'
+                );
+
+                // Reload popular condos to show updated ratings
+                if (typeof loadPopularCondos === 'function') {
+                    loadPopularCondos();
+                }
+
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                showAlert('Error', error.message, 'error');
+            } finally {
+                // Restore button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        });
+
+        // Function to show SweetAlert
+        function showAlert(title, message, icon) {
+            Swal.fire({
+                title: title,
+                text: message,
+                icon: icon,
+                confirmButtonColor: '#28a745',
+                confirmButtonText: 'OK'
+            });
         }
     </script>
   </body>
