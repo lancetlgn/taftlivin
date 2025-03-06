@@ -509,5 +509,135 @@ window.location.reload();
                 }
             });
         </script>
+
+    <script>
+        // Handle the home page search form submission
+        document.getElementById('homeSearchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const searchTerm = this.querySelector('input[name="search"]').value.trim();
+            if (searchTerm) {
+                window.location.href = `pages/condos.html?search=${encodeURIComponent(searchTerm)}`;
+            }
+        });
+        
+        // Load popular condos on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Update auth UI if available
+            if (typeof updateAuthUI === 'function') {
+                updateAuthUI();
+            }
+            
+            // Load popular condos
+            try {
+                const condosContainer = document.querySelector('.row.flex-nowrap.overflow-auto');
+                if (!condosContainer) return;
+                
+                // Add loading indicator
+                condosContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <div class="spinner-border text-success" role="status"></div>
+                        <p class="mt-2">Loading popular condos...</p>
+                    </div>
+                `;
+                
+                // Fetch popular condos
+                const data = await api.getPopularCondos();
+                const condos = data.condos;
+                
+                if (!condos || condos.length === 0) {
+                    condosContainer.innerHTML = '<div class="col-12"><p class="text-center">No condos found.</p></div>';
+                    return;
+                }
+                
+                // Generate HTML for each condo
+                condosContainer.innerHTML = '';
+                
+                condos.forEach(condo => {
+                    // Calculate walking time - approximately 1 minute per 80 meters
+                    const walkingTime = Math.round(condo.distance / 80) || 5; // Default to 5min if no distance
+                    
+                    // Generate star rating HTML
+                    const rating = condo.averageRating || 0;
+                    const starsHtml = generateStarRating(rating);
+                    
+                    // Create card element
+                    const cardCol = document.createElement('div');
+                    cardCol.className = 'col-md-4 col-sm-6 col-12 flex-shrink-0';
+                    
+                    // Recent review text with fallback
+                    let reviewText = '';
+                    if (condo.recentReview) {
+                        // Truncate comment if too long (over 70 chars)
+                        const comment = condo.recentReview.comment.length > 70 
+                            ? condo.recentReview.comment.substring(0, 67) + '...' 
+                            : condo.recentReview.comment;
+                        reviewText = `"${comment}" - ${condo.recentReview.username}`;
+                    } else {
+                        reviewText = "No reviews yet.";
+                    }
+                    
+                    cardCol.innerHTML = `
+                        <div class="card h-100">
+                            <div class="card-img-container">
+                                <img src="${condo.image || 'images/default-condo.jpg'}" alt="${condo.name}" class="card-img-top img-fluid">
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">${condo.name}</h4>
+                                <div class="star-rating">
+                                    ${starsHtml}
+                                    <span class="text-muted">(${rating.toFixed(1)})</span>
+                                </div>
+                                <p class="card-text"><i class="fas fa-walking"></i> ${condo.distance || 'N/A'}m from DLSU (${walkingTime}min. walk)</p>
+                                <p class="card-text">${reviewText}</p>
+                                <a href="pages/condo-page.html?id=${condo._id}" class="btn btn-success view-button">View</a>
+                            </div>
+                        </div>
+                    `;
+                    
+                    condosContainer.appendChild(cardCol);
+                });
+                
+            } catch (error) {
+                console.error('Error loading popular condos:', error);
+                const condosContainer = document.querySelector('.row.flex-nowrap.overflow-auto');
+                if (condosContainer) {
+                    condosContainer.innerHTML = `
+                        <div class="col-12">
+                            <div class="alert alert-danger">
+                                Error loading popular condos: ${error.message}
+                                <button class="btn btn-sm btn-danger ms-2" onclick="location.reload()">Retry</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        });
+        
+        // Utility function to generate star rating HTML
+        function generateStarRating(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            
+            let html = '';
+            
+            // Add full stars
+            for (let i = 0; i < fullStars; i++) {
+                html += '<i class="fas fa-star text-warning"></i>';
+            }
+            
+            // Add half star if needed
+            if (hasHalfStar) {
+                html += '<i class="fas fa-star-half-alt text-warning"></i>';
+            }
+            
+            // Add empty stars
+            for (let i = 0; i < emptyStars; i++) {
+                html += '<i class="far fa-star text-warning"></i>';
+            }
+            
+            return html;
+        }
+    </script>
   </body>
 </html>

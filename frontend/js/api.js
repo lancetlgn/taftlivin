@@ -425,5 +425,21 @@ const admin = {
 window.api = { 
   API_URL, 
   auth, 
-  admin 
+  admin, 
+
+  getPopularCondos: async () => {
+    try {
+      const response = await fetch(`${API_URL}/condos/popular`);
+      
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to fetch popular condos');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching popular condos:', error);
+      throw error;
+    }
+  }
 };

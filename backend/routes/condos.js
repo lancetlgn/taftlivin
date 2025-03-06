@@ -50,10 +50,73 @@ router.get('/', async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
-
-
-
   
+});
+
+// @route   GET /api/condos/popular
+// @desc    Get popular condos (top 6 by review count)
+// @access  Public
+router.get('/popular', async (req, res) => {
+  try {
+    // Find top 6 condos sorted by review count
+    const condos = await Condo.find()
+      .sort({ reviewCount: -1, createdAt: -1 })
+      .limit(6);
+    
+    if (!condos || condos.length === 0) {
+      return res.json({ condos: [] });
+    }
+    
+    // Get the Review model using proper path
+    const Review = require('../models/Review');
+    
+    // Process each condo more safely
+    const condosWithReviews = [];
+    
+    for (const condo of condos) {
+      try {
+        // Create a plain object from the Mongoose document
+        const condoObj = condo.toObject();
+        
+        try {
+          // Find the most recent review for this condo
+          const mostRecentReview = await Review.findOne({ condo: condo._id })
+            .sort({ datePosted: -1 })
+            .populate('user', 'username');
+          
+          // Add the most recent review if available
+          if (mostRecentReview) {
+            condoObj.recentReview = {
+              comment: mostRecentReview.comment || 'Great place!',
+              username: mostRecentReview.user ? mostRecentReview.user.username : 'Anonymous'
+            };
+          }
+        } catch (reviewError) {
+          console.error(`Error fetching review for condo ${condo._id}:`, reviewError);
+          // Continue without review data
+        }
+        
+        condosWithReviews.push(condoObj);
+      } catch (condoError) {
+        console.error(`Error processing condo ${condo._id}:`, condoError);
+        // Add minimal condo data to avoid breaking the frontend
+        condosWithReviews.push({
+          _id: condo._id,
+          name: condo.name || 'Unknown',
+          address: condo.address || '',
+          image: condo.image || '',
+          averageRating: condo.averageRating || 0,
+          reviewCount: condo.reviewCount || 0,
+          distance: condo.distance || 0
+        });
+      }
+    }
+    
+    res.json({ condos: condosWithReviews });
+  } catch (error) {
+    console.error('Error fetching popular condos:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
 // @route   GET /api/condos/:id
@@ -75,6 +138,8 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+
 
 // @route   POST /api/condos
 // @desc    Create a condo
@@ -112,6 +177,9 @@ router.post('/', protect, admin, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+
+
 
 // @route   PUT /api/condos/:id
 // @desc    Update a condo
@@ -254,6 +322,8 @@ router.post('/recalculate-reviews', protect, admin, async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+
+
 
 
 module.exports = router;
