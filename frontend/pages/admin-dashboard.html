@@ -1252,12 +1252,10 @@ document.getElementById('editCondoGalleryFiles').addEventListener('change', asyn
     
     // Limit to 4 files
     const files = Array.from(fileInput.files).slice(0, 4);
-    
-    // Show loading state
+
     gallery.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
     
     try {
-        // Upload files
         const formData = new FormData();
         files.forEach(file => {
             formData.append('galleryImages', file);
@@ -1278,13 +1276,10 @@ document.getElementById('editCondoGalleryFiles').addEventListener('change', asyn
         
         const data = await response.json();
         
-        // Update hidden field with file URLs
         document.getElementById('editCondoGallery').value = data.fileUrls.join('\n');
         
-        // Clear gallery first
         gallery.innerHTML = '';
         
-        // Show previews one by one
         data.fileUrls.forEach((url, index) => {
             const col = document.createElement('div');
             col.className = 'col-3 mb-2';
@@ -1298,7 +1293,6 @@ document.getElementById('editCondoGalleryFiles').addEventListener('change', asyn
             gallery.appendChild(col);
         });
         
-        // Add event listeners for remove buttons after all elements are created
         setTimeout(() => {
             document.querySelectorAll('#currentGalleryImages button').forEach(button => {
                 button.addEventListener('click', function() {
@@ -1308,7 +1302,6 @@ document.getElementById('editCondoGalleryFiles').addEventListener('change', asyn
                     document.getElementById('editCondoGallery').value = urls.join('\n');
                     this.closest('.col-3').remove();
                     
-                    // Update data-index attributes
                     document.querySelectorAll('#currentGalleryImages button').forEach((btn, i) => {
                         btn.setAttribute('data-index', i);
                     });
@@ -1323,7 +1316,6 @@ document.getElementById('editCondoGalleryFiles').addEventListener('change', asyn
     }
 });
 
-// Update your form submission handlers
 
 document.getElementById('addCondoForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -1361,31 +1353,26 @@ document.getElementById('addCondoForm').addEventListener('submit', async functio
             }
         }
         
-        // Create condo via API
+        // create condo via API
         await api.admin.createCondo(condoData);
-        
-        // Hide modal
         const modal = bootstrap.Modal.getInstance(document.getElementById('addCondoModal'));
         modal.hide();
         
         // Reset form
         this.reset();
         
-        // Clear preview elements
         const previewElem = document.getElementById('addCondoMainImagePreview');
         if (previewElem) previewElem.classList.add('d-none');
         
         const galleryPreviewElem = document.getElementById('addCondoGalleryPreview');
         if (galleryPreviewElem) galleryPreviewElem.innerHTML = '';
         
-        // Clear hidden fields
         const imageField = document.getElementById('addCondoImage');
         if (imageField) imageField.value = '';
         
         const galleryField = document.getElementById('addCondoGallery');
         if (galleryField) galleryField.value = '';
         
-        // Reload condos
         loadCondos();
         
         // Show toast notification
