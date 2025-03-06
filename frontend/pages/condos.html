@@ -135,6 +135,16 @@
                 updateAuthUI();
             }
             
+            // Check if there is a search parameter in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchParam = urlParams.get('search');
+            
+            if (searchParam) {
+                // Set the search input value
+                document.getElementById('searchInput').value = searchParam;
+                currentSearchTerm = searchParam;
+            }
+            
             // Load initial condos
             loadCondos();
             
