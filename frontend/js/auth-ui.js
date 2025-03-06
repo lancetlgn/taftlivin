@@ -68,25 +68,20 @@ function updateAuthUI() {
       button.addEventListener('click', function(e) {
         e.preventDefault();
         
-        // Call the logout function from API
         api.auth.logout();
         
-        // Update UI immediately
         updateAuthUI();
         
-        // Determine correct path for redirect based on current location
         const currentPath = window.location.pathname;
         let redirectPath;
         
-        // If we're in a sub-page (contains "/pages/"), go back to main index
         if (currentPath.includes('/pages/')) {
           redirectPath = '../index.html';
         } else {
-          // Already on main page or unknown location
+
           redirectPath = 'index.html';
         }
         
-        // Redirect to homepage
         window.location.href = redirectPath;
       });
     });

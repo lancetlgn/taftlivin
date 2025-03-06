@@ -94,10 +94,10 @@
         </ul>
 
         <div class="tab-content mt-4">
-            <div class="tab-pane fade show active" id="condos">
-                <div class="d-flex justify-content-between mb-3">
+            <div class="tab-pane fade show active" id="condos" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3>Manage Condos</h3>
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCondoModal">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCondoModal">
                         <i class="fas fa-plus"></i> Add New Condo
                     </button>
                 </div>
@@ -107,38 +107,14 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Location</th>
-                                <th>Rating</th>
+                                <th>Distance</th>
+                                <th>Reviews</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="condosList">
-
                             <tr>
-                                <td>Green Residences</td>
-                                <td>Taft Avenue</td>
-                                <td>4.5</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success btn-edit-condo"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Vista Taft</td>
-                                <td>Taft Avenue</td>
-                                <td>4.0</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success btn-edit-condo"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>One Archers Place</td>
-                                <td>Taft Avenue</td>
-                                <td>4.8</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success btn-edit-condo"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
-                                </td>
+                                <td colspan="5" class="text-center">Loading condos...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -258,10 +234,26 @@
                 </div>
             </div>
         </div>
+
+        
+        <!-- Toast Notification -->
+        <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11">
+            <div id="adminToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto" id="toastTitle">Notification</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="toastMessage">
+                    <!-- Message goes here -->
+                </div>
+            </div>
+        </div>        
+    
     </main>
 
+        <!-- Add Condo Modal -->
     <div class="modal fade" id="addCondoModal" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add New Condo</h5>
@@ -271,19 +263,49 @@
                     <form id="addCondoForm">
                         <div class="mb-3">
                             <label class="form-label">Condo Name</label>
-                            <input type="text" class="form-control" required>
+                            <input type="text" class="form-control" id="addCondoName" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Location</label>
-                            <input type="text" class="form-control" required>
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" id="addCondoAddress" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" rows="3"></textarea>
+                            <textarea class="form-control" id="addCondoDescription" rows="3" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Image</label>
-                            <input type="file" class="form-control" accept="image/*">
+                            <label class="form-label">Distance from DLSU (meters)</label>
+                            <input type="number" class="form-control" id="addCondoDistance" value="150" min="0">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Amenities (comma-separated)</label>
+                            <input type="text" class="form-control" id="addCondoAmenities" placeholder="WiFi, Parking, Gym, Security">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contact Phone</label>
+                            <input type="text" class="form-control" id="addCondoPhone">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contact Email</label>
+                            <input type="email" class="form-control" id="addCondoEmail">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Main Image</label>
+                            <input type="file" class="form-control" id="addCondoMainImageFile" accept="image/*">
+                            <div id="addCondoMainImagePreview" class="mt-2 d-none">
+                                <img src="" alt="Preview" class="img-thumbnail" style="max-height: 150px;">
+                                <button type="button" class="btn btn-sm btn-danger d-block mt-1" id="removeAddMainImage">Remove</button>
+                            </div>
+                            <input type="hidden" id="addCondoImage" value="">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Gallery Images (up to 4)</label>
+                            <input type="file" class="form-control" id="addCondoGalleryFiles" accept="image/*" multiple>
+                            <small class="text-muted">Select up to 4 images</small>
+                            <div id="addCondoGalleryPreview" class="mt-2 row">
+                                <!-- Preview images will be shown here -->
+                            </div>
+                            <input type="hidden" id="addCondoGallery" value="">
                         </div>
                     </form>
                 </div>
@@ -295,8 +317,9 @@
         </div>
     </div>
 
+    <!-- Edit Condo Modal -->
     <div class="modal fade" id="editCondoModal" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Condo</h5>
@@ -309,21 +332,49 @@
                             <input type="text" class="form-control" id="editCondoName" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Location</label>
-                            <input type="text" class="form-control" id="editCondoLocation" required>
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" id="editCondoAddress" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" id="editCondoDescription" rows="3"></textarea>
+                            <textarea class="form-control" id="editCondoDescription" rows="3" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Current Image</label>
-                            <img id="currentCondoImage" src="../images/green1.jpg" alt="Current condo image" class="img-fluid mb-2" style="max-height: 200px;">
-                            <input type="file" class="form-control" accept="image/*">
+                            <label class="form-label">Distance from DLSU (meters)</label>
+                            <input type="number" class="form-control" id="editCondoDistance" min="0">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Rating</label>
-                            <input type="number" class="form-control" id="editCondoRating" min="0" max="5" step="0.1">
+                            <label class="form-label">Amenities (comma-separated)</label>
+                            <input type="text" class="form-control" id="editCondoAmenities">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contact Phone</label>
+                            <input type="text" class="form-control" id="editCondoPhone">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contact Email</label>
+                            <input type="email" class="form-control" id="editCondoEmail">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Main Image</label>
+                            <input type="file" class="form-control" id="editCondoMainImageFile" accept="image/*">
+                            <div class="mt-2">
+                                <small class="text-muted">Current image:</small>
+                                <img id="currentCondoImage" src="" alt="Current condo image" class="img-fluid mt-2" style="max-height: 150px;">
+                            </div>
+                            <input type="hidden" id="editCondoImage" value="">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Gallery Images</label>
+                            <input type="file" class="form-control" id="editCondoGalleryFiles" accept="image/*" multiple>
+                            <small class="text-muted">Select up to 4 images to replace existing ones</small>
+                            <div class="mt-2">
+                                <small class="text-muted">Current gallery:</small>
+                                <div id="currentGalleryImages" class="row mt-2">
+                                    <!-- Current gallery images will be shown here -->
+                                </div>
+                            </div>
+                            <input type="hidden" id="editCondoGallery" value="">
                         </div>
                     </form>
                 </div>
@@ -462,6 +513,22 @@
 <script src="../js/api.js"></script>
 <script src="../js/auth-ui.js"></script>
 <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Load condos on page load
+    loadCondos();
+    
+    // Set up tab change events
+    document.querySelectorAll('button[data-bs-toggle="tab"]').forEach(function(tab) {
+        tab.addEventListener('shown.bs.tab', function(event) {
+            const targetId = event.target.getAttribute('data-bs-target');
+            if (targetId === '#condos') {
+                loadCondos();
+            }
+        });
+    });
+});
+
     document.addEventListener('DOMContentLoaded', function() {
         // Protection - redirect if not admin
         if (!api.auth.isLoggedIn()) {
@@ -727,7 +794,7 @@
         }
     }
 
-    // Add these functions to the script section of your admin-dashboard.html file
+// Add this JavaScript in the script tag at the bottom of the file
 
 // Set up navigation events for condos tab
 document.querySelector('button[data-bs-target="#condos"]').addEventListener('click', function() {
@@ -759,13 +826,13 @@ async function loadCondos() {
             row.innerHTML = `
                 <td>${condo.name}</td>
                 <td>${condo.address}</td>
-                <td>${condo.price}</td>
-                <td>${condo.averageRating || 'No ratings'}</td>
+                <td>${condo.distance || 0} meters</td>
+                <td>${condo.reviewCount || 0} reviews</td>
                 <td>
                     <button class="btn btn-sm btn-success btn-edit-condo" data-condo-id="${condo._id}">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-success btn-delete-condo" data-condo-id="${condo._id}">
+                    <button class="btn btn-sm btn-danger btn-delete-condo" data-condo-id="${condo._id}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
@@ -799,8 +866,8 @@ async function loadCondos() {
 // Edit condo
 async function editCondo(condoId) {
     try {
-        const data = await api.admin.getCondos();
-        const condo = data.condos.find(c => c._id === condoId);
+        const data = await api.admin.getCondo(condoId);
+        const condo = data.condo;
         
         if (!condo) {
             throw new Error('Condo not found');
@@ -810,16 +877,39 @@ async function editCondo(condoId) {
         document.getElementById('editCondoName').value = condo.name;
         document.getElementById('editCondoAddress').value = condo.address;
         document.getElementById('editCondoDescription').value = condo.description;
-        document.getElementById('editCondoPrice').value = condo.price;
-        document.getElementById('editCondoDistance').value = condo.distance;
+        document.getElementById('editCondoDistance').value = condo.distance || 0;
+        document.getElementById('editCondoImage').value = condo.image || '';
         
+        // Show current image
+        document.getElementById('currentCondoImage').src = condo.image || '../images/default-condo.jpg';
+        
+        // Fill contact info
         if (condo.contactInfo) {
             document.getElementById('editCondoPhone').value = condo.contactInfo.phone || '';
             document.getElementById('editCondoEmail').value = condo.contactInfo.email || '';
         }
         
-        // Handle amenities (assuming it's a comma-separated list in a text field)
-        document.getElementById('editCondoAmenities').value = condo.amenities.join(', ');
+        // Fill amenities
+        document.getElementById('editCondoAmenities').value = condo.amenities ? condo.amenities.join(', ') : '';
+        
+        // Fill gallery images
+        const galleryTextarea = document.getElementById('editCondoGallery');
+        galleryTextarea.value = condo.gallery ? condo.gallery.join('\n') : '';
+        
+        // Show current gallery
+        const galleryContainer = document.getElementById('currentGalleryImages');
+        galleryContainer.innerHTML = '';
+        
+        if (condo.gallery && condo.gallery.length > 0) {
+            condo.gallery.forEach((img, index) => {
+                const imgCol = document.createElement('div');
+                imgCol.className = 'col-3 mb-2';
+                imgCol.innerHTML = `
+                    <img src="${img}" alt="Gallery image ${index+1}" class="img-thumbnail" style="height: 80px; width: 100%; object-fit: cover;">
+                `;
+                galleryContainer.appendChild(imgCol);
+            });
+        }
         
         // Store the condo ID for the save action
         document.getElementById('editCondoForm').setAttribute('data-condo-id', condoId);
@@ -836,93 +926,551 @@ async function editCondo(condoId) {
 
 // Delete condo
 async function deleteCondo(condoId) {
-    if (confirm('Are you sure you want to delete this condo?')) {
+    if (confirm('Are you sure you want to delete this condo? This will also remove all associated reviews.')) {
         try {
             await api.admin.deleteCondo(condoId);
             loadCondos();
-            alert('Condo deleted successfully');
+            showToast('Success', 'Condo deleted successfully', 'success');
         } catch (error) {
             console.error('Error deleting condo:', error);
-            alert('Error: ' + error.message);
+            showToast('Error', error.message, 'danger');
         }
     }
 }
 
-    // Set up add condo form submission
-    document.getElementById('addCondoForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
+// Set up add condo form submission
+document.getElementById('addCondoForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Get form values
+    const condoData = {
+        name: document.getElementById('addCondoName').value,
+        address: document.getElementById('addCondoAddress').value,
+        description: document.getElementById('addCondoDescription').value,
+        distance: parseFloat(document.getElementById('addCondoDistance').value) || 150,
+        amenities: document.getElementById('addCondoAmenities').value.split(',').map(item => item.trim()).filter(item => item),
+        contactInfo: {
+            phone: document.getElementById('addCondoPhone').value,
+            email: document.getElementById('addCondoEmail').value
+        }
+    };
+    
+    // Handle image
+    const imageUrl = document.getElementById('addCondoImage').value;
+    if (imageUrl) {
+        condoData.image = imageUrl;
+    }
+    
+    // Handle gallery
+    const galleryText = document.getElementById('addCondoGallery').value;
+    if (galleryText) {
+        // Split by new lines and filter out empty entries
+        const galleryUrls = galleryText.split('\n').map(url => url.trim()).filter(url => url);
+        if (galleryUrls.length > 0) {
+            condoData.gallery = galleryUrls.slice(0, 4); // Limit to 4 images
+        }
+    }
+    
+    try {
+        // Create condo via API
+        await api.admin.createCondo(condoData);
         
-        // Get form values
+        // Hide modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('addCondoModal'));
+        modal.hide();
+        
+        // Clear form
+        this.reset();
+        
+        // Reload condos
+        loadCondos();
+        
+        alert('Condo added successfully!');
+    } catch (error) {
+        console.error('Error creating condo:', error);
+        alert('Error: ' + error.message);
+    }
+});
+
+// Set up edit condo form submission
+document.getElementById('editCondoForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const condoId = this.getAttribute('data-condo-id');
+    
+    // Get form values
+    const condoData = {
+        name: document.getElementById('editCondoName').value,
+        address: document.getElementById('editCondoAddress').value,
+        description: document.getElementById('editCondoDescription').value,
+        distance: parseFloat(document.getElementById('editCondoDistance').value) || 150,
+        amenities: document.getElementById('editCondoAmenities').value.split(',').map(item => item.trim()).filter(item => item),
+        contactInfo: {
+            phone: document.getElementById('editCondoPhone').value,
+            email: document.getElementById('editCondoEmail').value
+        }
+    };
+    
+    // Handle image
+    const imageUrl = document.getElementById('editCondoImage').value;
+    if (imageUrl) {
+        condoData.image = imageUrl;
+    }
+    
+    // Handle gallery
+    const galleryText = document.getElementById('editCondoGallery').value;
+    if (galleryText) {
+        // Split by new lines and filter out empty entries
+        const galleryUrls = galleryText.split('\n').map(url => url.trim()).filter(url => url);
+        if (galleryUrls.length > 0) {
+            condoData.gallery = galleryUrls.slice(0, 4); // Limit to 4 images
+        }
+    }
+    
+    try {
+        await api.admin.updateCondo(condoId, condoData);
+        
+        // Hide modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('editCondoModal'));
+        modal.hide();
+        
+        // Reload condos
+        loadCondos();
+        alert('Condo updated successfully');
+    } catch (error) {
+        console.error('Error updating condo:', error);
+        alert('Error: ' + error.message);
+    }
+
+    
+});
+
+
+// Toast notification function
+function showToast(title, message, type = 'success') {
+    const toast = document.getElementById('adminToast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastBody = document.getElementById('toastMessage');
+    
+    // Set content
+    toastTitle.textContent = title;
+    toastBody.textContent = message;
+    
+    // Set color based on type
+    toast.className = 'toast';
+    if (type === 'success') {
+        toast.classList.add('bg-success', 'text-white');
+    } else if (type === 'danger') {
+        toast.classList.add('bg-danger', 'text-white');
+    } else if (type === 'warning') {
+        toast.classList.add('bg-warning');
+    } else if (type === 'info') {
+        toast.classList.add('bg-info', 'text-white');
+    }
+    
+    // Show toast
+    const bsToast = new bootstrap.Toast(toast, {
+        animation: true,
+        autohide: true,
+        delay: 3000
+    });
+    bsToast.show();
+}
+
+
+
+// Main image preview for Add Condo
+document.getElementById('addCondoMainImageFile').addEventListener('change', async function(e) {
+    const preview = document.getElementById('addCondoMainImagePreview');
+    const fileInput = this;
+    
+    if (!fileInput.files || fileInput.files.length === 0) {
+        preview.classList.add('d-none');
+        document.getElementById('addCondoImage').value = '';
+        return;
+    }
+    
+    const file = fileInput.files[0];
+    
+    // Show loading state
+    preview.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
+    preview.classList.remove('d-none');
+    
+    try {
+        // Upload file
+        const formData = new FormData();
+        formData.append('mainImage', file);
+        
+        const response = await fetch(`${api.API_URL}/admin/upload/condo/main`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error('Upload failed');
+        }
+        
+        const data = await response.json();
+        
+        // Update hidden field with file URL
+        document.getElementById('addCondoImage').value = data.fileUrl;
+        
+        // Show preview
+        preview.innerHTML = `
+            <img src="${data.fileUrl}" alt="Preview" class="img-thumbnail" style="max-height: 150px;">
+            <button type="button" class="btn btn-sm btn-danger d-block mt-1" id="removeAddMainImage">Remove</button>
+        `;
+        
+        // Add event listener for remove button
+        document.getElementById('removeAddMainImage').addEventListener('click', function() {
+            document.getElementById('addCondoMainImageFile').value = '';
+            document.getElementById('addCondoImage').value = '';
+            preview.classList.add('d-none');
+        });
+        
+    } catch (error) {
+        console.error('Upload error:', error);
+        preview.innerHTML = `<div class="alert alert-danger">Upload failed: ${error.message}</div>`;
+        document.getElementById('addCondoImage').value = '';
+    }
+});
+
+// Gallery images preview for Add Condo
+document.getElementById('addCondoGalleryFiles').addEventListener('change', async function(e) {
+    const preview = document.getElementById('addCondoGalleryPreview');
+    const fileInput = this;
+    
+    if (!fileInput.files || fileInput.files.length === 0) {
+        preview.innerHTML = '';
+        document.getElementById('addCondoGallery').value = '';
+        return;
+    }
+    
+    // Limit to 4 files
+    const files = Array.from(fileInput.files).slice(0, 4);
+    
+    // Show loading state
+    preview.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
+    
+    try {
+        // Upload files
+        const formData = new FormData();
+        files.forEach(file => {
+            formData.append('galleryImages', file);
+        });
+        
+        const response = await fetch(`${api.API_URL}/admin/upload/condo/gallery`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error('Upload failed');
+        }
+        
+        const data = await response.json();
+        
+        // Update hidden field with file URLs
+        document.getElementById('addCondoGallery').value = data.fileUrls.join('\n');
+        
+        // Show previews
+        preview.innerHTML = '';
+        data.fileUrls.forEach((url, index) => {
+            const col = document.createElement('div');
+            col.className = 'col-3 mb-2';
+            col.innerHTML = `
+                <div class="position-relative">
+                    <img src="${url}" class="img-thumbnail" style="height: 80px; width: 100%; object-fit: cover;">
+                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" 
+                            data-index="${index}">×</button>
+                </div>
+            `;
+            preview.appendChild(col);
+        });
+        
+        // Add event listeners for remove buttons
+        document.querySelectorAll('#addCondoGalleryPreview button').forEach(button => {
+            button.addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-index'));
+                const urls = document.getElementById('addCondoGallery').value.split('\n');
+                urls.splice(index, 1);
+                document.getElementById('addCondoGallery').value = urls.join('\n');
+                this.closest('.col-3').remove();
+                
+                // Update data-index attributes
+                document.querySelectorAll('#addCondoGalleryPreview button').forEach((btn, i) => {
+                    btn.setAttribute('data-index', i);
+                });
+            });
+        });
+        
+    } catch (error) {
+        console.error('Upload error:', error);
+        preview.innerHTML = `<div class="alert alert-danger">Upload failed: ${error.message}</div>`;
+        document.getElementById('addCondoGallery').value = '';
+    }
+});
+
+// Main image preview for Edit Condo
+document.getElementById('editCondoMainImageFile').addEventListener('change', async function(e) {
+    const fileInput = this;
+    const currentImage = document.getElementById('currentCondoImage');
+    
+    if (!fileInput.files || fileInput.files.length === 0) return;
+    
+    const file = fileInput.files[0];
+    
+    // Show loading state
+    currentImage.src = '';
+    currentImage.parentNode.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
+    
+    try {
+        // Upload file
+        const formData = new FormData();
+        formData.append('mainImage', file);
+        
+        const response = await fetch(`${api.API_URL}/admin/upload/condo/main`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error('Upload failed');
+        }
+        
+        const data = await response.json();
+        
+        // Update hidden field with file URL
+        document.getElementById('editCondoImage').value = data.fileUrl;
+        
+        // Show preview
+        currentImage.parentNode.innerHTML = `
+            <small class="text-muted">Current image:</small>
+            <img id="currentCondoImage" src="${data.fileUrl}" alt="Current condo image" class="img-fluid mt-2" style="max-height: 150px;">
+        `;
+        
+    } catch (error) {
+        console.error('Upload error:', error);
+        currentImage.parentNode.innerHTML = `
+            <div class="alert alert-danger">Upload failed: ${error.message}</div>
+            <img id="currentCondoImage" src="" alt="Current condo image" class="img-fluid mt-2" style="max-height: 150px;">
+        `;
+    }
+});
+
+// Gallery images preview for Edit Condo
+document.getElementById('editCondoGalleryFiles').addEventListener('change', async function(e) {
+    const fileInput = this;
+    const gallery = document.getElementById('currentGalleryImages');
+    
+    if (!fileInput.files || fileInput.files.length === 0) return;
+    
+    // Limit to 4 files
+    const files = Array.from(fileInput.files).slice(0, 4);
+    
+    // Show loading state
+    gallery.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
+    
+    try {
+        // Upload files
+        const formData = new FormData();
+        files.forEach(file => {
+            formData.append('galleryImages', file);
+        });
+        
+        const response = await fetch(`${api.API_URL}/admin/upload/condo/gallery`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error('Upload failed');
+        }
+        
+        const data = await response.json();
+        
+        // Update hidden field with file URLs
+        document.getElementById('editCondoGallery').value = data.fileUrls.join('\n');
+        
+        // Show previews
+        gallery.innerHTML = '';
+        data.fileUrls.forEach((url, index) => {
+            const col = document.createElement('div');
+            col.className = 'col-3 mb-2';
+            col.innerHTML = `
+                <div class="position-relative">
+                    <img src="${url}" class="img-thumbnail" style="height: 80px; width: 100%; object-fit: cover;">
+                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" 
+                            data-index="${index}">×</button>
+                </div>
+            `;
+            gallery.appendChild(col);
+        });
+        
+        // Add event listeners for remove buttons
+        document.querySelectorAll('#currentGalleryImages button').forEach(button => {
+            button.addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-index'));
+                const urls = document.getElementById('editCondoGallery').value.split('\n');
+                urls.splice(index, 1);
+                document.getElementById('editCondoGallery').value = urls.join('\n');
+                this.closest('.col-3').remove();
+                
+                // Update data-index attributes
+                document.querySelectorAll('#currentGalleryImages button').forEach((btn, i) => {
+                    btn.setAttribute('data-index', i);
+                });
+            });
+        });
+        
+    } catch (error) {
+        console.error('Upload error:', error);
+        gallery.innerHTML = `<div class="alert alert-danger">Upload failed: ${error.message}</div>`;
+        document.getElementById('editCondoGallery').value = '';
+    }
+});
+
+// Update your form submission handlers
+
+// Add condo form submission
+document.getElementById('addCondoForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    try {
+        // Show loading
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Saving...';
+        
         const condoData = {
             name: document.getElementById('addCondoName').value,
             address: document.getElementById('addCondoAddress').value,
             description: document.getElementById('addCondoDescription').value,
-            price: parseFloat(document.getElementById('addCondoPrice').value),
-            distance: parseFloat(document.getElementById('addCondoDistance').value),
-            amenities: document.getElementById('addCondoAmenities').value.split(',').map(item => item.trim()),
+            distance: parseFloat(document.getElementById('addCondoDistance').value) || 150,
+            amenities: document.getElementById('addCondoAmenities').value.split(',').map(item => item.trim()).filter(item => item),
             contactInfo: {
                 phone: document.getElementById('addCondoPhone').value,
                 email: document.getElementById('addCondoEmail').value
             }
         };
         
-        try {
-            // Create condo via API
-            await api.admin.createCondo(condoData);
-            
-            // Hide modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('addCondoModal'));
-            modal.hide();
-            
-            // Clear form
-            this.reset();
-            
-            // Reload condos
-            loadCondos();
-            
-            alert('Condo added successfully!');
-        } catch (error) {
-            console.error('Error creating condo:', error);
-            alert('Error: ' + error.message);
+        const imageUrl = document.getElementById('addCondoImage').value;
+        if (imageUrl) {
+            condoData.image = imageUrl;
         }
-    });
+        
+        const galleryText = document.getElementById('addCondoGallery').value;
+        if (galleryText) {
+            const galleryUrls = galleryText.split('\n').map(url => url.trim()).filter(url => url);
+            if (galleryUrls.length > 0) {
+                condoData.gallery = galleryUrls.slice(0, 4);
+            }
+        }
+        
+        // Create condo via API
+        await api.admin.createCondo(condoData);
+        
+        // Hide modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('addCondoModal'));
+        modal.hide();
+        
+        // Reset form
+        this.reset();
+        document.getElementById('addCondoMainImagePreview').classList.add('d-none');
+        document.getElementById('addCondoGalleryPreview').innerHTML = '';
+        document.getElementById('addCondoImage').value = '';
+        document.getElementById('addCondoGallery').value = '';
+        
+        // Reload condos
+        loadCondos();
+        
+        // Show toast notification
+        showToast('Success', 'Condo added successfully', 'success');
+        
+    } catch (error) {
+        console.error('Error creating condo:', error);
+        showToast('Error', error.message, 'danger');
+    } finally {
+        // Restore button state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Add Condo';
+    }
+});
 
-    // Set up edit condo form submission
-    document.getElementById('editCondoForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
+// Edit condo form submission
+document.getElementById('editCondoForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const condoId = this.getAttribute('data-condo-id');
+    
+    try {
+        // Show loading
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Saving...';
         
-        const condoId = this.getAttribute('data-condo-id');
-        
-        // Get form values
         const condoData = {
             name: document.getElementById('editCondoName').value,
             address: document.getElementById('editCondoAddress').value,
             description: document.getElementById('editCondoDescription').value,
-            price: parseFloat(document.getElementById('editCondoPrice').value),
-            distance: parseFloat(document.getElementById('editCondoDistance').value),
-            amenities: document.getElementById('editCondoAmenities').value.split(',').map(item => item.trim()),
+            distance: parseFloat(document.getElementById('editCondoDistance').value) || 150,
+            amenities: document.getElementById('editCondoAmenities').value.split(',').map(item => item.trim()).filter(item => item),
             contactInfo: {
                 phone: document.getElementById('editCondoPhone').value,
                 email: document.getElementById('editCondoEmail').value
             }
         };
         
-        try {
-            await api.admin.updateCondo(condoId, condoData);
-            
-            // Hide modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('editCondoModal'));
-            modal.hide();
-            
-            // Reload condos
-            loadCondos();
-            alert('Condo updated successfully');
-        } catch (error) {
-            console.error('Error updating condo:', error);
-            alert('Error: ' + error.message);
+        const imageUrl = document.getElementById('editCondoImage').value;
+        if (imageUrl) {
+            condoData.image = imageUrl;
         }
-    });
-
+        
+        const galleryText = document.getElementById('editCondoGallery').value;
+        if (galleryText) {
+            const galleryUrls = galleryText.split('\n').map(url => url.trim()).filter(url => url);
+            if (galleryUrls.length > 0) {
+                condoData.gallery = galleryUrls.slice(0, 4);
+            }
+        }
+        
+        await api.admin.updateCondo(condoId, condoData);
+        
+        // Hide modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('editCondoModal'));
+        modal.hide();
+        
+        // Reload condos
+        loadCondos();
+        
+        // Show toast notification
+        showToast('Success', 'Condo updated successfully', 'success');
+        
+    } catch (error) {
+        console.error('Error updating condo:', error);
+        showToast('Error', error.message, 'danger');
+    } finally {
+        // Restore button state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Save Changes';
+    }
+});
     
 </script>
 </body>

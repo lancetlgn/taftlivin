@@ -28,6 +28,7 @@ app.use('/api/condos', require('./routes/condos'));
 app.use('/api/forum', require('./routes/forum'));
 app.use('/api/condos', require('./routes/condos'));
 app.use('/api/reviews', require('./routes/reviews'));
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 
 // Catch-all route to serve the frontend

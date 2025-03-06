@@ -100,7 +100,6 @@
         </form>
     </main>
     
-    <!-- Add your API script -->
     <script src="../js/api.js"></script>
     
     <script>
@@ -112,10 +111,8 @@
             const errorElement = document.getElementById('loginError');
             
             try {
-                // Clear any previous errors
                 errorElement.classList.add('d-none');
                 
-                // Call the real login API
                 await api.auth.login({ email, password });
                 
                 // Redirect on successful login

@@ -15,13 +15,24 @@ const condoSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  price: {
-    type: Number,
-    required: true
-  },
   image: {
     type: String,
-    default: 'default-condo.jpg'
+    default: '../images/default-condo.jpg'
+  },
+  gallery: {
+    type: [String],
+    default: [
+      '../images/default-gallery-1.jpg',
+      '../images/default-gallery-2.jpg',
+      '../images/default-gallery-3.jpg',
+      '../images/default-gallery-4.jpg'
+    ],
+    validate: [
+      function(val) {
+        return val.length <= 4;
+      },
+      'Gallery cannot have more than 4 images'
+    ]
   },
   amenities: {
     type: [String],

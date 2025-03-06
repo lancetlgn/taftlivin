@@ -299,21 +299,14 @@ const admin = {
         }
     },
 
-    // Add these methods to your admin object
-
-    // Get all condos
-    getCondos: async (page = 1, search = '') => {
+    // Get all condos for admin
+    getCondos: async () => {
       try {
         const token = localStorage.getItem('token');
         if (!token) throw new Error('Not authenticated');
         
-        let url = `${API_URL}/condos?page=${page}`;
-        if (search) url += `&search=${encodeURIComponent(search)}`;
-        
-        const response = await fetch(url, {
-          headers: { 
-            'Authorization': `Bearer ${token}` 
-          }
+        const response = await fetch(`${API_URL}/admin/condos`, {
+          headers: { 'Authorization': `Bearer ${token}` }
         });
         
         const data = await response.json();
@@ -327,14 +320,36 @@ const admin = {
         throw error;
       }
     },
-
-    // Create a condo
+    
+    // Get single condo
+    getCondo: async (condoId) => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        const response = await fetch(`${API_URL}/admin/condos/${condoId}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch condo');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Error fetching condo:', error);
+        throw error;
+      }
+    },
+    
+    // Create new condo
     createCondo: async (condoData) => {
       try {
         const token = localStorage.getItem('token');
         if (!token) throw new Error('Not authenticated');
         
-        const response = await fetch(`${API_URL}/condos`, {
+        const response = await fetch(`${API_URL}/admin/condos`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -354,14 +369,14 @@ const admin = {
         throw error;
       }
     },
-
-    // Update a condo
+    
+    // Update condo
     updateCondo: async (condoId, condoData) => {
       try {
         const token = localStorage.getItem('token');
         if (!token) throw new Error('Not authenticated');
         
-        const response = await fetch(`${API_URL}/condos/${condoId}`, {
+        const response = await fetch(`${API_URL}/admin/condos/${condoId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -381,18 +396,16 @@ const admin = {
         throw error;
       }
     },
-
-    // Delete a condo
+    
+    // Delete condo
     deleteCondo: async (condoId) => {
       try {
         const token = localStorage.getItem('token');
         if (!token) throw new Error('Not authenticated');
         
-        const response = await fetch(`${API_URL}/condos/${condoId}`, {
+        const response = await fetch(`${API_URL}/admin/condos/${condoId}`, {
           method: 'DELETE',
-          headers: { 
-            'Authorization': `Bearer ${token}` 
-          }
+          headers: { 'Authorization': `Bearer ${token}` }
         });
         
         const data = await response.json();
@@ -406,15 +419,7 @@ const admin = {
         throw error;
       }
     }
-
-
-
-    
-
-    
 };
-
-
 
 // Export the API
 window.api = { 
