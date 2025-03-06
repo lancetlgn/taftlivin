@@ -283,7 +283,7 @@ window.location.reload();
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="reviewModalLabel">Submit a Review</h5>
+                                    <h5 class="modal-title" id="reviewModalLabel">Submit or Edit a Review</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -614,6 +614,7 @@ window.location.reload();
     <script>
         // Variables to store state
         let allCondos = [];
+        let userReviews = []; 
         let typingTimer;
 
         // Set up review modal
@@ -631,42 +632,113 @@ window.location.reload();
                     document.getElementById('condoSearchInput').value = '';
                     document.getElementById('searchResults').innerHTML = '';
 
-                    // Fetch all condos and then show the initial options
-                    await fetchCondos();
-                    showInitialCondoOptions();
+                    try {
+                        // Fetch data sequentially to ensure reviews are loaded
+                        await fetchUserReviews(); // Fetch reviews first
+                        await fetchCondos();      // Then fetch condos
+                        console.log('Reviews loaded:', userReviews.length); // Add this log
+                        console.log('Condos loaded:', allCondos.length);    // Add this log
+                        showInitialCondoOptions();
+                    } catch (error) {
+                        console.error('Error initializing modal:', error);
+                    }
                 });
             }
+
+            async function fetchUserReviews() {
+                    try {
+                        const token = localStorage.getItem('token');
+                        // Add logging to see what URL we're hitting
+                        console.log('Fetching reviews from:', `${api.API_URL}/reviews/user`);
+
+                        const response = await fetch(`${api.API_URL}/reviews/user`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Accept': 'application/json' // Add this line
+                            }
+                        });
+
+                        // Log the response for debugging
+                        console.log('Response status:', response.status);
+                        const responseText = await response.text();
+                        console.log('Response text:', responseText);
+
+                        // Try to parse as JSON
+                        const data = JSON.parse(responseText);
+                        userReviews = data.reviews || [];
+                        console.log('Parsed reviews:', userReviews);
+
+                    } catch (error) {
+                        console.error('Error fetching user reviews:', error);
+                        userReviews = [];
+                    }
+                }
 
             // Function to show initial condo options without requiring search
             function showInitialCondoOptions() {
-                const resultsContainer = document.getElementById('searchResults');
-                resultsContainer.innerHTML = '';
+                    const resultsContainer = document.getElementById('searchResults');
+                    resultsContainer.innerHTML = '<div class="list-group-item text-center text-muted">Loading condos...</div>';
 
-                if (!allCondos || allCondos.length === 0) {
-                    resultsContainer.innerHTML = '<div class="list-group-item text-center text-muted">No condos available</div>';
-                    return;
-                }
+                    if (!allCondos || allCondos.length === 0) {
+                        resultsContainer.innerHTML = '<div class="list-group-item text-center text-muted">No condos available</div>';
+                        return;
+                    }
 
-                // Sort by popularity (most reviews first) and take top 5
-                const popularCondos = [...allCondos]
-                    .sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0))
-                    .slice(0, 5);
+                    // Clear previous results
+                    resultsContainer.innerHTML = '';
 
-                // Display the top 5 condos
-                popularCondos.forEach(condo => {
+                    // Sort by popularity (most reviews first) and take top 5
+                    const popularCondos = [...allCondos]
+                        .sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0))
+                        .slice(0, 5);
+
+                    console.log('Showing initial condos:', popularCondos.length);
+
+                    if (popularCondos.length === 0) {
+                        resultsContainer.innerHTML = '<div class="list-group-item text-center text-muted">No condos available</div>';
+                        return;
+                    }
+
+                    // Display the top 5 condos
+                    popularCondos.forEach(condo => {
                     const item = document.createElement('button');
                     item.type = 'button';
                     item.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+
+                    // Updated comparison with logging
+                    const hasReview = userReviews.some(review => {
+                            // First determine what type of data we're working with
+                            const isCondoObject = typeof review.condo === 'object' && review.condo !== null;
+                            const reviewCondoId = isCondoObject && review.condo._id ? review.condo._id : review.condo;
+
+                            // Log everything to understand the comparison
+                            console.log('Review details:', {
+                                reviewId: review._id,
+                                reviewCondoRaw: review.condo,
+                                isCondoObject: isCondoObject,
+                                extractedReviewCondoId: reviewCondoId,
+                                targetCondoId: condo._id,
+                                stringComparison: String(reviewCondoId) === String(condo._id)
+                            });
+
+                            return String(reviewCondoId) === String(condo._id);
+                        });
+
+                    console.log(`Condo ${condo.name} has review: ${hasReview}`);
+
                     item.innerHTML = `
-            <div>
-                <strong>${condo.name}</strong>
-                <br><small class="text-muted">${condo.address}</small>
-            </div>
-        `;
+                        <div>
+                            <strong>${condo.name}</strong>
+                            <br><small class="text-muted">${condo.address}</small>
+                        </div>
+                        ${hasReview ? '<span class="badge bg-success">Edit</span>' : ''}
+                    `;
+
                     item.addEventListener('click', () => selectCondo(condo));
                     resultsContainer.appendChild(item);
                 });
-            }
+                }
+
 
         // Fetch all condos
         async function fetchCondos() {
@@ -726,12 +798,33 @@ window.location.reload();
                 const item = document.createElement('button');
                 item.type = 'button';
                 item.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+
+                // Check if user has already reviewed this condo
+                const hasReview = userReviews.some(review => {
+                    // First determine what type of data we're working with
+                    const isCondoObject = typeof review.condo === 'object' && review.condo !== null;
+                    const reviewCondoId = isCondoObject && review.condo._id ? review.condo._id : review.condo;
+
+                    // Log everything to understand the comparison
+                    console.log('Review details:', {
+                        reviewId: review._id,
+                        reviewCondoRaw: review.condo,
+                        isCondoObject: isCondoObject,
+                        extractedReviewCondoId: reviewCondoId,
+                        targetCondoId: condo._id,
+                        stringComparison: String(reviewCondoId) === String(condo._id)
+                    });
+
+                    return String(reviewCondoId) === String(condo._id);
+                });
                 item.innerHTML = `
                     <div>
                         <strong>${condo.name}</strong>
                         <br><small class="text-muted">${condo.address}</small>
                     </div>
+                    ${hasReview ? '<span class="badge bg-success">Edit</span>' : ''}
                 `;
+
                 item.addEventListener('click', () => selectCondo(condo));
                 resultsContainer.appendChild(item);
             });
@@ -884,36 +977,60 @@ window.location.reload();
 
         // Function to show SweetAlert
         function showAlert(title, message, icon) {
-                // First manually close the Bootstrap modal and clean up
-                const modalElement = document.getElementById('reviewModal');
-                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            // Get modal element and instance
+            const modalElement = document.getElementById('reviewModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
 
-                if (modalInstance) {
-                    modalInstance.hide();
+            // If modal exists, properly dispose of it
+            if (modalInstance) {
+                // First hide the modal
+                modalInstance.hide();
 
-                    // Remove backdrop manually if it's still present
-                    const backdrop = document.querySelector('.modal-backdrop');
-                    if (backdrop) {
+                // Add an event listener for when the modal is fully hidden
+                modalElement.addEventListener('hidden.bs.modal', function handleHidden() {
+                    // Remove the event listener so it doesn't trigger multiple times
+                    modalElement.removeEventListener('hidden.bs.modal', handleHidden);
+
+                    // Remove any remaining backdrop
+                    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
                         backdrop.remove();
-                    }
+                    });
 
-                    // Remove modal-related classes from body
+                    // Clean up body classes and styles
                     document.body.classList.remove('modal-open');
                     document.body.style.overflow = '';
                     document.body.style.paddingRight = '';
-                }
 
-                // Small delay to ensure modal is gone before showing SweetAlert
-                setTimeout(() => {
+                    // Now show the SweetAlert after modal is completely gone
                     Swal.fire({
                         title: title,
                         text: message,
                         icon: icon,
                         confirmButtonColor: '#28a745',
                         confirmButtonText: 'OK'
+                    }).then((result) => {
+                        // When user clicks OK on successful submission, refresh the page
+                        if (result.isConfirmed && icon === 'success') {
+                            window.location.reload();
+                        }
                     });
-                }, 100);
+                });
+            } else {
+                // If no modal instance, just show the alert
+                Swal.fire({
+                    title: title,
+                    text: message,
+                    icon: icon,
+                    confirmButtonColor: '#28a745',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    // When user clicks OK on successful submission, refresh the page
+                    if (result.isConfirmed && icon === 'success') {
+                        window.location.reload();
+                    }
+                });
             }
+        }
     </script>
   </body>
 </html>

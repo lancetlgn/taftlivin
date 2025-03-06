@@ -21,8 +21,7 @@
                     window.location.href = '../index.html';
                     return;
                 }
-                
-                // Update username display
+
                 const user = api.auth.getUser();
                 document.querySelector('.text-white.me-3').textContent = user.username;
             });
@@ -1146,7 +1145,7 @@ document.getElementById('addCondoGalleryFiles').addEventListener('change', async
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
-                // Don't set Content-Type header
+
             },
             body: formData
         });
@@ -1395,7 +1394,6 @@ document.getElementById('addCondoForm').addEventListener('submit', async functio
     } catch (error) {
         showToast('Error', error.message, 'danger'); 
     } finally {
-        // Restore button state - with proper selector and null check
         const submitBtn = document.querySelector(`button[form="addCondoForm"][type="submit"]`);
         if (submitBtn) {
             submitBtn.disabled = false;
@@ -1404,14 +1402,12 @@ document.getElementById('addCondoForm').addEventListener('submit', async functio
     }
 });
 
-// Edit condo form submission
 document.getElementById('editCondoForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
     const condoId = this.getAttribute('data-condo-id');
 
     try {
-        // Show loading - select the button with the correct selector
         const submitBtn = document.querySelector(`button[form="editCondoForm"][type="submit"]`);
         if (submitBtn) {
             submitBtn.disabled = true;
@@ -1445,21 +1441,16 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
 
         await api.admin.updateCondo(condoId, condoData);
         
-        // Hide modal
         const modal = bootstrap.Modal.getInstance(document.getElementById('editCondoModal'));
         modal.hide();
         
-        // Reload condos
         loadCondos();
         
-        // Show success notification
         showToast('Success', 'Condo updated successfully', 'success');
 
     } catch (error) {
         showToast('Error', error.message, 'danger');
-    } finally {
-        // Restore button state - with proper selector and null check
-        const submitBtn = document.querySelector(`button[form="editCondoForm"][type="submit"]`);
+    } finally {        const submitBtn = document.querySelector(`button[form="editCondoForm"][type="submit"]`);
         if (submitBtn) {
             submitBtn.disabled = false;
             submitBtn.innerHTML = 'Save Changes';

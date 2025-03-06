@@ -24,13 +24,6 @@ router.get('/', async (req, res) => {
       ];
     }
     
-    // Add price range filter
-    if (req.query.minPrice || req.query.maxPrice) {
-      filter.price = {};
-      if (req.query.minPrice) filter.price.$gte = parseInt(req.query.minPrice);
-      if (req.query.maxPrice) filter.price.$lte = parseInt(req.query.maxPrice);
-    }
-    
     // Get condos with pagination
     const condos = await Condo.find(filter)
       .limit(limit)

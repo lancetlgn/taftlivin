@@ -120,7 +120,6 @@ function updateAuthUI() {
   
   // Initialize auth UI
   document.addEventListener('DOMContentLoaded', function() {
-    // Remove any mock authentication
     localStorage.removeItem('mockLoggedIn');
     localStorage.removeItem('mockAdminLoggedIn');
     

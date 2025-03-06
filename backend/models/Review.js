@@ -35,7 +35,7 @@ const reviewSchema = new mongoose.Schema({
   }
 });
 
-// Prevent users from submitting multiple reviews for the same condo
+// prevent users from submitting multiple reviews for the same condo
 reviewSchema.index({ user: 1, condo: 1 }, { unique: true });
 
 module.exports = mongoose.model('Review', reviewSchema);

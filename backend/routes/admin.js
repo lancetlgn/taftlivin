@@ -18,14 +18,12 @@ const adminMiddleware = (req, res, next) => {
 router.use(protect);
 router.use(adminMiddleware);
 
-// Get all users
 router.get('/users', async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const skip = (page - 1) * limit;
     
-    // Create search filter if provided
     const filter = {};
     if (req.query.search) {
       filter.$or = [
@@ -34,7 +32,6 @@ router.get('/users', async (req, res) => {
       ];
     }
     
-    // Get users with pagination
     const users = await User.find(filter)
       .select('-password')
       .limit(limit)
@@ -50,12 +47,10 @@ router.get('/users', async (req, res) => {
       total
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Update user
 router.put('/users/:id', async (req, res) => {
     try {
       const user = await User.findById(req.params.id);
@@ -64,12 +59,17 @@ router.put('/users/:id', async (req, res) => {
         return res.status(404).json({ message: 'User not found' });
       }
       
-      // Update user type if provided
       if (req.body.userType) {
         user.userType = req.body.userType;
       }
       
-      // Add this section to handle password updates
+      
+    
+      if (req.body.userType) {
+        user.userType = req.body.userType;
+      }
+      
+     
       if (req.body.password) {
         user.password = req.body.password;
       }
@@ -106,8 +106,7 @@ router.delete('/users/:id', async (req, res) => {
     
     res.json({ message: 'User removed' });
   } catch (error) {
-    // Remove or comment out this line:
-    // console.error(error);
+
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -116,12 +115,12 @@ router.delete('/users/:id', async (req, res) => {
 router.get('/stats', async (req, res) => {
   try {
     const userCount = await User.countDocuments();
-    const condoCount = await Condo.countDocuments(); // Add this line
+    const condoCount = await Condo.countDocuments(); 
     
     res.json({
       userCount,
-      condoCount,  // Now returns real count
-      reviewCount: 0  // update this for Review model
+      condoCount, 
+      reviewCount: 0  
     });
   } catch (error) {
     console.error(error);
@@ -334,8 +333,8 @@ router.put('/condos/:id', async (req, res) => {
         }
       },
       { 
-        new: true,       // Return the updated document
-        runValidators: false  // Skip validation on update
+        new: true,      
+        runValidators: false 
       }
     );
     
@@ -364,13 +363,12 @@ router.delete('/condos/:id', async (req, res) => {
     // Delete the condo
     await Condo.deleteOne({ _id: req.params.id });
     
-    // Also delete associated reviews
     const Review = require('../models/Review');
     await Review.deleteMany({ condo: req.params.id });
     
     res.json({ message: 'Condo deleted successfully' });
   } catch (error) {
-    // console.error('Error deleting condo:', error);
+  
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -382,31 +380,26 @@ router.post('/upload/condo/main', upload.single('mainImage'), async (req, res) =
           return res.status(400).json({ message: 'No file uploaded' });
       }
       
-      // Return the URL path
       const fileUrl = `/uploads/condos/main/${req.file.filename}`;
-      // File uploaded successfully
+
       res.json({ fileUrl });
   } catch (error) {
-      // Remove or comment out this line:
-      // console.error('Upload error:', error);
+
       res.status(500).json({ message: error.message });
   }
 });
 
-// Upload gallery images
+// for uploading gallery images
 router.post('/upload/condo/gallery', upload.array('galleryImages', 4), async (req, res) => {
   try {
       if (!req.files || req.files.length === 0) {
           return res.status(400).json({ message: 'No files uploaded' });
       }
       
-      // Return URL paths
+      // return url paths
       const fileUrls = req.files.map(file => `/uploads/condos/gallery/${file.filename}`);
-      // Files uploaded successfully
       res.json({ fileUrls });
   } catch (error) {
-      // Remove or comment out this line:
-      // console.error('Upload error:', error);
       res.status(500).json({ message: error.message });
   }
 });

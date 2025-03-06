@@ -2,13 +2,13 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Set up upload directories
+// upload directories
 const uploadDir = path.join(__dirname, '../public/uploads');
 const condoMainDir = path.join(uploadDir, 'condos/main');
 const condoGalleryDir = path.join(uploadDir, 'condos/gallery');
 const profilePicsDir = path.join(uploadDir, 'users/profile');
 
-// Create directories if they don't exist
+// directories if they don't exist
 [uploadDir, condoMainDir, condoGalleryDir, profilePicsDir].forEach(dir => {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
@@ -47,7 +47,7 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-// Set up multer with our configuration
+// set up multer with our configuration
 const upload = multer({ 
     storage: storage,
     fileFilter: fileFilter,
@@ -56,5 +56,4 @@ const upload = multer({
     }
 });
 
-// Export the configured multer instance
 module.exports = upload;

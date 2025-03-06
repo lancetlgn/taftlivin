@@ -91,14 +91,12 @@ async function checkUserReview() {
             }
         });
         
-        if (!response.ok) return; // No review or error
+        if (!response.ok) return;
         
         const data = await response.json();
         
-        // This is important: if there's no review, we need to ensure currentUserReview is null
         currentUserReview = data.review || null;
-        
-        // Update the UI based on whether the user has a review or not
+    
         updateUserReviewSection();
         
     } catch (error) {
@@ -153,15 +151,12 @@ function updateUserReviewSection() {
     // Set comment
     userReviewComment.textContent = currentUserReview.comment || 'No comment provided.';
     
-    // IMPORTANT: Remove any existing event listeners to prevent duplicates
     const editButton = document.getElementById('editReviewBtn');
     const deleteButton = document.getElementById('deleteReviewBtn');
     
-    // Clone and replace to remove old event listeners
     const newEditButton = editButton.cloneNode(true);
     const newDeleteButton = deleteButton.cloneNode(true);
     
-    // FIX: Explicitly reset button appearance before adding to DOM
     newEditButton.innerHTML = '<i class="fas fa-edit"></i> Edit';
     newEditButton.disabled = false;
     newDeleteButton.innerHTML = '<i class="fas fa-trash"></i> Delete';
@@ -170,7 +165,6 @@ function updateUserReviewSection() {
     editButton.parentNode.replaceChild(newEditButton, editButton);
     deleteButton.parentNode.replaceChild(newDeleteButton, deleteButton);
     
-    // Set up edit button
     newEditButton.addEventListener('click', function() {
         // Switch to edit mode
         userReviewSection.classList.add('d-none');
@@ -382,8 +376,6 @@ async function loadCondoReviews(page = 1, append = false) {
             reviewsContainer.appendChild(reviewElement);
         });
         
-        // Add a sentinel element for intersection observer
-        // Remove old sentinel first if it exists
         const oldSentinel = document.getElementById('reviews-sentinel');
         if (oldSentinel) oldSentinel.remove();
         
@@ -394,7 +386,6 @@ async function loadCondoReviews(page = 1, append = false) {
             sentinel.style.marginTop = '10px';
             reviewsContainer.appendChild(sentinel);
             
-            // Setup intersection observer for the new sentinel
             setupInfiniteScroll();
         }
         
@@ -513,8 +504,6 @@ function calculateTimeAgo(date) {
     return 'just now';
 }
 
-// Setup review form submission
-// Update this function in condo-page.js
 function setupReviewForm() {
     const token = localStorage.getItem('token');
     const reviewForm = document.getElementById('reviewForm');
@@ -529,7 +518,6 @@ function setupReviewForm() {
         return;
     }
     
-    // Remove any existing event listeners
     const newForm = reviewForm.cloneNode(true);
     reviewForm.parentNode.replaceChild(newForm, reviewForm);
     
@@ -580,11 +568,9 @@ function setupReviewForm() {
             // Reset form
             newForm.reset();
             
-            // Reset pagination variables
             currentPage = 1;
             hasMoreReviews = true;
             
-            // Show success notification
             const isUpdate = !!currentUserReview;
             showNotification(
                 'Success', 
@@ -592,10 +578,7 @@ function setupReviewForm() {
                 'success'
             );
             
-            // Update user review status (fetch the updated review)
             await checkUserReview();
-            
-            // Reload reviews from scratch and condo details
             await loadCondoReviews(1, false);
             await loadCondoDetails();
             
@@ -603,7 +586,7 @@ function setupReviewForm() {
             console.error('Error submitting review:', error);
             showNotification('Error', error.message, 'danger');
         } finally {
-            // Restore button state
+
             submitButton.disabled = false;
             submitButton.innerHTML = originalText;
         }
@@ -616,11 +599,11 @@ function showNotification(title, message, type = 'success') {
     const toastTitle = document.getElementById('toastTitle');
     const toastMessage = document.getElementById('toastMessage');
     
-    // Set content
+
     toastTitle.textContent = title;
     toastMessage.textContent = message;
     
-    // Set color based on type
+
     toastElement.className = 'toast';
     
     if (type === 'success') {
@@ -671,7 +654,6 @@ async function deleteReview() {
         deleteBtn.disabled = true;
         deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...';
         
-        // Call API to delete the review
         const response = await fetch(`${api.API_URL}/reviews/${currentUserReview._id}`, {
             method: 'DELETE',
             headers: {
@@ -686,15 +668,12 @@ async function deleteReview() {
         }
         
         console.log('Delete review response:', data);
-        
-        // Show success notification
         showNotification('Success', 'Your review has been deleted successfully', 'success');
         
         // Update condo data with the returned values to avoid an extra API call
         if (data.updatedCondo && currentCondo) {
             currentCondo.averageRating = data.updatedCondo.averageRating;
             currentCondo.reviewCount = data.updatedCondo.reviewCount;
-            // Update the UI with these new values
             const ratingElement = document.getElementById('condoRating');
             if (ratingElement) {
                 const starsHtml = generateStarRating(currentCondo.averageRating);
@@ -702,24 +681,20 @@ async function deleteReview() {
             }
         }
         
-        // Clear current user review
         currentUserReview = null;
         
-        // Show the review form instead
         updateUserReviewSection();
         
-        // Reset the form
+
         document.getElementById('reviewForm').reset();
         document.getElementById('reviewSubmitBtn').textContent = 'Submit Review';
         
-        // Reload reviews to show the updated list
         await loadCondoReviews(1, false);
         
     } catch (error) {
         console.error('Error deleting review:', error);
         showNotification('Error', error.message, 'danger');
     } finally {
-        // Always restore delete button, even on error
         const deleteBtn = document.getElementById('deleteReviewBtn');
         if (deleteBtn) {
             deleteBtn.disabled = false;
@@ -727,11 +702,9 @@ async function deleteReview() {
         }
     }
 }
-
+//utility function to convert meters to walking time
 function calculateWalkingTime(meters) {
-    // Average walking speed is about 1.4 meters per second or 84 meters per minute
     const walkingSpeedMetersPerMinute = 84;
-    // Calculate minutes and round to nearest integer
     return Math.round(meters / walkingSpeedMetersPerMinute);
 }
 

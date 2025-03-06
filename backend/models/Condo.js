@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Create schema
 const condoSchema = new mongoose.Schema({
   name: {
     type: String,

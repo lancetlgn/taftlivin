@@ -239,12 +239,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Profile page functionality
+      
         document.addEventListener('DOMContentLoaded', function() {
-            // Show loading state
-            document.getElementById('profile-loading').classList.remove('d-none');
             
-            // Load user profile
+            document.getElementById('profile-loading').classList.remove('d-none');
             loadUserProfile();
             
             // Set up form submission
@@ -273,12 +271,12 @@
                 });
             });
             
-            // Handle scroll position after password section expands
+          
             const passwordSection = document.getElementById('passwordSection');
             passwordSection.addEventListener('shown.bs.collapse', function() {
-                // Give browser time to render the expanded form
+                
                 setTimeout(() => {
-                    // Scroll the form into view if needed
+                  
                     this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 150);
             });
@@ -286,13 +284,13 @@
         
         async function loadUserProfile() {
             try {
-                // Get token
+            
                 const token = localStorage.getItem('token');
                 if (!token) {
                     throw new Error('Not authenticated');
                 }
                 
-                // Fetch user profile
+            
                 const response = await fetch(`${api.API_URL}/auth/me`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -305,10 +303,10 @@
                 
                 const user = await response.json();
                 
-                // Hide loading, show profile
+                
                 document.getElementById('profile-loading').classList.add('d-none');
                 
-                // Update profile information
+              
                 document.getElementById('fullname').value = user.username;
                 document.getElementById('email').value = user.email;
                 document.querySelector('.profile-username').textContent = user.username;
@@ -317,12 +315,12 @@
                     document.getElementById('bio').value = user.bio;
                 }
                 
-                // Update the profile picture if available
+                
                 if (user.profilePicture && user.profilePicture !== 'default.jpg') {
                     document.getElementById('profile-image').src = user.profilePicture;
                 }
                 
-                // Update user role display if present
+              
                 const role = user.userType.charAt(0).toUpperCase() + user.userType.slice(1);
                 document.querySelector('.profile-role').textContent = role;
                 
@@ -334,18 +332,17 @@
             }
         }
         
-        // Handle profile update
+       
         async function updateProfile(event) {
             event.preventDefault();
             
             try {
-                // Get form values
+               
                 const bio = document.getElementById('bio').value;
                 
-                // Update profile data
-                const profileData = { bio };
                 
-                // Update profile
+                const profileData = { bio };
+            
                 const token = localStorage.getItem('token');
                 const profileResponse = await fetch(`${api.API_URL}/users/profile`, {
                     method: 'PUT',
@@ -360,7 +357,7 @@
                     throw new Error('Failed to update profile');
                 }
                 
-                // Check if password needs to be updated
+           
                 const currentPassword = document.getElementById('currentPassword')?.value;
                 const newPassword = document.getElementById('newPassword')?.value;
                 const confirmPassword = document.getElementById('confirmPassword')?.value;
@@ -388,12 +385,12 @@
                         throw new Error(errorData.message || 'Failed to change password');
                     }
                     
-                    // Clear password fields
+                    
                     document.getElementById('currentPassword').value = '';
                     document.getElementById('newPassword').value = '';
                     document.getElementById('confirmPassword').value = '';
                     
-                    // Close password section
+                   
                     const passwordCollapse = bootstrap.Collapse.getInstance(document.getElementById('passwordSection'));
                     if (passwordCollapse) {
                         passwordCollapse.hide();
@@ -410,7 +407,7 @@
             }
         }
         
-        // Handle profile image upload
+       
         async function uploadProfileImage(e) {
             if (!e.target.files || e.target.files.length === 0) return;
             
@@ -418,7 +415,7 @@
             const imageElement = document.getElementById('profile-image');
             
             try {
-                // Show loading indicator
+                
                 imageElement.style.opacity = '0.5';
                 const loadingIndicator = document.createElement('div');
                 loadingIndicator.className = 'spinner-border text-success position-absolute';
@@ -427,47 +424,45 @@
                 loadingIndicator.style.transform = 'translate(-50%, -50%)';
                 imageElement.parentNode.appendChild(loadingIndicator);
                 
-                // Create form data
+            
                 const formData = new FormData();
                 formData.append('profilePicture', file);
                 
-                // Send request to the server
                 const response = await fetch(`${api.API_URL}/users/upload/profile-picture`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
-                        // Don't set Content-Type, browser will set it with boundary
+                        
                     },
                     body: formData
                 });
                 
-                // Check for errors
+                
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(errorData.message || 'Upload failed');
                 }
                 
-                // Process successful response
+        
                 const data = await response.json();
                 
-                // Update the image source with the new URL
-                imageElement.src = data.fileUrl;
                 
-                // Update user data in local storage
+                imageElement.src = data.fileUrl;
+             
                 const user = JSON.parse(localStorage.getItem('user'));
                 if (user) {
                     user.profilePicture = data.fileUrl;
                     localStorage.setItem('user', JSON.stringify(user));
                 }
                 
-                // Show success message using toast
+            
                 showToast('Success', 'Profile picture updated successfully', 'success');
                 
             } catch (error) {
                 console.error('Error uploading profile picture:', error);
                 showToast('Error', error.message, 'danger');
             } finally {
-                // Remove loading indicator and restore opacity
+             
                 imageElement.style.opacity = '1';
                 const loadingIndicator = imageElement.parentNode.querySelector('.spinner-border');
                 if (loadingIndicator) {
@@ -478,7 +473,7 @@
 
         function showToast(title, message, type = 'success') {
     try {
-        // Get the toast element
+       
         const toastEl = document.getElementById('liveToast');
         if (!toastEl) {
             console.error('Toast element with id "liveToast" not found.');
@@ -486,7 +481,7 @@
             return;
         }
 
-        // Get the toast body element
+        
         const toastBody = document.getElementById('toastBody');
         if (!toastBody) {
             console.error('Toast body element with id "toastBody" not found.');
@@ -494,13 +489,13 @@
             return;
         }
 
-        // Set the message
+      
         toastBody.textContent = message;
 
-        // Reset classes
+      
         toastEl.className = 'toast';
 
-        // Set the background color based on the type
+       
         switch (type) {
             case 'success':
                 toastEl.classList.add('bg-success', 'text-white');
@@ -515,10 +510,8 @@
                 toastEl.classList.add('bg-light');
         }
 
-        // Create a new Bootstrap toast instance
+     
         const toast = new bootstrap.Toast(toastEl);
-
-        // Show the toast
         toast.show();
     } catch (error) {
         console.error('Error displaying toast:', error);

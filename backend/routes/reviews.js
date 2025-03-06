@@ -117,7 +117,7 @@ async function updateCondoRating(condoId) {
     const sum = reviews.reduce((total, review) => total + review.rating, 0);
     const average = sum / reviews.length;
     
-    // Update condo with both average rating and review count
+    // update condo with both average rating and review count
     const updatedCondo = await Condo.findByIdAndUpdate(
       condoId, 
       { 
@@ -254,6 +254,29 @@ router.put('/:id', protect, async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+
+router.get('/user', protect, async (req, res) => {
+    try {
+        const reviews = await Review.find({ user: req.user._id })
+            .populate('condo', 'name address')
+            .sort({ createdAt: -1 });
+
+        console.log('Found reviews:', reviews); 
+        
+        res.json({
+            success: true,
+            reviews: reviews
+        });
+    } catch (error) {
+        console.error('Error in /reviews/user:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching reviews'
+        });
+    }
+});
+
+
 
 
 module.exports = router;

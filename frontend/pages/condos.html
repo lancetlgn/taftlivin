@@ -258,29 +258,29 @@
             
             let starsHtml = '<div class="d-inline-flex align-items-center">';
             
-            // Full stars
+            
             for (let i = 0; i < fullStars; i++) {
                 starsHtml += '<i class="fas fa-star text-warning"></i>';
             }
             
-            // Half star
+         
             if (hasHalfStar) {
                 starsHtml += '<i class="fas fa-star-half-alt text-warning"></i>';
             }
             
-            // Empty stars
+        
             for (let i = 0; i < emptyStars; i++) {
                 starsHtml += '<i class="far fa-star text-warning"></i>';
             }
             
-            // Add numerical rating
+        
             starsHtml += `<span class="ms-2 text-dark fw-bold">${rating.toFixed(1)}</span>`;
             starsHtml += '</div>';
             
             return starsHtml;
         }
 
-        // Function to update pagination
+     
         function updatePagination(currentPage, totalPages) {
             const paginationContainer = document.getElementById('paginationContainer');
             
@@ -291,20 +291,19 @@
             
             let paginationHTML = '';
             
-            // Previous button
+          
             paginationHTML += `<a href="#" class="${currentPage === 1 ? 'disabled' : ''}" data-page="${currentPage - 1}">&laquo;</a>`;
             
-            // Page numbers
+           
             for (let i = 1; i <= totalPages; i++) {
                 paginationHTML += `<a href="#" class="${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`;
             }
             
-            // Next button
+          
             paginationHTML += `<a href="#" class="${currentPage === totalPages ? 'disabled' : ''}" data-page="${currentPage + 1}">&raquo;</a>`;
             
             paginationContainer.innerHTML = paginationHTML;
             
-            // Add event listeners to pagination links
             paginationContainer.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -314,7 +313,7 @@
                     if (!isNaN(page)) {
                         currentPage = page;
                         loadCondos();
-                        // Scroll to top of condos list
+                     
                         document.getElementById('dormList').scrollIntoView();
                     }
                 });

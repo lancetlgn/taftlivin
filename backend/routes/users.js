@@ -128,7 +128,6 @@ router.post('/upload/profile-picture', protect, upload.single('profilePicture'),
       return res.status(404).json({ message: 'User not found' });
     }
     
-    // Set the profile picture path
     const fileUrl = `/uploads/users/profile/${req.file.filename}`;
     
     // Update user's profile picture in database
