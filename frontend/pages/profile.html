@@ -354,7 +354,7 @@
                 
                 if (currentPassword && newPassword && confirmPassword) {
                     if (newPassword !== confirmPassword) {
-                        alert('New passwords do not match!');
+                        showToast('Error', 'New passwords do not match!', 'danger');
                         return;
                     }
                     
@@ -386,34 +386,147 @@
                         passwordCollapse.hide();
                     }
                     
-                    alert('Profile and password updated successfully!');
+                    showToast('Success', 'Profile and password updated successfully!', 'success');
                 } else {
-                    alert('Profile updated successfully!');
+                    showToast('Success', 'Profile updated successfully!', 'success');
                 }
                 
             } catch (error) {
                 console.error('Error updating profile:', error);
-                alert('Error updating profile: ' + error.message);
+                showToast('Error', 'Error updating profile: ' + error.message, 'danger');
             }
         }
         
         // Handle profile image upload
-        function uploadProfileImage(e) {
-            // This is just a placeholder for now since we don't have image upload API yet
-            if (e.target.files && e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('profile-image').src = e.target.result;
+        async function uploadProfileImage(e) {
+            if (!e.target.files || e.target.files.length === 0) return;
+            
+            const file = e.target.files[0];
+            const imageElement = document.getElementById('profile-image');
+            
+            try {
+                // Show loading indicator
+                imageElement.style.opacity = '0.5';
+                const loadingIndicator = document.createElement('div');
+                loadingIndicator.className = 'spinner-border text-success position-absolute';
+                loadingIndicator.style.top = '50%';
+                loadingIndicator.style.left = '50%';
+                loadingIndicator.style.transform = 'translate(-50%, -50%)';
+                imageElement.parentNode.appendChild(loadingIndicator);
+                
+                // Create form data
+                const formData = new FormData();
+                formData.append('profilePicture', file);
+                
+                // Send request to the server
+                const response = await fetch(`${api.API_URL}/users/upload/profile-picture`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        // Don't set Content-Type, browser will set it with boundary
+                    },
+                    body: formData
+                });
+                
+                // Check for errors
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Upload failed');
                 }
-                reader.readAsDataURL(e.target.files[0]);
-                alert('Note: Image upload is just for preview currently. The image will not be saved to the server.');
+                
+                // Process successful response
+                const data = await response.json();
+                
+                // Update the image source with the new URL
+                imageElement.src = data.fileUrl;
+                
+                // Update user data in local storage
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user) {
+                    user.profilePicture = data.fileUrl;
+                    localStorage.setItem('user', JSON.stringify(user));
+                }
+                
+                // Show success message using toast
+                showToast('Success', 'Profile picture updated successfully', 'success');
+                
+            } catch (error) {
+                console.error('Error uploading profile picture:', error);
+                showToast('Error', error.message, 'danger');
+            } finally {
+                // Remove loading indicator and restore opacity
+                imageElement.style.opacity = '1';
+                const loadingIndicator = imageElement.parentNode.querySelector('.spinner-border');
+                if (loadingIndicator) {
+                    loadingIndicator.remove();
+                }
             }
         }
+
+        function showToast(title, message, type = 'success') {
+    try {
+        // Get the toast element
+        const toastEl = document.getElementById('liveToast');
+        if (!toastEl) {
+            console.error('Toast element with id "liveToast" not found.');
+            alert(message);
+            return;
+        }
+
+        // Get the toast body element
+        const toastBody = document.getElementById('toastBody');
+        if (!toastBody) {
+            console.error('Toast body element with id "toastBody" not found.');
+            alert(message);
+            return;
+        }
+
+        // Set the message
+        toastBody.textContent = message;
+
+        // Reset classes
+        toastEl.className = 'toast';
+
+        // Set the background color based on the type
+        switch (type) {
+            case 'success':
+                toastEl.classList.add('bg-success', 'text-white');
+                break;
+            case 'danger':
+                toastEl.classList.add('bg-danger', 'text-white');
+                break;
+            case 'warning':
+                toastEl.classList.add('bg-warning');
+                break;
+            default:
+                toastEl.classList.add('bg-light');
+        }
+
+        // Create a new Bootstrap toast instance
+        const toast = new bootstrap.Toast(toastEl);
+
+        // Show the toast
+        toast.show();
+    } catch (error) {
+        console.error('Error displaying toast:', error);
+        alert(message);
+    }
+}
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/api.js"></script>
     <script src="../js/auth-ui.js"></script>
+
+    <!-- Toast container -->
+    <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11000">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastBody"></div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
 
     
 </body>

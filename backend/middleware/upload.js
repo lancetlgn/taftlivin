@@ -2,23 +2,18 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Create upload directories if they don't exist
+// Set up upload directories
 const uploadDir = path.join(__dirname, '../public/uploads');
 const condoMainDir = path.join(uploadDir, 'condos/main');
 const condoGalleryDir = path.join(uploadDir, 'condos/gallery');
+const profilePicsDir = path.join(uploadDir, 'users/profile');
 
-// Make sure directories exist
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-if (!fs.existsSync(condoMainDir)) {
-    fs.mkdirSync(condoMainDir, { recursive: true });
-}
-
-if (!fs.existsSync(condoGalleryDir)) {
-    fs.mkdirSync(condoGalleryDir, { recursive: true });
-}
+// Create directories if they don't exist
+[uploadDir, condoMainDir, condoGalleryDir, profilePicsDir].forEach(dir => {
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+});
 
 // Configure storage
 const storage = multer.diskStorage({
@@ -28,32 +23,38 @@ const storage = multer.diskStorage({
             cb(null, condoMainDir);
         } else if (file.fieldname === 'galleryImages') {
             cb(null, condoGalleryDir);
+        } else if (file.fieldname === 'profilePicture') {
+            cb(null, profilePicsDir);
         } else {
             cb(null, uploadDir);
         }
     },
     filename: function(req, file, cb) {
-        // Generate unique filename
+        // Generate unique filename with original extension
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const fileExt = path.extname(file.originalname);
-        cb(null, `${file.fieldname}-${uniqueSuffix}${fileExt}`);
+        const ext = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix + ext);
     }
 });
 
-// Create multer upload middleware
-const upload = multer({
+// File filter to only allow images
+const fileFilter = (req, file, cb) => {
+    // Accept only image files
+    if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+    } else {
+        cb(new Error('Only image files are allowed!'), false);
+    }
+};
+
+// Set up multer with our configuration
+const upload = multer({ 
     storage: storage,
+    fileFilter: fileFilter,
     limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB limit
-    },
-    fileFilter: function(req, file, cb) {
-        // Check file type
-        if (file.mimetype.startsWith('image/')) {
-            cb(null, true);
-        } else {
-            cb(new Error('Only image files are allowed'), false);
-        }
+        fileSize: 5 * 1024 * 1024, // 5MB limit
     }
 });
 
+// Export the configured multer instance
 module.exports = upload;
