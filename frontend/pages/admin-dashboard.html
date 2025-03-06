@@ -112,11 +112,7 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="condosList">
-                            <tr>
-                                <td colspan="5" class="text-center">Loading condos...</td>
-                            </tr>
-                        </tbody>
+                        <tbody id="condosList"></tbody>
                     </table>
                 </div>
             </div>
@@ -138,45 +134,7 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="usersList">
-                            <!-- Sample row -->
-                            <tr>
-                                <td>Lance Morrison</td>
-                                <td>lance_tulagan@dlsu.edu.ph</td>
-                                <td><span class="badge bg-success">Active</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-success btn-edit-user"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Yuyang Guo</td>
-                                <td>yuyang_guo@dlsu.edu.ph</td>
-                                <td><span class="badge bg-warning">Suspended</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-success btn-edit-user"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Ivan Boado</td>
-                                <td>ivan_boado@dlsu.edu.ph</td>
-                                <td><span class="badge bg-success">Active</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-success btn-edit-user"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Mark Pineda</td>
-                                <td>mark_pinda@dlsu.edu.ph</td>
-                                <td><span class="badge bg-success">Active</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-success btn-edit-user"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-success"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="usersList"></tbody>
                     </table>
                 </div>
             </div>
@@ -235,19 +193,6 @@
             </div>
         </div>
 
-        
-        <!-- Toast Notification -->
-        <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11">
-            <div id="adminToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <strong class="me-auto" id="toastTitle">Notification</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body" id="toastMessage">
-                    <!-- Message goes here -->
-                </div>
-            </div>
-        </div>        
     
     </main>
 
@@ -615,7 +560,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Validate passwords match
             if (password !== confirmPassword) {
-                alert('Passwords do not match!');
+                showToast('Error', 'Passwords do not match!', 'danger');
                 return;
             }
             
@@ -638,10 +583,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Reload users
                 loadUsers();
                 
-                alert('User added successfully!');
+                // Show success notification
+                showToast('Success', 'User added successfully!', 'success');
             } catch (error) {
-                console.error('Error creating user:', error);
-                alert('Error: ' + error.message);
+                showToast('Error', error.message, 'danger');
             }
         });
         
@@ -661,12 +606,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const passwordConfirm = document.getElementById('editUserPasswordConfirm').value;
                 
                 if (!password || password.length < 6) {
-                    alert('Password must be at least 6 characters long');
+                    showToast('Error', 'Password must be at least 6 characters long', 'danger');
                     return;
                 }
                 
                 if (password !== passwordConfirm) {
-                    alert('Passwords do not match');
+                    showToast('Error', 'Passwords do not match', 'danger');
                     return;
                 }
                 
@@ -682,10 +627,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Reload users
                 loadUsers();
-                alert('User updated successfully');
+                
+                // Success notification
+                showToast('Success', 'User updated successfully', 'success');
             } catch (error) {
-                console.error('Error updating user:', error);
-                alert('Error: ' + error.message);
+                showToast('Error', error.message, 'danger');
             }
         });
     });
@@ -740,7 +686,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
         } catch (error) {
-            console.error('Error loading users:', error);
+    
             document.getElementById('usersList').innerHTML = 
                 `<tr><td colspan="4" class="text-center text-danger">Error: ${error.message}</td></tr>`;
         }
@@ -775,8 +721,7 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.show();
             
         } catch (error) {
-            console.error('Error editing user:', error);
-            alert('Error: ' + error.message);
+            showToast('Error', error.message, 'danger');
         }
     }
     
@@ -786,10 +731,9 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 await api.admin.deleteUser(userId);
                 loadUsers();
-                alert('User deleted successfully');
+                showToast('Success', 'User deleted successfully', 'success');
             } catch (error) {
-                console.error('Error deleting user:', error);
-                alert('Error: ' + error.message);
+                showToast('Error', error.message, 'danger');
             }
         }
     }
@@ -857,7 +801,7 @@ async function loadCondos() {
         });
         
     } catch (error) {
-        console.error('Error loading condos:', error);
+        
         document.getElementById('condosList').innerHTML = 
             `<tr><td colspan="5" class="text-center text-danger">Error: ${error.message}</td></tr>`;
     }
@@ -880,8 +824,11 @@ async function editCondo(condoId) {
         document.getElementById('editCondoDistance').value = condo.distance || 0;
         document.getElementById('editCondoImage').value = condo.image || '';
         
-        // Show current image
-        document.getElementById('currentCondoImage').src = condo.image || '../images/default-condo.jpg';
+        // Show current image - with null checks
+        const currentImg = document.getElementById('currentCondoImage');
+        if (currentImg) {
+            currentImg.src = condo.image || '../images/default-condo.jpg';
+        }
         
         // Fill contact info
         if (condo.contactInfo) {
@@ -896,19 +843,21 @@ async function editCondo(condoId) {
         const galleryTextarea = document.getElementById('editCondoGallery');
         galleryTextarea.value = condo.gallery ? condo.gallery.join('\n') : '';
         
-        // Show current gallery
+        // Show current gallery - with null check
         const galleryContainer = document.getElementById('currentGalleryImages');
-        galleryContainer.innerHTML = '';
-        
-        if (condo.gallery && condo.gallery.length > 0) {
-            condo.gallery.forEach((img, index) => {
-                const imgCol = document.createElement('div');
-                imgCol.className = 'col-3 mb-2';
-                imgCol.innerHTML = `
-                    <img src="${img}" alt="Gallery image ${index+1}" class="img-thumbnail" style="height: 80px; width: 100%; object-fit: cover;">
-                `;
-                galleryContainer.appendChild(imgCol);
-            });
+        if (galleryContainer) {
+            galleryContainer.innerHTML = '';
+            
+            if (condo.gallery && condo.gallery.length > 0) {
+                condo.gallery.forEach((img, index) => {
+                    const imgCol = document.createElement('div');
+                    imgCol.className = 'col-3 mb-2';
+                    imgCol.innerHTML = `
+                        <img src="${img}" alt="Gallery image ${index+1}" class="img-thumbnail" style="height: 80px; width: 100%; object-fit: cover;">
+                    `;
+                    galleryContainer.appendChild(imgCol);
+                });
+            }
         }
         
         // Store the condo ID for the save action
@@ -919,8 +868,8 @@ async function editCondo(condoId) {
         modal.show();
         
     } catch (error) {
-        console.error('Error editing condo:', error);
-        alert('Error: ' + error.message);
+  
+        showToast('Error', error.message, 'danger');
     }
 }
 
@@ -932,7 +881,7 @@ async function deleteCondo(condoId) {
             loadCondos();
             showToast('Success', 'Condo deleted successfully', 'success');
         } catch (error) {
-            console.error('Error deleting condo:', error);
+          
             showToast('Error', error.message, 'danger');
         }
     }
@@ -987,7 +936,7 @@ document.getElementById('addCondoForm').addEventListener('submit', async functio
         
         alert('Condo added successfully!');
     } catch (error) {
-        console.error('Error creating condo:', error);
+        
         alert('Error: ' + error.message);
     }
 });
@@ -1036,9 +985,8 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
         
         // Reload condos
         loadCondos();
-        alert('Condo updated successfully');
     } catch (error) {
-        console.error('Error updating condo:', error);
+  
         alert('Error: ' + error.message);
     }
 
@@ -1046,35 +994,64 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
 });
 
 
-// Toast notification function
+// Toast notification function - complete rewrite with dynamic creation
 function showToast(title, message, type = 'success') {
-    const toast = document.getElementById('adminToast');
-    const toastTitle = document.getElementById('toastTitle');
-    const toastBody = document.getElementById('toastMessage');
-    
-    // Set content
-    toastTitle.textContent = title;
-    toastBody.textContent = message;
-    
-    // Set color based on type
-    toast.className = 'toast';
-    if (type === 'success') {
-        toast.classList.add('bg-success', 'text-white');
-    } else if (type === 'danger') {
-        toast.classList.add('bg-danger', 'text-white');
-    } else if (type === 'warning') {
-        toast.classList.add('bg-warning');
-    } else if (type === 'info') {
-        toast.classList.add('bg-info', 'text-white');
+    try {
+        // Get the toast element
+        const toastEl = document.getElementById('liveToast');
+        if (!toastEl) {
+            // Fallback: create a temporary toast element
+            const tempToast = document.createElement('div');
+            tempToast.className = 'toast bg-danger text-white';
+            tempToast.role = 'alert';
+            tempToast.setAttribute('aria-live', 'assertive');
+            tempToast.setAttribute('aria-atomic', 'true');
+            tempToast.innerHTML = `<div class="d-flex">
+                <div class="toast-body">Toast container not found.</div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>`;
+            document.body.appendChild(tempToast);
+            new bootstrap.Toast(tempToast).show();
+            return;
+        }
+
+        // Get the toast body element
+        const toastBody = document.getElementById('toastBody');
+        if (!toastBody) {
+            // Fallback using alert if toast body is missing
+            alert('Toast body element with id "toastBody" not found.');
+            return;
+        }
+
+        // Set the message
+        toastBody.textContent = message;
+
+        // Reset classes
+        toastEl.className = 'toast';
+
+        // Set the background color based on the type
+        switch (type) {
+            case 'success':
+                toastEl.classList.add('bg-success', 'text-white');
+                break;
+            case 'danger':
+                toastEl.classList.add('bg-danger', 'text-white');
+                break;
+            case 'warning':
+                toastEl.classList.add('bg-warning');
+                break;
+            default:
+                toastEl.classList.add('bg-light');
+        }
+
+        // Create a new Bootstrap toast instance
+        const toast = new bootstrap.Toast(toastEl);
+
+        // Show the toast
+        toast.show();
+    } catch (error) {
+        alert('Error displaying toast: ' + error.message);
     }
-    
-    // Show toast
-    const bsToast = new bootstrap.Toast(toast, {
-        animation: true,
-        autohide: true,
-        delay: 3000
-    });
-    bsToast.show();
 }
 
 
@@ -1137,7 +1114,6 @@ document.getElementById('addCondoMainImageFile').addEventListener('change', asyn
         });
         
     } catch (error) {
-        console.error('Error uploading image:', error);
         preview.innerHTML = `<div class="alert alert-danger">Upload failed: ${error.message}</div>`;
         document.getElementById('addCondoImage').value = '';
     }
@@ -1210,7 +1186,7 @@ document.getElementById('addCondoGalleryFiles').addEventListener('change', async
         });
         
     } catch (error) {
-        console.error('Upload error:', error);
+
         preview.innerHTML = `<div class="alert alert-danger">Upload failed: ${error.message}</div>`;
         document.getElementById('addCondoGallery').value = '';
     }
@@ -1219,15 +1195,14 @@ document.getElementById('addCondoGalleryFiles').addEventListener('change', async
 // Main image preview for Edit Condo
 document.getElementById('editCondoMainImageFile').addEventListener('change', async function(e) {
     const fileInput = this;
-    const currentImage = document.getElementById('currentCondoImage');
+    const imagePreviewContainer = document.querySelector('#editCondoModal .mt-2');
     
-    if (!fileInput.files || fileInput.files.length === 0) return;
+    if (!fileInput.files || fileInput.files.length === 0 || !imagePreviewContainer) return;
     
     const file = fileInput.files[0];
     
     // Show loading state
-    currentImage.src = '';
-    currentImage.parentNode.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
+    imagePreviewContainer.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
     
     try {
         // Upload file
@@ -1243,24 +1218,27 @@ document.getElementById('editCondoMainImageFile').addEventListener('change', asy
         });
         
         if (!response.ok) {
-            throw new Error('Upload failed');
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Upload failed');
         }
         
         const data = await response.json();
         
         // Update hidden field with file URL
-        document.getElementById('editCondoImage').value = data.fileUrl;
+        const hiddenField = document.getElementById('editCondoImage');
+        if (hiddenField) hiddenField.value = data.fileUrl;
         
         // Show preview
-        currentImage.parentNode.innerHTML = `
+        imagePreviewContainer.innerHTML = `
             <small class="text-muted">Current image:</small>
             <img id="currentCondoImage" src="${data.fileUrl}" alt="Current condo image" class="img-fluid mt-2" style="max-height: 150px;">
         `;
         
     } catch (error) {
-        console.error('Upload error:', error);
-        currentImage.parentNode.innerHTML = `
+      
+        imagePreviewContainer.innerHTML = `
             <div class="alert alert-danger">Upload failed: ${error.message}</div>
+            <small class="text-muted">Current image:</small>
             <img id="currentCondoImage" src="" alt="Current condo image" class="img-fluid mt-2" style="max-height: 150px;">
         `;
     }
@@ -1295,7 +1273,8 @@ document.getElementById('editCondoGalleryFiles').addEventListener('change', asyn
         });
         
         if (!response.ok) {
-            throw new Error('Upload failed');
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Upload failed');
         }
         
         const data = await response.json();
@@ -1303,8 +1282,10 @@ document.getElementById('editCondoGalleryFiles').addEventListener('change', asyn
         // Update hidden field with file URLs
         document.getElementById('editCondoGallery').value = data.fileUrls.join('\n');
         
-        // Show previews
+        // Clear gallery first
         gallery.innerHTML = '';
+        
+        // Show previews one by one
         data.fileUrls.forEach((url, index) => {
             const col = document.createElement('div');
             col.className = 'col-3 mb-2';
@@ -1318,24 +1299,26 @@ document.getElementById('editCondoGalleryFiles').addEventListener('change', asyn
             gallery.appendChild(col);
         });
         
-        // Add event listeners for remove buttons
-        document.querySelectorAll('#currentGalleryImages button').forEach(button => {
-            button.addEventListener('click', function() {
-                const index = parseInt(this.getAttribute('data-index'));
-                const urls = document.getElementById('editCondoGallery').value.split('\n');
-                urls.splice(index, 1);
-                document.getElementById('editCondoGallery').value = urls.join('\n');
-                this.closest('.col-3').remove();
-                
-                // Update data-index attributes
-                document.querySelectorAll('#currentGalleryImages button').forEach((btn, i) => {
-                    btn.setAttribute('data-index', i);
+        // Add event listeners for remove buttons after all elements are created
+        setTimeout(() => {
+            document.querySelectorAll('#currentGalleryImages button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    const urls = document.getElementById('editCondoGallery').value.split('\n');
+                    urls.splice(index, 1);
+                    document.getElementById('editCondoGallery').value = urls.join('\n');
+                    this.closest('.col-3').remove();
+                    
+                    // Update data-index attributes
+                    document.querySelectorAll('#currentGalleryImages button').forEach((btn, i) => {
+                        btn.setAttribute('data-index', i);
+                    });
                 });
             });
-        });
+        }, 100);
         
     } catch (error) {
-        console.error('Upload error:', error);
+   
         gallery.innerHTML = `<div class="alert alert-danger">Upload failed: ${error.message}</div>`;
         document.getElementById('editCondoGallery').value = '';
     }
@@ -1343,16 +1326,16 @@ document.getElementById('editCondoGalleryFiles').addEventListener('change', asyn
 
 // Update your form submission handlers
 
-// Add condo form submission
 document.getElementById('addCondoForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     try {
-        // Show loading
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Saving...';
+        // Show loading - select the button correctly
+        const submitBtn = document.querySelector(`button[form="addCondoForm"][type="submit"]`);
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Saving...';
+        }
         
         const condoData = {
             name: document.getElementById('addCondoName').value,
@@ -1388,10 +1371,20 @@ document.getElementById('addCondoForm').addEventListener('submit', async functio
         
         // Reset form
         this.reset();
-        document.getElementById('addCondoMainImagePreview').classList.add('d-none');
-        document.getElementById('addCondoGalleryPreview').innerHTML = '';
-        document.getElementById('addCondoImage').value = '';
-        document.getElementById('addCondoGallery').value = '';
+        
+        // Clear preview elements
+        const previewElem = document.getElementById('addCondoMainImagePreview');
+        if (previewElem) previewElem.classList.add('d-none');
+        
+        const galleryPreviewElem = document.getElementById('addCondoGalleryPreview');
+        if (galleryPreviewElem) galleryPreviewElem.innerHTML = '';
+        
+        // Clear hidden fields
+        const imageField = document.getElementById('addCondoImage');
+        if (imageField) imageField.value = '';
+        
+        const galleryField = document.getElementById('addCondoGallery');
+        if (galleryField) galleryField.value = '';
         
         // Reload condos
         loadCondos();
@@ -1400,29 +1393,31 @@ document.getElementById('addCondoForm').addEventListener('submit', async functio
         showToast('Success', 'Condo added successfully', 'success');
         
     } catch (error) {
-        console.error('Error creating condo:', error);
-        showToast('Error', error.message, 'danger');
+        showToast('Error', error.message, 'danger'); 
     } finally {
-        // Restore button state
-        const submitBtn = this.querySelector('button[type="submit"]');
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Add Condo';
+        // Restore button state - with proper selector and null check
+        const submitBtn = document.querySelector(`button[form="addCondoForm"][type="submit"]`);
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Add Condo';
+        }
     }
 });
 
 // Edit condo form submission
 document.getElementById('editCondoForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    
+
     const condoId = this.getAttribute('data-condo-id');
-    
+
     try {
-        // Show loading
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Saving...';
-        
+        // Show loading - select the button with the correct selector
+        const submitBtn = document.querySelector(`button[form="editCondoForm"][type="submit"]`);
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Saving...';
+        }
+
         const condoData = {
             name: document.getElementById('editCondoName').value,
             address: document.getElementById('editCondoAddress').value,
@@ -1434,12 +1429,12 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
                 email: document.getElementById('editCondoEmail').value
             }
         };
-        
+
         const imageUrl = document.getElementById('editCondoImage').value;
         if (imageUrl) {
             condoData.image = imageUrl;
         }
-        
+
         const galleryText = document.getElementById('editCondoGallery').value;
         if (galleryText) {
             const galleryUrls = galleryText.split('\n').map(url => url.trim()).filter(url => url);
@@ -1447,7 +1442,7 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
                 condoData.gallery = galleryUrls.slice(0, 4);
             }
         }
-        
+
         await api.admin.updateCondo(condoId, condoData);
         
         // Hide modal
@@ -1457,20 +1452,35 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
         // Reload condos
         loadCondos();
         
-        // Show toast notification
+        // Show success notification
         showToast('Success', 'Condo updated successfully', 'success');
-        
+
     } catch (error) {
-        console.error('Error updating condo:', error);
         showToast('Error', error.message, 'danger');
     } finally {
-        // Restore button state
-        const submitBtn = this.querySelector('button[type="submit"]');
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Save Changes';
+        // Restore button state - with proper selector and null check
+        const submitBtn = document.querySelector(`button[form="editCondoForm"][type="submit"]`);
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Save Changes';
+        }
     }
 });
     
 </script>
+
+<div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11000">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body" id="toastBody"></div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 </body>
 </html>

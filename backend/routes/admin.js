@@ -106,7 +106,8 @@ router.delete('/users/:id', async (req, res) => {
     
     res.json({ message: 'User removed' });
   } catch (error) {
-    console.error(error);
+    // Remove or comment out this line:
+    // console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -369,7 +370,7 @@ router.delete('/condos/:id', async (req, res) => {
     
     res.json({ message: 'Condo deleted successfully' });
   } catch (error) {
-    console.error('Error deleting condo:', error);
+    // console.error('Error deleting condo:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -383,10 +384,11 @@ router.post('/upload/condo/main', upload.single('mainImage'), async (req, res) =
       
       // Return the URL path
       const fileUrl = `/uploads/condos/main/${req.file.filename}`;
-      console.log('File uploaded:', fileUrl); // Add this for debugging
+      // File uploaded successfully
       res.json({ fileUrl });
   } catch (error) {
-      console.error('Upload error:', error);
+      // Remove or comment out this line:
+      // console.error('Upload error:', error);
       res.status(500).json({ message: error.message });
   }
 });
@@ -400,10 +402,11 @@ router.post('/upload/condo/gallery', upload.array('galleryImages', 4), async (re
       
       // Return URL paths
       const fileUrls = req.files.map(file => `/uploads/condos/gallery/${file.filename}`);
-      console.log('Files uploaded:', fileUrls); // Add this for debugging
+      // Files uploaded successfully
       res.json({ fileUrls });
   } catch (error) {
-      console.error('Upload error:', error);
+      // Remove or comment out this line:
+      // console.error('Upload error:', error);
       res.status(500).json({ message: error.message });
   }
 });
