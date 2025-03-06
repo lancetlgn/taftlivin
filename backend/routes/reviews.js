@@ -11,7 +11,6 @@ router.post('/', protect, async (req, res) => {
   try {
     const { condoId, rating, comment, recommend } = req.body;
     
-    // Validate input
     if (!condoId || !rating) {
       return res.status(400).json({ message: 'Condo ID and rating are required' });
     }
@@ -20,13 +19,11 @@ router.post('/', protect, async (req, res) => {
       return res.status(400).json({ message: 'Rating must be between 1 and 5' });
     }
     
-    // Check if condo exists
     const condoExists = await Condo.findById(condoId);
     if (!condoExists) {
       return res.status(404).json({ message: 'Condo not found' });
     }
     
-    // Check if user already reviewed this condo
     const existingReview = await Review.findOne({ 
       user: req.user._id, 
       condo: condoId 
@@ -40,14 +37,11 @@ router.post('/', protect, async (req, res) => {
       existingReview.datePosted = Date.now();
       
       await existingReview.save();
-      
-      // Update condo average rating
       await updateCondoRating(condoId);
       
       return res.json({ message: 'Review updated successfully' });
     }
     
-    // Create new review
     const review = new Review({
       user: req.user._id,
       condo: condoId,
@@ -124,7 +118,7 @@ async function updateCondoRating(condoId) {
         averageRating: average,
         reviewCount: reviews.length
       },
-      { new: true } // Return the updated document
+      { new: true } 
     );
     
     console.log(`Updated condo ${condoId}: Rating=${average.toFixed(2)}, Count=${reviews.length}`);
@@ -151,37 +145,30 @@ router.get('/user/condo/:id', protect, async (req, res) => {
 
 router.delete('/:id', protect, async (req, res) => {
   try {
-    // Find the review
     const review = await Review.findById(req.params.id);
     
     if (!review) {
       return res.status(404).json({ message: 'Review not found' });
     }
     
-    // Check if user owns the review
     if (review.user.toString() !== req.user._id.toString()) {
       return res.status(401).json({ message: 'Not authorized to delete this review' });
     }
-    
-    // Get the condo ID before deleting the review
+
     const condoId = review.condo;
-    
-    // Delete the review
+
     await Review.deleteOne({ _id: req.params.id });
     console.log(`Review ${req.params.id} deleted successfully`);
     
-    // Get the updated review count and recalculate average rating
     const remainingReviews = await Review.find({ condo: condoId });
     const reviewCount = remainingReviews.length;
     
-    // Calculate new average if there are reviews left
     let averageRating = 0;
     if (reviewCount > 0) {
       const sum = remainingReviews.reduce((total, rev) => total + rev.rating, 0);
       averageRating = sum / reviewCount;
     }
     
-    // Update the condo document with new values
     const updatedCondo = await Condo.findByIdAndUpdate(
       condoId,
       { 
@@ -193,7 +180,6 @@ router.delete('/:id', protect, async (req, res) => {
     
     console.log(`Updated condo ${condoId}: Rating=${averageRating.toFixed(2)}, Count=${reviewCount}`);
     
-    // Return success response with updated condo data
     res.json({ 
       message: 'Review deleted successfully',
       updatedCondo: {
@@ -215,7 +201,6 @@ router.put('/:id', protect, async (req, res) => {
   try {
     const { rating, comment, recommend } = req.body;
     
-    // Validate input
     if (!rating) {
       return res.status(400).json({ message: 'Rating is required' });
     }
@@ -224,7 +209,7 @@ router.put('/:id', protect, async (req, res) => {
       return res.status(400).json({ message: 'Rating must be between 1 and 5' });
     }
     
-    // Find the review
+
     const review = await Review.findById(req.params.id);
     
     if (!review) {
@@ -236,7 +221,6 @@ router.put('/:id', protect, async (req, res) => {
       return res.status(401).json({ message: 'Not authorized to update this review' });
     }
     
-    // Update review
     review.rating = rating;
     review.comment = comment || review.comment;
     review.recommend = recommend !== undefined ? recommend : review.recommend;
