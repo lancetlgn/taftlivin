@@ -618,23 +618,55 @@ window.location.reload();
 
         // Set up review modal
         const reviewModal = document.getElementById('reviewModal');
-        if (reviewModal) {
-            reviewModal.addEventListener('show.bs.modal', function (event) {
-                // Check if user is logged in
-                if (!api.auth.isLoggedIn()) {
-                    window.location.href = 'pages/signin.html';
+            if (reviewModal) {
+                reviewModal.addEventListener('show.bs.modal', async function (event) {
+                    // Check if user is logged in
+                    if (!api.auth.isLoggedIn()) {
+                        window.location.href = 'pages/signin.html';
+                        return;
+                    }
+
+                    // Reset to step 1 when modal opens
+                    showStep(1);
+                    document.getElementById('condoSearchInput').value = '';
+                    document.getElementById('searchResults').innerHTML = '';
+
+                    // Fetch all condos and then show the initial options
+                    await fetchCondos();
+                    showInitialCondoOptions();
+                });
+            }
+
+            // Function to show initial condo options without requiring search
+            function showInitialCondoOptions() {
+                const resultsContainer = document.getElementById('searchResults');
+                resultsContainer.innerHTML = '';
+
+                if (!allCondos || allCondos.length === 0) {
+                    resultsContainer.innerHTML = '<div class="list-group-item text-center text-muted">No condos available</div>';
                     return;
                 }
 
-                // Reset to step 1 when modal opens
-                showStep(1);
-                document.getElementById('condoSearchInput').value = '';
-                document.getElementById('searchResults').innerHTML = '';
+                // Sort by popularity (most reviews first) and take top 5
+                const popularCondos = [...allCondos]
+                    .sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0))
+                    .slice(0, 5);
 
-                // Fetch all condos
-                fetchCondos();
-            });
-        }
+                // Display the top 5 condos
+                popularCondos.forEach(condo => {
+                    const item = document.createElement('button');
+                    item.type = 'button';
+                    item.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+                    item.innerHTML = `
+            <div>
+                <strong>${condo.name}</strong>
+                <br><small class="text-muted">${condo.address}</small>
+            </div>
+        `;
+                    item.addEventListener('click', () => selectCondo(condo));
+                    resultsContainer.appendChild(item);
+                });
+            }
 
         // Fetch all condos
         async function fetchCondos() {
@@ -833,15 +865,7 @@ window.location.reload();
                 }
 
                 // Hide modal
-                const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
-                modal.hide();
-
-                // Show success notification
-                showAlert(
-                    'Success!',
-                    isUpdate ? 'Your review has been updated successfully.' : 'Your review has been submitted successfully.',
-                    'success'
-                );
+                showAlert('Success!', isUpdate ? 'Your review has been updated successfully.' : 'Your review has been submitted successfully.', 'success');
 
                 // Reload popular condos to show updated ratings
                 if (typeof loadPopularCondos === 'function') {
@@ -860,14 +884,36 @@ window.location.reload();
 
         // Function to show SweetAlert
         function showAlert(title, message, icon) {
-            Swal.fire({
-                title: title,
-                text: message,
-                icon: icon,
-                confirmButtonColor: '#28a745',
-                confirmButtonText: 'OK'
-            });
-        }
+                // First manually close the Bootstrap modal and clean up
+                const modalElement = document.getElementById('reviewModal');
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+
+                if (modalInstance) {
+                    modalInstance.hide();
+
+                    // Remove backdrop manually if it's still present
+                    const backdrop = document.querySelector('.modal-backdrop');
+                    if (backdrop) {
+                        backdrop.remove();
+                    }
+
+                    // Remove modal-related classes from body
+                    document.body.classList.remove('modal-open');
+                    document.body.style.overflow = '';
+                    document.body.style.paddingRight = '';
+                }
+
+                // Small delay to ensure modal is gone before showing SweetAlert
+                setTimeout(() => {
+                    Swal.fire({
+                        title: title,
+                        text: message,
+                        icon: icon,
+                        confirmButtonColor: '#28a745',
+                        confirmButtonText: 'OK'
+                    });
+                }, 100);
+            }
     </script>
   </body>
 </html>
