@@ -1079,7 +1079,7 @@ function showToast(title, message, type = 'success') {
 
 
 
-// Main image preview for Add Condo
+// Main image upload handler for Add Condo
 document.getElementById('addCondoMainImageFile').addEventListener('change', async function(e) {
     const preview = document.getElementById('addCondoMainImagePreview');
     const fileInput = this;
@@ -1092,39 +1092,44 @@ document.getElementById('addCondoMainImageFile').addEventListener('change', asyn
     
     const file = fileInput.files[0];
     
-    // Show loading state
+    // Show loading indicator
     preview.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
     preview.classList.remove('d-none');
     
     try {
-        // Upload file
+        // Create form data
         const formData = new FormData();
         formData.append('mainImage', file);
         
-        const response = await fetch(`${api.API_URL}/admin/upload/condo/main`, {
+        // Send request - note we're not setting Content-Type header
+        const response = await fetch(`${window.location.origin}/api/admin/upload/condo/main`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
+                // Don't set Content-Type, browser will set it with boundary
             },
             body: formData
         });
         
+        // Check for errors
         if (!response.ok) {
-            throw new Error('Upload failed');
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Upload failed');
         }
         
+        // Process successful response
         const data = await response.json();
         
-        // Update hidden field with file URL
+        // Update hidden field
         document.getElementById('addCondoImage').value = data.fileUrl;
         
         // Show preview
         preview.innerHTML = `
             <img src="${data.fileUrl}" alt="Preview" class="img-thumbnail" style="max-height: 150px;">
-            <button type="button" class="btn btn-sm btn-danger d-block mt-1" id="removeAddMainImage">Remove</button>
+            <button type="button" class="btn btn-sm btn-danger mt-1" id="removeAddMainImage">Remove</button>
         `;
         
-        // Add event listener for remove button
+        // Add remove button functionality
         document.getElementById('removeAddMainImage').addEventListener('click', function() {
             document.getElementById('addCondoMainImageFile').value = '';
             document.getElementById('addCondoImage').value = '';
@@ -1132,13 +1137,13 @@ document.getElementById('addCondoMainImageFile').addEventListener('change', asyn
         });
         
     } catch (error) {
-        console.error('Upload error:', error);
+        console.error('Error uploading image:', error);
         preview.innerHTML = `<div class="alert alert-danger">Upload failed: ${error.message}</div>`;
         document.getElementById('addCondoImage').value = '';
     }
 });
 
-// Gallery images preview for Add Condo
+// Gallery images upload handler for Add Condo - similar approach
 document.getElementById('addCondoGalleryFiles').addEventListener('change', async function(e) {
     const preview = document.getElementById('addCondoGalleryPreview');
     const fileInput = this;
@@ -1156,27 +1161,26 @@ document.getElementById('addCondoGalleryFiles').addEventListener('change', async
     preview.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
     
     try {
-        // Upload files
         const formData = new FormData();
         files.forEach(file => {
             formData.append('galleryImages', file);
         });
         
-        const response = await fetch(`${api.API_URL}/admin/upload/condo/gallery`, {
+        const response = await fetch(`${window.location.origin}/api/admin/upload/condo/gallery`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
+                // Don't set Content-Type header
             },
             body: formData
         });
         
         if (!response.ok) {
-            throw new Error('Upload failed');
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Upload failed');
         }
         
         const data = await response.json();
-        
-        // Update hidden field with file URLs
         document.getElementById('addCondoGallery').value = data.fileUrls.join('\n');
         
         // Show previews
@@ -1202,11 +1206,6 @@ document.getElementById('addCondoGalleryFiles').addEventListener('change', async
                 urls.splice(index, 1);
                 document.getElementById('addCondoGallery').value = urls.join('\n');
                 this.closest('.col-3').remove();
-                
-                // Update data-index attributes
-                document.querySelectorAll('#addCondoGalleryPreview button').forEach((btn, i) => {
-                    btn.setAttribute('data-index', i);
-                });
             });
         });
         

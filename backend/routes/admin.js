@@ -374,4 +374,38 @@ router.delete('/condos/:id', async (req, res) => {
   }
 });
 
+// Upload main condo image
+router.post('/upload/condo/main', upload.single('mainImage'), async (req, res) => {
+  try {
+      if (!req.file) {
+          return res.status(400).json({ message: 'No file uploaded' });
+      }
+      
+      // Return the URL path
+      const fileUrl = `/uploads/condos/main/${req.file.filename}`;
+      console.log('File uploaded:', fileUrl); // Add this for debugging
+      res.json({ fileUrl });
+  } catch (error) {
+      console.error('Upload error:', error);
+      res.status(500).json({ message: error.message });
+  }
+});
+
+// Upload gallery images
+router.post('/upload/condo/gallery', upload.array('galleryImages', 4), async (req, res) => {
+  try {
+      if (!req.files || req.files.length === 0) {
+          return res.status(400).json({ message: 'No files uploaded' });
+      }
+      
+      // Return URL paths
+      const fileUrls = req.files.map(file => `/uploads/condos/gallery/${file.filename}`);
+      console.log('Files uploaded:', fileUrls); // Add this for debugging
+      res.json({ fileUrls });
+  } catch (error) {
+      console.error('Upload error:', error);
+      res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;
