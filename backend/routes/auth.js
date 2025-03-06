@@ -82,7 +82,8 @@ router.get('/me', protect, async (req, res) => {
         email: user.email,
         userType: user.userType,
         bio: user.bio || '',
-        dateJoined: user.dateJoined
+        dateJoined: user.dateJoined,
+        profilePicture: user.profilePicture
       });
     } catch (error) {
       console.error(error);

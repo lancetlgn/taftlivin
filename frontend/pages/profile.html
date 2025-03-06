@@ -212,6 +212,16 @@
         </div>
     </main>
 
+    <!-- Toast container -->
+    <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11000">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastBody"></div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-dark text-white py-4 mt-5">
         <div class="container text-center">
@@ -275,7 +285,6 @@
             });
         });
         
-        // Load user profile data
         async function loadUserProfile() {
             try {
                 // Get token
@@ -307,6 +316,11 @@
                 
                 if (user.bio) {
                     document.getElementById('bio').value = user.bio;
+                }
+                
+                // Update the profile picture if available
+                if (user.profilePicture && user.profilePicture !== 'default.jpg') {
+                    document.getElementById('profile-image').src = user.profilePicture;
                 }
                 
                 // Update user role display if present
@@ -518,15 +532,7 @@
     <script src="../js/api.js"></script>
     <script src="../js/auth-ui.js"></script>
 
-    <!-- Toast container -->
-    <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11000">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body" id="toastBody"></div>
-                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
+    
 
     
 </body>
