@@ -2,8 +2,6 @@
 
 TaftLivin is a comprehensive web platform that helps DLSU students find, review, and explore dormitories and condominiums in the Taft Avenue area. The application features condo listings, user reviews, and forums where students can discuss housing options and share experiences.
 
-![TaftLivin Platform](https://via.placeholder.com/800x400?text=TaftLivin+Platform)
-
 ## Features
 
 - **User Authentication**: Secure signup, login, and profile management
