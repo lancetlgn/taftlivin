@@ -69,30 +69,23 @@
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="forum.html">Forum</a>
                   </li>
-                  <!-- Admin-only menu item -->
-                  <li class="nav-item admin-only d-none">
-                    <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
-                  </li>
                 </ul>
-                
                 <!-- Right side of navbar -->
                 <ul class="navbar-nav">
-                  <!-- Show when logged out -->
-                  <li class="nav-item logged-out-only">
-                    <a class="nav-link auth-btn signin-btn" href="signin.html">Sign In</a>
+                  <!-- Admin-only menu item -->
+                  <li class="nav-item admin-only d-none">
+                    <a class="nav-link text-warning" href="pages/admin-dashboard.html">Dashboard</a>
                   </li>
-                  <li class="nav-item logged-out-only">
-                    <a class="nav-link auth-btn signup-btn" href="signup.html">Sign Up</a>
-                  </li>
-                  
                   <!-- Show when logged in -->
-                  <li class="nav-item dropdown logged-in-only d-none">
+                  <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                      Welcome, <span class="username-display">User</span>
+                      Welcome, <span class="username-display">Admin</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                       <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
-                      <li><hr class="dropdown-divider"></li>
+                      <li>
+                        <hr class="dropdown-divider">
+                      </li>
                       <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
                     </ul>
                   </li>

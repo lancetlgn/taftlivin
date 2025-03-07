@@ -47,14 +47,14 @@ window.location.reload();
               <li class="nav-item">
                 <a class="nav-link" href="pages/forum.html">Forum</a>
               </li>
-              <!-- Admin-only menu item -->
-              <li class="nav-item admin-only d-none">
-                <a class="nav-link" href="pages/admin-dashboard.html">Dashboard</a>
-              </li>
             </ul>
             
             <!-- Right side of navbar -->
             <ul class="navbar-nav">
+                <!-- Admin-only menu item -->
+                <li class="nav-item admin-only d-none">
+                    <a class="nav-link text-warning" href="pages/admin-dashboard.html">Dashboard</a>
+                </li>
               <!-- Show when logged out -->
               <li class="nav-item logged-out-only">
                 <a class="nav-link auth-btn signin-btn" href="pages/signin.html">Sign In</a>
@@ -646,33 +646,33 @@ window.location.reload();
             }
 
             async function fetchUserReviews() {
-                    try {
-                        const token = localStorage.getItem('token');
-                        // Add logging to see what URL we're hitting
-                        console.log('Fetching reviews from:', `${api.API_URL}/reviews/user`);
+    try {
+        const token = localStorage.getItem('token');
+        // Add logging to see what URL we're hitting
+        console.log('Fetching reviews from:', `${api.API_URL}/reviews/user`);
+        
+        const response = await fetch(`${api.API_URL}/reviews/user`, {
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json' // Add this line
+            }
+        });
 
-                        const response = await fetch(`${api.API_URL}/reviews/user`, {
-                            headers: {
-                                'Authorization': `Bearer ${token}`,
-                                'Accept': 'application/json' // Add this line
-                            }
-                        });
+        // Log the response for debugging
+        console.log('Response status:', response.status);
+        const responseText = await response.text();
+        console.log('Response text:', responseText);
 
-                        // Log the response for debugging
-                        console.log('Response status:', response.status);
-                        const responseText = await response.text();
-                        console.log('Response text:', responseText);
+        // Try to parse as JSON
+        const data = JSON.parse(responseText);
+        userReviews = data.reviews || [];
+        console.log('Parsed reviews:', userReviews);
 
-                        // Try to parse as JSON
-                        const data = JSON.parse(responseText);
-                        userReviews = data.reviews || [];
-                        console.log('Parsed reviews:', userReviews);
-
-                    } catch (error) {
-                        console.error('Error fetching user reviews:', error);
-                        userReviews = [];
-                    }
-                }
+    } catch (error) {
+        console.error('Error fetching user reviews:', error);
+        userReviews = [];
+    }
+}
 
             // Function to show initial condo options without requiring search
             function showInitialCondoOptions() {

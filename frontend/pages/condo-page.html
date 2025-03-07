@@ -31,10 +31,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="forum.html">Forum</a>
                     </li>
-                    <!-- Admin-only menu item -->
-                    <li class="nav-item admin-only d-none">
-                        <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
-                    </li>
+   
                 </ul>
                 
 
@@ -43,17 +40,26 @@
                     <a href="signup.html" class="btn btn-outline-light ms-2 signup-btn">Sign Up</a>
                 </div>
                 
-                <!-- Show when logged in -->
-                <div class="dropdown logged-in-only d-none">
-                    <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Welcome, <span class="username-display">User</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
-                    </ul>
-                </div>
+                <!-- Right side of navbar -->
+                <ul class="navbar-nav">
+                    <!-- Admin-only menu item -->
+                    <li class="nav-item admin-only d-none">
+                        <a class="nav-link text-warning" href="pages/admin-dashboard.html">Dashboard</a>
+                    </li>
+                    <!-- Show when logged in -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            Welcome, <span class="username-display">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>

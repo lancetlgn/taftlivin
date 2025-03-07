@@ -48,14 +48,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="forum.html">Forum</a>
                     </li>
-                    <!-- Admin-only menu item -->
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="admin-dashboard.html">Dashboard</a>
-                    </li>
                 </ul>
                 
                 <!-- Right side of navbar -->
                 <ul class="navbar-nav">
+                    <!-- Admin-only menu item -->
+                    <li class="nav-item admin-only d-none">
+                        <a class="nav-link text-warning" href="pages/admin-dashboard.html">Dashboard</a>
+                    </li>
                     <!-- Show when logged in -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
