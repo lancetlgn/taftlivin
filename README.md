@@ -129,7 +129,7 @@ taftlivin/
 ## Test Accounts
 
 Admin:
-- Email: admin@emai.com
+- Email: admin@email.com
 - Password: admin123
 
 Regular User:
