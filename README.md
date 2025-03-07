@@ -82,7 +82,7 @@ npm run dev
 ```
 
 Access the application:
-- Backend API: http://localhost:5000/api
+- Backend API: http://localhost:8000/api
 - Frontend: Open index.html in browser or use Live Server
 
 ## Project Structure
@@ -131,11 +131,11 @@ taftlivin/
 ## Test Accounts
 
 Admin:
-- Email: admin@taftlivin.com
+- Email: admin@emai.com
 - Password: admin123
 
 Regular User:
-- Email: user@taftlivin.com
+- Email: user@email.com
 - Password: user123
 
 ## Contributors
