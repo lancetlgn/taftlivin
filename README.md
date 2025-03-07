@@ -130,11 +130,11 @@ taftlivin/
 
 Admin:
 - Email: admin@email.com
-- Password: admin123
+- Password: password123
 
 Regular User:
 - Email: user@email.com
-- Password: user123
+- Password: password123
 
 ## Contributors
 
