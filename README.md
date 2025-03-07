@@ -51,7 +51,7 @@ touch .env
 Add the following environment variables:
 
 ```plaintext
-PORT=5000
+PORT=8000
 MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.r9b2e.mongodb.net/taftlivin?retryWrites=true&w=majority
 JWT_SECRET=yoursecretkey123
 ```
