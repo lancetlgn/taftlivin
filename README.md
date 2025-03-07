@@ -16,8 +16,8 @@ TaftLivin is a comprehensive web platform that helps DLSU students find, review,
 - **Frontend**: HTML, CSS, JavaScript, Bootstrap 5
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB Atlas
-- **Authentication**: JWT (JSON Web Tokens)
-- **Image Storage**: Base64 encoding (with optional cloud storage support)
+- **Authentication & Hashing**: JWT (JSON Web Tokens), bcrypt
+- **Image Storage**: Base64 encoding (with optional cloud storage support), Multer
 
 ## Prerequisites
 
