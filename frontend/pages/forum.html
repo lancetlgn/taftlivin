@@ -102,38 +102,13 @@
                     <br>
                     <h1>Topics</h1>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Name of Topic" aria-label="Topic name" aria-describedby="basic-addon2">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Name of Topic" aria-label="Topic name" aria-describedby="basic-addon2">
                         <div class="input-group-append">
-                          <button class="btn btn-outline-success" type="button">Search</button>
+                          <button class="btn btn-outline-success" id="searchBtn" type="button">Search</button>
                         </div>
                     </div>
 
-                    <div class="list-group">
-                        <a href="threads/thread1.html" class="list-group-item">
-                            <h4 class="list-group-item-heading">What's the best condo in Taft?</h4>
-                            <small class="text-muted">30 days ago • 12 replies</small>
-                            <p class="list-group-item-text">Discussion about amenities, pricing, and location...</p>
-                        </a>
-                        <a href="threads/thread2.html" class="list-group-item">
-                            <h4 class="list-group-item-heading">Moving tips for new residents</h4>
-                            <small class="text-muted">67 days ago • 8 replies</small>
-                            <p class="list-group-item-text">Share your experience and advice...</p>
-                        </a>
-                        <a href="threads/thread3.html" class="list-group-item">
-                            <h4 class="list-group-item-heading">Safety concerns in Green Residences</h4>
-                            <small class="text-muted">45 days ago • 15 replies</small>
-                            <p class="list-group-item-text">Recent incidents and security measures...</p>
-                        </a>
-                        <a href="threads/thread4.html" class="list-group-item">
-                            <h4 class="list-group-item-heading">Monthly rental rates discussion</h4>
-                            <small class="text-muted">25 days ago • 20 replies</small>
-                            <p class="list-group-item-text">Comparing prices across different condos...</p>
-                        </a>
-                        <a href="threads/thread5.html" class="list-group-item">
-                            <h4 class="list-group-item-heading">Best food spots near Vista Taft</h4>
-                            <small class="text-muted">15 days ago • 18 replies</small>
-                            <p class="list-group-item-text">Restaurant recommendations and reviews...</p>
-                        </a>
+                    <div class="list-group" id="topicList">
                     </div>
                 </div>
             </div>
@@ -180,6 +155,166 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="../js/api.js"></script>
         <script src="../js/auth-ui.js"></script>
+        <script>
+
+          // Current page and search term
+          let currentPage = 1;
+          let currentSearchTerm = '';
+
+          document.addEventListener('DOMContentLoaded', function() {
+            // Update authentication UI if the function is available
+            if (typeof updateAuthUI === 'function') {
+                updateAuthUI();
+            }
+
+          
+            // Check if there is a search parameter in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchParam = urlParams.get('search');
+
+            if (searchParam) {
+                // Set the search input value
+                document.getElementById('searchInput').value = searchParam;
+                currentSearchTerm = searchParam;
+            }
+
+            loadTopics();
+
+            document.getElementById('searchBtn').addEventListener('click', function() {
+                const searchTerm = document.getElementById('searchInput').value.trim();
+                currentSearchTerm = searchTerm;
+                currentPage = 1;
+                loadTopics();
+            });
+
+            document.getElementById('searchInput').addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim();
+                    currentSearchTerm = searchTerm;
+                    currentPage = 1;
+                    loadTopics();
+                }
+            });
+
+          });
+
+          async function loadTopics() {
+            try {
+                // Show loading state
+                const topicList = document.getElementById('topicList');
+                topicList.innerHTML = `
+                    <div class="text-center py-3">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading topics...</p>
+                    </div>
+                `;
+                
+                
+                // Build query parameters
+                let queryParams = `page=${currentPage}`;
+                if (currentSearchTerm) {
+                    queryParams += `&search=${encodeURIComponent(currentSearchTerm)}`;
+                }
+                
+                // Fetch topics from API
+                const response = await fetch(`${api.API_URL}/topics?${queryParams}`);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to load topics');
+                }
+                
+                // Display topics
+                displayTopics(data.topics);
+                
+                // Update pagination
+                updatePagination(data.currentPage, data.totalPages);
+                
+            } catch (error) {
+                console.error('Error loading topics:', error);
+                document.getElementById('topicList').innerHTML = `
+                    <div class="alert alert-danger">
+                        Error loading topics: ${error.message}
+                        <button class="btn btn-sm btn-danger ms-2" onclick="loadTopics()">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        function displayTopics(topics) {
+            const topicList = document.getElementById('topicList');
+            
+            if (!topics || topics.length === 0) {
+                topicList.innerHTML = `
+                    <div class="alert alert-info">
+                        No topics found matching your criteria. Try adjusting your search.
+                    </div>
+                `;
+                return;
+            }
+            
+            // Clear container
+            topicList.innerHTML = '';
+            
+            // Add each condo
+            topics.forEach(topic => {
+                const topicItem = document.createElement('div');
+                topicItem.className = 'list-group-item';
+                
+                
+                topicItem.innerHTML = `
+                    <h4 class="list-group-item-heading">${topic.title}</h4>
+                    <small class="text-muted">${topic.datePosted}</small>
+                    <p class="list-group-item-text">${topic.content}</p>
+                `;
+                
+                topicList.appendChild(topicItem);
+            });
+        }
+
+        function updatePagination(currentPage, totalPages) {
+            const paginationContainer = document.getElementById('paginationContainer');
+            
+            if (!totalPages || totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+          
+            paginationHTML += `<a href="#" class="${currentPage === 1 ? 'disabled' : ''}" data-page="${currentPage - 1}">&laquo;</a>`;
+            
+           
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `<a href="#" class="${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`;
+            }
+            
+          
+            paginationHTML += `<a href="#" class="${currentPage === totalPages ? 'disabled' : ''}" data-page="${currentPage + 1}">&raquo;</a>`;
+            
+            paginationContainer.innerHTML = paginationHTML;
+            
+            paginationContainer.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (this.classList.contains('disabled')) return;
+                    
+                    const page = parseInt(this.getAttribute('data-page'));
+                    if (!isNaN(page)) {
+                        currentPage = page;
+                        loadTopics();
+                     
+                        document.getElementById('topicList').scrollIntoView();
+                    }
+                });
+            });
+        }
+
+
+        </script>
 
     </body>
 </html>
