@@ -129,6 +129,8 @@ const auth = {
         console.error('Password change error:', error);
         throw error;
       }
+
+      
     },
     
     // Update user profile
@@ -164,7 +166,59 @@ const auth = {
         console.error('Profile update error:', error);
         throw error;
       }
-    }
+    },
+
+    createTopic: async (topicData) => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        const response = await fetch(`${API_URL}/forum`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(topicData)
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to create topic');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Error creating topic:', error);
+        throw error;
+      }
+    },
+
+    createReply: async (topicId, topicData) => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+        
+        const response = await fetch(`${API_URL}/forum/${topicId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(topicData)
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to update condo');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Error updating condo:', error);
+        throw error;
+      }
+    },
 };
 
 // Admin API functions
