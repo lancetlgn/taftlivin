@@ -205,8 +205,21 @@ function updateCondoDetails() {
     if (mainImage) {
         const imageSrc = currentCondo.image || '../images/green1.jpg';
         mainImage.src = imageSrc;
-        mainImage.setAttribute('onclick', `openPopup('${imageSrc}')`);
+        mainImage.setAttribute('onclick', `openPopup('${imageSrc}', 0)`);
     }
+
+    const galleryImages = currentCondo.gallery || [];
+
+    // Update gallery images (fixed)
+    for (let i = 0; i < 4; i++) {
+        const galleryImage = document.getElementById(`sideImage${i + 1}`);
+        if (galleryImage) {
+            const imageSrc = galleryImages[i] || '../images/green1.jpg';
+            galleryImage.src = imageSrc;
+            galleryImage.setAttribute('onclick', `openPopup('${imageSrc}', ${i + 1})`);
+        }
+    }
+    
     
     // Update address
     const addressElement = document.getElementById('condoAddress');
