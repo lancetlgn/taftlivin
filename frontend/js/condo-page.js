@@ -205,7 +205,7 @@ function updateCondoDetails() {
     const mainImageLink = document.getElementById('mainImageLink');
 
     if (mainImage && mainImageLink) {
-        const imageSrc = currentCondo.image || '../images/green1.jpg';
+        const imageSrc = currentCondo.image || '../images/empty_placeholder.jpg';
         mainImage.src = imageSrc;
         mainImageLink.href = imageSrc;
     }
@@ -218,7 +218,7 @@ function updateCondoDetails() {
         const galleryImageLink = document.getElementById(`sideImageLink${i + 1}`);
 
         if (galleryImage && galleryImageLink) {
-            const imageSrc = galleryImages[i] || '../images/green1.jpg';
+            const imageSrc = galleryImages[i] || '../images/empty_placeholder.jpg';
 
             // Update <img> tag
             galleryImage.src = imageSrc;

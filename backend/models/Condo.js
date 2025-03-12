@@ -16,15 +16,15 @@ const condoSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: '../images/default-condo.jpg'
+    default: '../images/empty_placeholder.jpg'
   },
   gallery: {
     type: [String],
     default: [
-      '../images/default-gallery-1.jpg',
-      '../images/default-gallery-2.jpg',
-      '../images/default-gallery-3.jpg',
-      '../images/default-gallery-4.jpg'
+      '../images/empty_placeholder.jpg',
+      '../images/empty_placeholder.jpg',
+      '../images/empty_placeholder.jpg',
+      '../images/empty_placeholder.jpg'
     ],
     validate: [
       function(val) {
