@@ -74,7 +74,7 @@
                 <ul class="navbar-nav">
                   <!-- Admin-only menu item -->
                   <li class="nav-item admin-only d-none">
-                    <a class="nav-link text-warning" href="pages/admin-dashboard.html">Dashboard</a>
+                    <a class="nav-link text-warning" href="admin-dashboard.html">Dashboard</a>
                   </li>
                   <!-- Show when logged in -->
                   <li class="nav-item dropdown">
@@ -105,6 +105,7 @@
                         <input type="text" class="form-control" id="searchInput" placeholder="Name of Topic" aria-label="Topic name" aria-describedby="basic-addon2">
                         <div class="input-group-append">
                           <button class="btn btn-outline-success" id="searchBtn" type="button">Search</button>
+                          <button class="btn btn-outline-success" id="postBtn" type="button">Post</button>
                         </div>
                     </div>
 
@@ -196,6 +197,12 @@
                 }
             });
 
+            document.getElementById('postBtn').addEventListener('click', function(e) {
+                if (e.key === 'Enter') {
+
+                }
+            });
+
           });
 
           async function loadTopics() {
@@ -256,7 +263,7 @@
             if (!topics || topics.length === 0) {
                 topicList.innerHTML = `
                     <div class="alert alert-info">
-                        No topics found matching your criteria. Try adjusting your search.
+                        No topics found matching your criteria. Try adjusting your search or creating a new topic.
                     </div>
                 `;
                 return;
@@ -265,17 +272,25 @@
             // Clear container
             topicList.innerHTML = '';
             
-            // Add each condo
+            // Add each topic
             topics.forEach(topic => {
-                const topicItem = document.createElement('div');
+                const topicItem = document.createElement('a');
                 topicItem.className = 'list-group-item';
+                topicItem.href = 'subforum.html';
+
+                const formattedDate = topic.datePosted.split("T")[0]; 
                 
                 
                 topicItem.innerHTML = `
                     <h4 class="list-group-item-heading">${topic.title}</h4>
-                    <small class="text-muted">${topic.datePosted}</small>
+                    <small class="text-muted">Posted on ${formattedDate}</small>
                     <p class="list-group-item-text">${topic.content}</p>
                 `;
+
+                topicItem.addEventListener("click", () => {
+                localStorage.setItem("selectedTopic", JSON.stringify(topic));
+                });
+
                 
                 topicList.appendChild(topicItem);
             });
