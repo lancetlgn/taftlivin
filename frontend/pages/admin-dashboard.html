@@ -886,59 +886,6 @@ async function deleteCondo(condoId) {
     }
 }
 
-// Set up add condo form submission
-document.getElementById('addCondoForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    // Get form values
-    const condoData = {
-        name: document.getElementById('addCondoName').value,
-        address: document.getElementById('addCondoAddress').value,
-        description: document.getElementById('addCondoDescription').value,
-        distance: parseFloat(document.getElementById('addCondoDistance').value) || 150,
-        amenities: document.getElementById('addCondoAmenities').value.split(',').map(item => item.trim()).filter(item => item),
-        contactInfo: {
-            phone: document.getElementById('addCondoPhone').value,
-            email: document.getElementById('addCondoEmail').value
-        }
-    };
-    
-    // Handle image
-    const imageUrl = document.getElementById('addCondoImage').value;
-    if (imageUrl) {
-        condoData.image = imageUrl;
-    }
-    
-    // Handle gallery
-    const galleryText = document.getElementById('addCondoGallery').value;
-    if (galleryText) {
-        // Split by new lines and filter out empty entries
-        const galleryUrls = galleryText.split('\n').map(url => url.trim()).filter(url => url);
-        if (galleryUrls.length > 0) {
-            condoData.gallery = galleryUrls.slice(0, 4); // Limit to 4 images
-        }
-    }
-    
-    try {
-        // Create condo via API
-        await api.admin.createCondo(condoData);
-        
-        // Hide modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('addCondoModal'));
-        modal.hide();
-        
-        // Clear form
-        this.reset();
-        
-        // Reload condos
-        loadCondos();
-        
-        alert('Condo added successfully!');
-    } catch (error) {
-        
-        alert('Error: ' + error.message);
-    }
-});
 
 // Set up edit condo form submission
 document.getElementById('editCondoForm').addEventListener('submit', async function(e) {
