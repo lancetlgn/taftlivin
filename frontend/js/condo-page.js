@@ -208,7 +208,6 @@ function updateCondoDetails() {
         const imageSrc = currentCondo.image || '../images/green1.jpg';
         mainImage.src = imageSrc;
         mainImageLink.href = imageSrc;
-        mainImage.setAttribute('onclick', `openPopup('${imageSrc}', 0)`);
     }
 
     const galleryImages = currentCondo.gallery || [];
@@ -223,7 +222,6 @@ function updateCondoDetails() {
 
             // Update <img> tag
             galleryImage.src = imageSrc;
-            galleryImage.setAttribute('onclick', `openPopup('${imageSrc}', ${i + 1})`);
 
             // Update <a> tag
             galleryImageLink.href = imageSrc;
