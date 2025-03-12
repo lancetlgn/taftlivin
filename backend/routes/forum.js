@@ -1,12 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const Topic = require('../models/Topic');
+const mongoose = require('mongoose');
 const { protect, admin } = require('../middleware/auth');
 
 // this is a placeholder!!!!
 router.get('/', async (req, res) => {
   //res.json({ message: 'Forum endpoint (to be implemented)' });
   try {
+    // Check if the database connection is available
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ 
+        message: 'Database connection unavailable',
+        topics: [],
+        page: 1,
+        pages: 0,
+        total: 0
+      });
+    }
 
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
@@ -16,7 +27,7 @@ router.get('/', async (req, res) => {
 
     if (req.query.search) {
       filter.$or = [
-        { name: { $regex: req.query.search, $options: 'i' } },
+        { title: { $regex: req.query.search, $options: 'i' } },
       ];
     }
 
@@ -36,8 +47,14 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     // Handle any errors that occur during the query
-    console.error('error');
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error fetching topics:', error);
+    res.status(500).json({ 
+      message: 'Server error: ' + error.message,
+      topics: [],
+      page: 1,
+      pages: 0,
+      total: 0
+    });
   }
 
 });
@@ -80,7 +97,6 @@ router.post('/', async (req, res) => {
     const newTopic = new Topic({
       title,
       content,
-      description,
       user,
       status,
       replies: replies|| [],

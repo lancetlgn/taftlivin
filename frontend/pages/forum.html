@@ -115,7 +115,7 @@
 
             
             <br>
-            <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;" id="paginationContainer">
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
                     <li class="page-item">
@@ -217,9 +217,16 @@
                 if (currentSearchTerm) {
                     queryParams += `&search=${encodeURIComponent(currentSearchTerm)}`;
                 }
+
+                // Check API_URL value in console
+                console.log("API URL:", api.API_URL);
                 
                 // Fetch topics from API
-                const response = await fetch(`${api.API_URL}/topics?${queryParams}`);
+                const response = await fetch(`${api.API_URL}/forum?${queryParams}`);
+
+
+                
+
                 const data = await response.json();
                 
                 if (!response.ok) {
