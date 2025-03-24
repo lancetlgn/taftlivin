@@ -8,8 +8,58 @@
         <title>Condo page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
         <link rel="stylesheet" href="../style.css">
+        <style>
+            /* Lightbox styling that works */
+            .lb-outerContainer {
+                background-color: white;
+                border-radius: 8px;
+            }
+        
+            .lb-dataContainer {
+                border-radius: 0 0 8px 8px;
+            }
+        
+            /* Make lightbox fill reasonable space without fullscreen */
+            .lb-outerContainer,
+            .lb-dataContainer {
+                max-width: 800px;
+                margin: 0 auto;
+            }
+        
+            /* Keep thumbnails styled nicely */
+            .side-images a::after {
+                content: '\f00e';
+                font-family: 'Font Awesome 5 Free';
+                font-weight: 900;
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                background-color: rgba(40, 167, 69, 0.8);
+                color: white;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+        
+            .side-images a:hover::after {
+                opacity: 1;
+            }
+        </style>
+
+
+        
+        
+        
         
   </head>
   <body>
@@ -79,26 +129,26 @@
 
                 <div class="image-gallery">
                     <div class="main-image">
-                        <a href="../images/empty_placeholder.jpg" id="mainImageLink" data-toggle="lightbox"  data-gallery="gallery">
-                            <img src="../images/empty_placeholder.jpg" alt="Main Image" id="mainImage" class = "img-fluid">
+                        <a href="../images/empty_placeholder.jpg" id="mainImageLink" data-lightbox="gallery" data-title="Main Image">
+                            <img src="../images/empty_placeholder.jpg" alt="Main Image" id="mainImage" class="img-fluid">
                         </a>
                     </div>
                 
                     <div class="side-images" id="sideImages">
-                        <a href="../images/empty_placeholder.jpg" id = "sideImageLink1" data-toggle="lightbox" data-gallery="gallery">
-                            <img src="../images/empty_placeholder.jpg" id="sideImage1" alt="Image 1" class = "img-fluid">
+                        <a href="../images/empty_placeholder.jpg" id="sideImageLink1" data-lightbox="gallery" data-title="Gallery Image 1">
+                            <img src="../images/empty_placeholder.jpg" id="sideImage1" alt="Image 1" class="img-fluid">
                         </a>
-                
-                        <a href="../images/empty_placeholder.jpg" id = "sideImageLink2" data-toggle="lightbox" data-gallery="gallery">
-                            <img src="../images/empty_placeholder.jpg" id="sideImage2" alt="Image 2" class = "img-fluid">
+                    
+                        <a href="../images/empty_placeholder.jpg" id="sideImageLink2" data-lightbox="gallery" data-title="Gallery Image 2">
+                            <img src="../images/empty_placeholder.jpg" id="sideImage2" alt="Image 2" class="img-fluid">
                         </a>
-                
-                        <a href="../images/empty_placeholder.jpg" id = "sideImageLink3" data-toggle="lightbox" data-gallery="gallery">
-                            <img src="../images/empty_placeholder.jpg" id="sideImage3" alt="Image 3" class = "img-fluid">
+                    
+                        <a href="../images/empty_placeholder.jpg" id="sideImageLink3" data-lightbox="gallery" data-title="Gallery Image 3">
+                            <img src="../images/empty_placeholder.jpg" id="sideImage3" alt="Image 3" class="img-fluid">
                         </a>
-                
-                        <a href="../images/empty_placeholder.jpg" id = "sideImageLink4" data-toggle="lightbox" id = "4" data-gallery="gallery">
-                            <img src="../images/empty_placeholder.jpg" id="sideImage4" alt="Image 4" class = "img-fluid">
+                    
+                        <a href="../images/empty_placeholder.jpg" id="sideImageLink4" data-lightbox="gallery" data-title="Gallery Image 4">
+                            <img src="../images/empty_placeholder.jpg" id="sideImage4" alt="Image 4" class="img-fluid">
                         </a>
                     </div>
                 </div>
@@ -248,7 +298,6 @@
     
     <!-- Core Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.3/dist/index.bundle.min.js"></script>
     
    
     <script>
@@ -261,7 +310,21 @@
             }
         });
     </script>
-    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightbox.option({
+                'resizeDuration': 500,
+                'wrapAround': true,
+                'albumLabel': 'Image %1 of %2',
+                'fadeDuration': 300,
+                'disableScrolling': true,
+                'maxWidth': 800,
+                'showImageNumberLabel': true
+            });
+        });
+    </script>
+        
   
     <script src="../js/api.js"></script>
     <script src="../js/auth-ui.js"></script>

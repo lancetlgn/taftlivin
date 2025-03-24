@@ -1331,77 +1331,109 @@ document.getElementById('editCondoMainImageFile').addEventListener('change', asy
 });
 
 // Gallery images preview for Edit Condo
-document.getElementById('editCondoGalleryFiles').addEventListener('change', async function(e) {
-    const fileInput = this;
-    const gallery = document.getElementById('currentGalleryImages');
-    
-    if (!fileInput.files || fileInput.files.length === 0) return;
-    
-    // Limit to 4 files
-    const files = Array.from(fileInput.files).slice(0, 4);
+    // Replace the existing editCondoGalleryFiles event listener with this fixed version
+    document.getElementById('editCondoGalleryFiles').addEventListener('change', async function (e) {
+        const fileInput = this;
+        const gallery = document.getElementById('currentGalleryImages');
 
-    gallery.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
-    
-    try {
-        const formData = new FormData();
-        files.forEach(file => {
-            formData.append('galleryImages', file);
-        });
-        
-        const response = await fetch(`${api.API_URL}/admin/upload/condo/gallery`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: formData
-        });
-        
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Upload failed');
-        }
-        
-        const data = await response.json();
-        
-        document.getElementById('editCondoGallery').value = data.fileUrls.join('\n');
-        
-        gallery.innerHTML = '';
-        
-        data.fileUrls.forEach((url, index) => {
-            const col = document.createElement('div');
-            col.className = 'col-3 mb-2';
-            col.innerHTML = `
+        if (!fileInput.files || fileInput.files.length === 0) return;
+
+        try {
+            // IMPORTANT FIX: Preserve existing gallery URLs first
+            const existingGalleryValue = document.getElementById('editCondoGallery').value;
+            const existingUrls = existingGalleryValue ? existingGalleryValue.split('\n').filter(url => url.trim()) : [];
+
+            // Show loading state
+            Swal.fire({
+                title: 'Uploading...',
+                text: 'Please wait',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Create form data with the selected files
+            const formData = new FormData();
+            Array.from(fileInput.files).slice(0, 4).forEach(file => {
+                formData.append('galleryImages', file);
+            });
+
+            // Upload new images
+            const response = await fetch(`${api.API_URL}/admin/upload/condo/gallery`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Upload failed');
+            }
+
+            // Get the newly uploaded image URLs
+            const data = await response.json();
+            const newUrls = data.fileUrls;
+
+            // CRITICAL FIX: Merge new URLs with existing ones, keeping total under 4
+            const mergedUrls = [...newUrls, ...existingUrls].slice(0, 4);
+
+            // Update the hidden input with all URLs
+            document.getElementById('editCondoGallery').value = mergedUrls.join('\n');
+
+            // Refresh the gallery preview
+            gallery.innerHTML = '';
+
+            mergedUrls.forEach((url, index) => {
+                const col = document.createElement('div');
+                col.className = 'col-3 mb-2';
+                col.innerHTML = `
                 <div class="position-relative">
                     <img src="${url}" class="img-thumbnail" style="height: 80px; width: 100%; object-fit: cover;">
                     <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" 
                             data-index="${index}">×</button>
                 </div>
             `;
-            gallery.appendChild(col);
-        });
-        
-        setTimeout(() => {
+                gallery.appendChild(col);
+            });
+
+            // Add delete button functionality 
             document.querySelectorAll('#currentGalleryImages button').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const index = parseInt(this.getAttribute('data-index'));
                     const urls = document.getElementById('editCondoGallery').value.split('\n');
                     urls.splice(index, 1);
                     document.getElementById('editCondoGallery').value = urls.join('\n');
                     this.closest('.col-3').remove();
-                    
+
+                    // Update remaining buttons' data-index attributes
                     document.querySelectorAll('#currentGalleryImages button').forEach((btn, i) => {
                         btn.setAttribute('data-index', i);
                     });
                 });
             });
-        }, 100);
-        
-    } catch (error) {
-   
-        gallery.innerHTML = `<div class="alert alert-danger">Upload failed: ${error.message}</div>`;
-        document.getElementById('editCondoGallery').value = '';
-    }
-});
+
+            // Complete message
+            Swal.fire({
+                icon: 'success',
+                title: 'Upload Complete',
+                text: 'Gallery images have been updated',
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+        } catch (error) {
+            console.error('Error uploading gallery images:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Upload Failed',
+                text: error.message || 'Failed to upload images',
+                confirmButtonColor: '#28a745'
+            });
+        }
+    });
 
 
 document.getElementById('addCondoForm').addEventListener('submit', async function(e) {
