@@ -46,13 +46,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             padding: 24px;
             margin-bottom: 30px;
-            border-left: 5px solid var(--taft-green);
             transition: transform 0.2s;
-        }
-
-        .topic-container:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
         }
 
         .topic-header {
@@ -84,7 +78,6 @@
             height: 50px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
@@ -116,15 +109,7 @@
             line-height: 1.6;
             color: #333;
             font-size: 1.05rem;
-            padding: 50px 10px;
-        }
-
-        .section-title {
-            color: var(--taft-green-dark);
-            position: relative;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            font-weight: 600;
+            padding: 10px 10px;
         }
 
         .section-title:after {
@@ -145,11 +130,6 @@
             margin-bottom: 20px;
             border-left: 3px solid var(--taft-green);
             transition: transform 0.2s;
-        }
-
-        .reply-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .reply-card .card-body {
@@ -524,6 +504,7 @@
 
         async function loadTopic() {
             try {
+                
                 const response = await fetch(`${api.API_URL}/forum/${topicId}`);
 
                 if (!response.ok) {
@@ -545,6 +526,48 @@
 
                 // Update reply count
                 document.getElementById('replyCount').textContent = topic.replies ? topic.replies.length : 0;
+
+                        const replyForm = document.getElementById('replyFormContainer');
+                const replyPrompt = document.getElementById('loginPrompt');
+
+                if (topic.status === 'locked') {
+                    // Topic is locked - show locked message, hide form
+                    const lockedMessage = document.createElement('div');
+                    lockedMessage.className = 'alert alert-warning';
+                    lockedMessage.innerHTML = `
+                        <i class="fas fa-lock me-2"></i>
+                        <strong>This topic is locked.</strong> New replies are not allowed.
+                    `;
+
+                    // Remove any existing forms or messages
+                    replyForm.classList.add('d-none');
+
+                    // Add the locked message where the form would be
+                    const container = document.querySelector('.container .row .col-12');
+
+                    // Check if we already have a locked message to avoid duplicates
+                    const existingMessage = document.getElementById('lockedTopicMessage');
+                    if (existingMessage) {
+                        existingMessage.remove();
+                    }
+
+                    lockedMessage.id = 'lockedTopicMessage';
+                    container.appendChild(lockedMessage);
+                } else {
+                    // Topic is not locked - show the form if user is logged in
+                    const lockedMessage = document.getElementById('lockedTopicMessage');
+                    if (lockedMessage) {
+                        lockedMessage.remove();
+                    }
+
+                    if (api.auth.isLoggedIn()) {
+                        replyForm.classList.remove('d-none');
+                        replyPrompt.classList.add('d-none');
+                    } else {
+                        replyForm.classList.add('d-none');
+                        replyPrompt.classList.remove('d-none');
+                    }
+                }
 
             } catch (error) {
                 console.error('Error loading topic:', error);

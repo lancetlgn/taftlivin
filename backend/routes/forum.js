@@ -89,34 +89,75 @@ router.get('/:id', async (req, res) => {
 // @route   PUT /api/forum/:id
 // @desc    Update a topic
 // @access  Private
+// Replace both PUT route handlers with this single, comprehensive one
 router.put('/:id', protect, async (req, res) => {
   try {
-    const { title, content, description } = req.body;
+    const { title, content, description, status, replies } = req.body;
+    
+    console.log('Topic update request:', { 
+      topicId: req.params.id,
+      fields: {
+        hasTitle: !!title,
+        hasContent: !!content,
+        hasDescription: description !== undefined,
+        requestedStatus: status,
+        hasReplies: !!replies
+      },
+      user: {
+        id: req.user._id,
+        type: req.user.userType
+      }
+    });
+    
     const topic = await Topic.findById(req.params.id);
-
+    
     if (!topic) {
       return res.status(404).json({ message: 'Topic not found' });
     }
-
-    // Check if user is the author or an admin
-    if (topic.user.toString() !== req.user._id.toString() && req.user.userType !== 'admin') {
+    
+    // Check permissions for content updates (but not for status updates by admins)
+    const isAdmin = req.user.userType === 'admin';
+    const isAuthor = topic.user && topic.user.toString() === req.user._id.toString();
+    
+    if (!isAdmin && !isAuthor) {
       return res.status(403).json({ message: 'Not authorized to update this topic' });
     }
-
-    // Update fields
+    
+    // Update content if provided and authorized
     if (title) topic.title = title;
     if (content) topic.content = content;
     if (description !== undefined) topic.description = description;
-
+    
+    // Update status if provided (admin only)
+    if (status && isAdmin) {
+      console.log(`Admin is updating topic status from '${topic.status}' to '${status}'`);
+      topic.status = status;
+    }
+    
+    // Update replies if provided (admin only)
+    if (replies && isAdmin) {
+      topic.replies = replies;
+    }
+    
     const updatedTopic = await topic.save();
+    console.log('Topic updated successfully:', {
+      id: updatedTopic._id,
+      title: updatedTopic.title,
+      status: updatedTopic.status
+    });
+    
+    // Populate user data for response
     await updatedTopic.populate('user', 'username profilePicture');
-
+    
     res.json(updatedTopic);
   } catch (error) {
     console.error('Error updating topic:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// Also remove the duplicate DELETE route handler
+// Keep only one delete route
 
 // @route   POST /api/forum/:id/reply
 // @desc    Add a reply to a topic
@@ -202,5 +243,6 @@ router.patch('/:id/status', protect, admin, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 module.exports = router;
