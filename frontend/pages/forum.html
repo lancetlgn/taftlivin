@@ -435,13 +435,13 @@
                             </small>
                             <small class="ms-3">
                                 <i class="fas fa-comment me-1"></i>
-                                ${topic.replies ? topic.replies.length : 0} replies
+                                ${topic.replies ? topic.replies.length : 0} ${topic.replies && topic.replies.length === 1 ? 'Reply' : 'Replies'}
                             </small>
                             ${topic.status !== 'active' ?
-                                        `<span class="badge bg-${topic.status === 'locked' ? 'warning' : 'secondary'} ms-2">
+                                                `<span class="badge bg-${topic.status === 'locked' ? 'warning' : 'secondary'} ms-2">
                                     ${topic.status === 'locked' ? 'Locked' : 'Archived'}
                                 </span>` :
-                                        ''}
+                                                ''}
                         </div>
                     `;
 

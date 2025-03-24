@@ -6,6 +6,7 @@
         <title>Admin Dashboard - TaftLivin'</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <link rel="stylesheet" href="../style.css">
         <!-- Replace this script -->
         <script src="../js/api.js"></script>
@@ -667,7 +668,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 if (password !== passwordConfirm) {
-                    showToast('Error', 'Passwords do not match', 'danger');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: 'Passwords do not match',
+                        confirmButtonColor: '#28a745'
+                    });
                     return;
                 }
                 
@@ -781,18 +787,44 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Delete user
-    async function deleteUser(userId) {
-        if (confirm('Are you sure you want to delete this user?')) {
-            try {
-                await api.admin.deleteUser(userId);
-                loadUsers();
-                showToast('Success', 'User deleted successfully', 'success');
-            } catch (error) {
-                showToast('Error', error.message, 'danger');
-            }
+// Delete user
+async function deleteUser(userId) {
+    const result = await confirmAction(
+        'Delete User?',
+        'This will permanently remove this user account. This action cannot be undone.',
+        'Yes, delete user'
+    );
+
+    if (result.isConfirmed) {
+        try {
+            // Show loading state
+            Swal.fire({
+                title: 'Deleting...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            await api.admin.deleteUser(userId);
+            loadUsers();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: 'User has been deleted successfully',
+                confirmButtonColor: '#28a745'
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Failed to delete user',
+                confirmButtonColor: '#28a745'
+            });
         }
     }
+}
 
 // Add this JavaScript in the script tag at the bottom of the file
 
@@ -931,14 +963,41 @@ async function editCondo(condoId) {
 
 // Delete condo
 async function deleteCondo(condoId) {
-    if (confirm('Are you sure you want to delete this condo? This will also remove all associated reviews.')) {
+    const result = await confirmAction(
+        'Delete Condo?',
+        'This will permanently remove this condo and all associated reviews. This action cannot be undone.',
+        'Yes, delete it'
+    );
+
+    if (result.isConfirmed) {
         try {
+            // Show loading state
+            Swal.fire({
+                title: 'Deleting...',
+                text: 'Please wait while we process your request',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             await api.admin.deleteCondo(condoId);
+
             loadCondos();
-            showToast('Success', 'Condo deleted successfully', 'success');
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: 'The condo has been deleted successfully',
+                confirmButtonColor: '#28a745'
+            });
         } catch (error) {
-          
-            showToast('Error', error.message, 'danger');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Failed to delete condo',
+                confirmButtonColor: '#28a745'
+            });
         }
     }
 }
@@ -1055,6 +1114,30 @@ function showToast(title, message, type = 'success') {
     } catch (error) {
         alert('Error displaying toast: ' + error.message);
     }
+}
+
+function showAlert(title, message, icon = 'success') {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: icon,
+        confirmButtonColor: '#28a745',
+        confirmButtonText: 'OK'
+    });
+}
+
+// Confirmation dialog using SweetAlert
+function confirmAction(title, message, confirmText = 'Yes', icon = 'warning') {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: confirmText,
+        cancelButtonText: 'Cancel'
+    });
 }
 
 
@@ -1380,7 +1463,12 @@ document.getElementById('addCondoForm').addEventListener('submit', async functio
         loadCondos();
         
         // Show toast notification
-        showToast('Success', 'Condo added successfully', 'success');
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Condo added successfully',
+            confirmButtonColor: '#28a745'
+        });
         
     } catch (error) {
         showToast('Error', error.message, 'danger'); 
@@ -1696,10 +1784,13 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
 
             // Set delete button action
             document.getElementById('modalDeleteBtn').onclick = function () {
-                if (confirm('Are you sure you want to delete this topic? This action cannot be undone.')) {
-                    deleteTopic(topicId);
-                    modal.hide();
-                }
+                confirmAction('Delete Topic?', 'Are you sure you want to delete this topic? This action cannot be undone.')
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            deleteTopic(topicId);
+                            modal.hide();
+                        }
+                    });
             };
 
             // Display replies
@@ -1815,7 +1906,14 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
             }
 
             // Show success message
-            showToast('Success', `Topic ${status === 'locked' ? 'locked' : 'unlocked'} successfully`, 'success');
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: `Topic ${status === 'locked' ? 'locked' : 'unlocked'} successfully`,
+                confirmButtonColor: '#28a745',
+                timer: 1500, // Auto close after 1.5 seconds
+                showConfirmButton: false
+            });
 
             // Replace the status badge immediately with new status
             const newStatusHtml = status === 'locked'
@@ -1831,7 +1929,12 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
 
         } catch (error) {
             console.error('Error updating topic status:', error);
-            showToast('Error', error.message, 'danger');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'An error occurred',
+                confirmButtonColor: '#28a745'
+            });
 
             // Restore original cell content if there was an error
             const statusCell = document.querySelector(`button[data-topic-id="${topicId}"]`).closest('tr').querySelector('td:nth-child(5)');
@@ -1881,8 +1984,23 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
 
     // Delete topic
     async function deleteTopic(topicId) {
-        if (confirm('Are you sure you want to delete this topic? This action cannot be undone.')) {
+        const result = await confirmAction(
+            'Delete Topic?',
+            'This will permanently remove this topic and all replies. This action cannot be undone.',
+            'Yes, delete topic'
+        );
+
+        if (result.isConfirmed) {
             try {
+                // Show loading state
+                Swal.fire({
+                    title: 'Deleting...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
                 const response = await fetch(`${api.API_URL}/forum/${topicId}`, {
                     method: 'DELETE',
                     headers: {
@@ -1899,19 +2017,44 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
                 loadForumTopics(document.getElementById('forumStatusFilter').value);
 
                 // Show success message
-                showToast('Success', 'Topic deleted successfully', 'success');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Topic has been deleted successfully',
+                    confirmButtonColor: '#28a745'
+                });
 
             } catch (error) {
                 console.error('Error deleting topic:', error);
-                showToast('Error', error.message, 'danger');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Failed to delete topic',
+                    confirmButtonColor: '#28a745'
+                });
             }
         }
     }
 
     // Delete reply
     async function deleteReply(topicId, replyIndex) {
-        if (confirm('Are you sure you want to delete this reply? This action cannot be undone.')) {
+        const result = await confirmAction(
+            'Delete Reply?',
+            'This will permanently remove this reply. This action cannot be undone.',
+            'Yes, delete reply'
+        );
+
+        if (result.isConfirmed) {
             try {
+                // Show loading state
+                Swal.fire({
+                    title: 'Deleting...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
                 // First fetch the topic to get all replies
                 const response = await fetch(`${api.API_URL}/forum/${topicId}`, {
                     headers: {
@@ -1949,11 +2092,21 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
                 viewTopic(topicId);
 
                 // Show success message
-                showToast('Success', 'Reply deleted successfully', 'success');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Reply has been deleted successfully',
+                    confirmButtonColor: '#28a745'
+                });
 
             } catch (error) {
                 console.error('Error deleting reply:', error);
-                showToast('Error', error.message, 'danger');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Failed to delete reply',
+                    confirmButtonColor: '#28a745'
+                });
             }
         }
     }

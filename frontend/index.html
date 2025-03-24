@@ -375,27 +375,14 @@ window.location.reload();
                                 <!-- Recent Topics -->
                                 <div class="col-md-12">
                                     <h4>Latest Topics</h4>
-                                    <ul class="list-group">
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <a href="pages/threads/thread1.html" class="text-decoration-none text-dark">
-                                                What's the best condo in Taft?
-                                            </a>
-                                            <span class="badge bg-success rounded-pill">12 Replies</span>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <a href="pages/threads/thread2.html" class="text-decoration-none text-dark">
-                                                Moving tips for new residents
-                                            </a>
-                                            <span class="badge bg-success rounded-pill">8 Replies</span>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <a href="pages/threads/thread3.html" class="text-decoration-none text-dark">
-                                                Safety concerns in Green Residences
-                                            </a>
-                                            <span class="badge bg-success rounded-pill">15 Replies</span>
+                                    <ul class="list-group" id="latestTopics">
+                                        <!-- Dynamic content will be loaded here -->
+                                        <li class="list-group-item text-center">
+                                            <div class="spinner-border spinner-border-sm text-success" role="status"></div>
+                                            <span class="ms-2">Loading latest topics...</span>
                                         </li>
                                     </ul>
-                                    <a href="forum.html" class="btn btn-outline-success mt-3">View All Discussions</a>
+                                    <a href="pages/forum.html" class="btn btn-outline-success mt-3">View All Discussions</a>
                                 </div>
                                 
                             </div>
@@ -1031,6 +1018,91 @@ window.location.reload();
                 });
             }
         }
+        
+    </script>
+
+    <script>
+        // Function to load latest forum topics
+        async function loadLatestTopics() {
+            const topicsList = document.getElementById('latestTopics');
+
+            try {
+                // Show loading state
+                topicsList.innerHTML = `
+                    <li class="list-group-item text-center">
+                        <div class="spinner-border spinner-border-sm text-success" role="status"></div>
+                        <span class="ms-2">Loading latest topics...</span>
+                    </li>
+                `;
+
+                // Fetch latest topics from API
+                const response = await fetch(`${api.API_URL}/forum?limit=3`, {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load latest topics');
+                }
+
+                const data = await response.json();
+                const topics = data.topics || [];
+
+                // Clear loading state
+                topicsList.innerHTML = '';
+
+                // Handle empty state
+                if (topics.length === 0) {
+                    topicsList.innerHTML = `
+                        <li class="list-group-item text-center text-muted">
+                            <i class="fas fa-info-circle me-2"></i>No topics found
+                        </li>
+                    `;
+                    return;
+                }
+
+                // Sort by date (newest first)
+                topics.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted));
+
+                // Take the first 3 topics
+                const latestTopics = topics.slice(0, 3);
+
+                // Add each topic to the list
+                latestTopics.forEach(topic => {
+                    const replyCount = topic.replies ? topic.replies.length : 0;
+
+                    const listItem = document.createElement('li');
+                    listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    listItem.innerHTML = `
+                        <a href="pages/subforum.html?id=${topic._id}" class="text-decoration-none text-dark">
+                            ${topic.title}
+                        </a>
+                        <span class="badge bg-success rounded-pill">${replyCount} ${replyCount === 1 ? 'Reply' : 'Replies'}</span>
+                    `;
+
+                    topicsList.appendChild(listItem);
+                });
+
+            } catch (error) {
+                console.error('Error loading latest topics:', error);
+                topicsList.innerHTML = `
+                    <li class="list-group-item text-center text-danger">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        Error loading topics
+                        <button class="btn btn-sm btn-outline-danger ms-2" onclick="loadLatestTopics()">
+                            <i class="fas fa-sync-alt"></i> Retry
+                        </button>
+                    </li>
+                `;
+            }
+        }
+
+        // Load latest topics when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            // Call this function after authentication is loaded
+            loadLatestTopics();
+        });
     </script>
   </body>
 </html>
