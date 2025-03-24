@@ -1,40 +1,49 @@
 const mongoose = require('mongoose');
 
-const TopicSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true
-  },
+const replySchema = new mongoose.Schema({
   content: {
     type: String,
     required: true
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: 'User'
   },
-  status: {
-    type: String,
-    enum: ['active', 'locked', 'deleted'],
-    default: 'active'
-  },
-  replies: [{
-    content: String,
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    },
-    datePosted: {
-      type: Date,
-      default: Date.now
-    }
-  }],
   datePosted: {
     type: Date,
     default: Date.now
   }
 });
 
-module.exports = mongoose.model('Topic', TopicSchema);
+const topicSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    default: ''
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  status: {
+    type: String,
+    enum: ['active', 'locked', 'archived'],
+    default: 'active'
+  },
+  replies: [replySchema],
+  datePosted: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+const Topic = mongoose.model('Topic', topicSchema);
+
+module.exports = Topic;

@@ -1,304 +1,370 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="generator" content="Hugo 0.84.0">
-        <title> TaftLivin' Forum </title>
-        <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
-        <link rel="stylesheet" href="../style.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-        <style>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Forum Topic - TaftLivin'</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .list-group-item.active {
+            background-color: #169754;
+        }
 
-            .list-group-item.active{
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
 
-            background-color: #169754;    
+        .topic-content {
+            white-space: pre-line;
+        }
 
-            }
+        .reply-card {
+            border-left: 3px solid #28a745;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+        }
 
-            .list-group-item:hover{
+        .forum-background {
+            min-height: 90vh;
+            background-size: cover;
+            background-attachment: fixed;
+            padding: 100px 0 40px 0;
+        }
 
-            color: green;
+        .reply-form {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+        }
 
-            }
+        .topic-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
 
-            .text-muted.active {
-
-            color: white ;
-            opacity: 1 ; 
-
-            }
-
-            .page-link{
-
-            color:#169754;
-
-            }
-
-            .btn.btn-outline-success:hover{
-
-            background-color:#169754;
+        .topic-header {
+            background-color: #28a745;
             color: white;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            margin: -20px -20px 20px -20px;
+        }
 
-            }
+        .reply-content {
+            font-size: 16px;
+            padding: 15px;
+        }
+    </style>
+</head>
 
-            .topic{
+<body>
+    <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html">TaftLivin'</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="condos.html">Condos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="forum.html">Forum</a>
+                    </li>
+                </ul>
+                <!-- Right side of navbar -->
+                <ul class="navbar-nav">
+                    <!-- Admin-only menu item -->
+                    <li class="nav-item admin-only d-none">
+                        <a class="nav-link text-warning" href="admin-dashboard.html">Dashboard</a>
+                    </li>
+                    <!-- Show when logged in -->
+                    <li class="nav-item dropdown logged-in-only d-none">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown">
+                            Welcome, <span class="username-display">User</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
+                        </ul>
+                    </li>
+                    <!-- Show when logged out -->
+                    <li class="nav-item logged-out-only d-none">
+                        <a class="nav-link" href="signin.html">Sign In</a>
+                    </li>
+                    <li class="nav-item logged-out-only d-none">
+                        <a class="nav-link" href="signup.html">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-            padding-left: 125px;
+    <div class="forum-background">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="forum.html">Forum</a></li>
+                            <li class="breadcrumb-item active" aria-current="page" id="topicBreadcrumb">Topic</li>
+                        </ol>
+                    </nav>
 
-            }
+                    <!-- Topic content -->
+                    <div id="topicContainer" class="topic-container mb-4">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
 
-            .jumbotron.jumbotron-fluid{
+                    <!-- Replies section -->
+                    <h3 class="mb-3 text-white">Replies</h3>
+                    <div id="repliesContainer">
+                        <!-- Replies will be loaded here -->
+                    </div>
 
-            background-color: aliceblue;
+                    <!-- Reply form for logged in users -->
+                    <div id="replyFormContainer" class="reply-form logged-in-only d-none">
+                        <h4 class="mb-3">Add Your Reply</h4>
+                        <form id="replyForm">
+                            <div class="mb-3">
+                                <textarea class="form-control" id="replyContent" rows="3" placeholder="Your reply..."
+                                    required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success">Post Reply</button>
+                        </form>
+                    </div>
 
-            }
-
-            .d-flex.p-2{
-
-            background-color: rgb(255, 255, 255);
-            margin: 100px;
-            margin-top: 10px;
-            margin-bottom: 0;
-            font-size: large;
-            border-radius: 10px;
-            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); 
-            width: 70%;
-
-            }
-
-            .d-flex.p-2.first{
-
-            background-color: rgb(255, 255, 255);
-            margin: 100px;
-            margin-top: 30px;
-            margin-bottom: 0;
-            font-size: large;
-            border-radius: 10px;
-            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); 
-            width: 70%;
-
-            }
-
-            .d-flex.p-2.side{
-            position: fixed;
-            background-color: rgb(255, 255, 255);
-            margin: 100px;
-            margin-top: 30px;
-            margin-bottom: 0;
-            right: 0;
-            top: 145px;
-            font-size: medium;
-            border-radius: 10px;
-            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); 
-            width: 15%;    
-            height: 50%;
-            }
-
-            .rounded-circle.pfp{
-
-            width: 5%;
-            height: 5%;
-            padding-top: 3px;
-
-            }
-
-            .forum-background{
-
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100;
-                min-height: 100vh;
-                background-image: url("../../images/ls-bg-blur.png");
-
-            }
-
-            html, body {
-                overflow-y: auto; /* Enables vertical scrolling */
-                overflow-x: hidden; /* Prevents horizontal scrolling */
-                height: 100vh;
-            }
-
-            .flex-container{
-
-                display: flex;
-                flex-wrap: wrap; /* Allows items to wrap */
-                max-height: 600px; /* Prevents clipping */
-                overflow-y: auto; /* Enables scrolling */
-                padding-bottom: 20px;
-
-            }
-
-            .text-field.reply{
-
-                font-size: 16px;
-                border: 1px solid #ffffff;
-                border-radius: 0px;
-                width: 100%;
-                height: 100%;
-                resize: none;
-
-            }
-
-            .post-button {
-                font-size: larger;
-                position: fixed;
-                right: 100px;
-                top: 600px;
-                padding: 20px 36px;
-                font-size: 16px;
-                background-color: #3f9c42;
-                color: white;
-                border: 2px solid #ffffff;
-                border-radius: 15px;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-            }
-
-            .post-button:hover {
-
-                background-color: white;
-                color:black;
-                border: 2px solid rgb(27, 111, 27);
-
-            }
-
-        </style>
-
-    </head>
-    <body>
-
-        <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="../../index.html">TaftLivin'</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="../index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="about.html">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="condos.html">Condos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"  href="forum.html">Forum</a>
-                        </li>
-                    </ul>
-                    <div class="d-flex">
-                        <a href="signin.html" class="btn btn-light ms-2">Sign In</a>
-                        <a href="signup.html" class="btn btn-outline-light ms-2">Sign Up</a>
+                    <!-- Login prompt for guests -->
+                    <div id="loginPrompt" class="alert alert-info logged-out-only d-none">
+                        <p>You need to <a href="signin.html">sign in</a> to post a reply.</p>
                     </div>
                 </div>
             </div>
-        </nav>
+        </div>
+    </div>
 
-        <div class="forum-background" id="bg-image-container">
-            <br>
-            <br>
-            <br>
-            <br>
-                <div class="topic">
-                    <h1 id="topic">
-                    </h1>
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-6 text-md-start mb-3 mb-md-0">
+                    <p class="mb-0">&copy; 2025 TaftLivin'. All rights reserved.</p>
                 </div>
-                <div class="d-flex p-2 side">
-    
-                    <textarea type="text" class="text-field reply" placeholder="Enter your reply here"></textarea>
-    
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-white me-3">Privacy Policy</a>
+                    <a href="#" class="text-white me-3">Terms of Service</a>
+                    <a href="#" class="text-white">Contact Us</a>
                 </div>
-                <button type="submit" class="post-button" id="postBtn">Reply</button>
-                <div class="flex-container" style="align-items: flex-start;" id="reply-container">
+            </div>
+        </div>
+    </footer>
 
-                </div>
-                
-        
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../js/api.js"></script>
-        <script src="../js/auth-ui.js"></script>
-        <script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth-ui.js"></script>
+    <script>
+        // Get topic ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const topicId = urlParams.get('id');
 
-            document.addEventListener('DOMContentLoaded', function() {
-            // Update authentication UI if the function is available
-                if (typeof updateAuthUI === 'function') {
-                    updateAuthUI();
+        document.addEventListener('DOMContentLoaded', function () {
+            // Update authentication UI
+            if (typeof updateAuthUI === 'function') {
+                updateAuthUI();
+            }
+
+            if (!topicId) {
+                document.getElementById('topicContainer').innerHTML = `
+                    <div class="alert alert-danger">
+                        No topic ID provided. <a href="forum.html">Go back to forum</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Load topic data
+            loadTopic();
+
+            // Set up reply form
+            document.getElementById('replyForm').addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const content = document.getElementById('replyContent').value;
+
+                if (!content.trim()) {
+                    alert('Please enter a reply');
+                    return;
                 }
 
-                loadTopic();
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${api.API_URL}/forum/${topicId}/reply`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ content })
+                    });
 
-                document.getElementById('postBtn').addEventListener('click', function() {
-                    event.preventDefault(); // Prevent default form submission
-                });
+                    const data = await response.json();
 
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Failed to post reply');
+                    }
+
+                    // Clear form and reload topic
+                    document.getElementById('replyContent').value = '';
+                    loadTopic();
+
+                } catch (error) {
+                    console.error('Error posting reply:', error);
+                    alert('Error posting reply: ' + error.message);
+                }
+            });
+        });
+
+        async function loadTopic() {
+            try {
+                const response = await fetch(`${api.API_URL}/forum/${topicId}`);
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to load topic');
+                }
+
+                const topic = await response.json();
+
+                // Update breadcrumb and title
+                document.getElementById('topicBreadcrumb').textContent = topic.title;
+                document.title = `${topic.title} - TaftLivin'`;
+
+                // Display topic
+                renderTopic(topic);
+
+                // Display replies
+                renderReplies(topic.replies || []);
+
+            } catch (error) {
+                console.error('Error loading topic:', error);
+                document.getElementById('topicContainer').innerHTML = `
+                    <div class="alert alert-danger">
+                        Error loading topic: ${error.message}
+                        <button class="btn btn-sm btn-danger ms-2" onclick="loadTopic()">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        function renderTopic(topic) {
+            const container = document.getElementById('topicContainer');
+
+            // Format date
+            const date = new Date(topic.datePosted);
+            const formattedDate = date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
             });
 
-            async function loadTopic() {
-                try {
-                    // Show loading state
-                    const selectedTopic = JSON.parse(localStorage.getItem("selectedTopic"));
+            // Get user data
+            const username = topic.user ? topic.user.username : 'Anonymous';
+            const profilePic = topic.user && topic.user.profilePicture
+                ? topic.user.profilePicture
+                : '../images/anonymous.png';
 
-                    const topic = document.getElementById('topic');
-    
-                    
-                    if (!selectedTopic) {
-                        throw new Error(data.message || 'Failed to load topics');
-                    }
-                    
-                    // Display topics
-                    displayReplies(selectedTopic);
-                    
-                    
-                } catch (error) {
-                    console.error('Error loading topic:', error);
-                    document.getElementById('topic').innerHTML = `
-                        <div class="alert alert-danger">
-                            Error loading topic: ${error.message}
-                            <button class="btn btn-sm btn-danger ms-2" onclick="loadTopic()">Retry</button>
-                        </div>
-                    `;
-                }
+            // Render topic
+            container.innerHTML = `
+                <div class="topic-header">
+                    <h2 class="mb-0">${topic.title}</h2>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <img src="${profilePic}" alt="${username}" class="profile-pic me-2">
+                    <div>
+                        <div class="fw-bold">${username}</div>
+                        <small class="text-muted">${formattedDate}</small>
+                    </div>
+                </div>
+                <p class="topic-content">${topic.content}</p>
+            `;
+        }
+
+        function renderReplies(replies) {
+            const container = document.getElementById('repliesContainer');
+
+            if (!replies || replies.length === 0) {
+                container.innerHTML = `
+                    <div class="alert alert-light">
+                        <p class="text-muted">No replies yet. Be the first to reply!</p>
+                    </div>
+                `;
+                return;
             }
 
-            function displayReplies(topic) {
-                const topicDiv = document.getElementById('topic');
-                const replyContainer = document.getElementById('reply-container')
-
-
-                topicDiv.innerHTML = `
-                    ${topic.title}
-                    `;
-                
-                
-                
-                // Clear container
-                replyContainer.innerHTML = '';
-                
-                // Add each condo
-                topic.replies.forEach(reply => {
-                    const replyItem = document.createElement('div');
-                    username = 'User'
-                    replyItem.className = 'd-flex p-2 first';
-                    
-                    const formattedDate = topic.datePosted.split("T")[0];
-
-                    replyItem.innerHTML = `
-                        <p style="padding-left: 10px;">${username}:<br>${reply.content}</p>
-                        <p style="margin-left: auto; padding-right: 10px; font-size: smaller;">Posted on ${formattedDate}</p>
-                    `;
-                    
-                    replyContainer.appendChild(replyItem);
+            // Render each reply
+            container.innerHTML = replies.map(reply => {
+                // Format date
+                const date = new Date(reply.datePosted);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
                 });
-            }
 
+                // Get user data
+                const username = reply.user ? reply.user.username : 'Anonymous';
+                const profilePic = reply.user && reply.user.profilePicture
+                    ? reply.user.profilePicture
+                    : '../images/anonymous.png';
 
+                return `
+                    <div class="card mb-3 reply-card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="${profilePic}" alt="${username}" class="profile-pic me-2">
+                                <div>
+                                    <div class="fw-bold">${username}</div>
+                                    <small class="text-muted">${formattedDate}</small>
+                                </div>
+                            </div>
+                            <p class="reply-content">${reply.content}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
 
-        </script>
-    </body>
+</html>

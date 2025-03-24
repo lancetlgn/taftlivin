@@ -45,6 +45,7 @@
 
             }
 
+
         </style>
 
     </head>
@@ -104,36 +105,15 @@
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" id="searchInput" placeholder="Name of Topic" aria-label="Topic name" aria-describedby="basic-addon2">
                         <div class="input-group-append">
-                          <button class="btn btn-outline-success" id="searchBtn" type="button">Search</button>
-                          <button class="btn btn-outline-success" id="postBtn" type="button">Post</button>
+                            <button class="btn btn-outline-success" id="searchBtn" type="button">Search</button>
+                            <button class="btn btn-outline-success" id="postBtn" type="button">Create New Topic</button>
                         </div>
+
                     </div>
 
                     <div class="list-group" id="topicList">
                     </div>
                 </div>
-            </div>
-
-            
-            <br>
-            <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;" id="paginationContainer">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                          </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                    </ul>
-                </nav>
             </div>
         </div>
 
@@ -157,186 +137,374 @@
         <script src="../js/api.js"></script>
         <script src="../js/auth-ui.js"></script>
         <script>
+            console.log('API Configuration:', {
+                baseUrl: api.API_URL,
+                isLoggedIn: api.auth.isLoggedIn(),
+                token: localStorage.getItem('token') ? 'Exists' : 'Missing'
+            });
 
           // Current page and search term
           let currentPage = 1;
           let currentSearchTerm = '';
 
-          document.addEventListener('DOMContentLoaded', function() {
-            // Update authentication UI if the function is available
-            if (typeof updateAuthUI === 'function') {
-                updateAuthUI();
-            }
+            document.addEventListener('DOMContentLoaded', function () {
+                // Update authentication UI if the function is available
+                if (typeof updateAuthUI === 'function') {
+                    updateAuthUI();
+                }
 
-          
-            // Check if there is a search parameter in the URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const searchParam = urlParams.get('search');
 
-            if (searchParam) {
-                // Set the search input value
-                document.getElementById('searchInput').value = searchParam;
-                currentSearchTerm = searchParam;
-            }
+                // Check if there is a search parameter in the URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const searchParam = urlParams.get('search');
 
-            loadTopics();
+                if (searchParam) {
+                    // Set the search input value
+                    document.getElementById('searchInput').value = searchParam;
+                    currentSearchTerm = searchParam;
+                }
 
-            document.getElementById('searchBtn').addEventListener('click', function() {
-                const searchTerm = document.getElementById('searchInput').value.trim();
-                currentSearchTerm = searchTerm;
-                currentPage = 1;
                 loadTopics();
-            });
-
-            document.getElementById('searchInput').addEventListener('keyup', function(e) {
-                if (e.key === 'Enter') {
-                    const searchTerm = this.value.trim();
+                document.getElementById('searchBtn').addEventListener('click', function () {
+                    const searchTerm = document.getElementById('searchInput').value.trim();
                     currentSearchTerm = searchTerm;
-                    currentPage = 1;
                     loadTopics();
-                }
-            });
-
-            document.getElementById('postBtn').addEventListener('click', function(e) {
-                if (e.key === 'Enter') {
-
-                }
-            });
-
-          });
-
-          async function loadTopics() {
-            try {
-                // Show loading state
-                const topicList = document.getElementById('topicList');
-                topicList.innerHTML = `
-                    <div class="text-center py-3">
-                        <div class="spinner-border text-success" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="mt-2">Loading topics...</p>
-                    </div>
-                `;
-                
-                
-                // Build query parameters
-                let queryParams = `page=${currentPage}`;
-                if (currentSearchTerm) {
-                    queryParams += `&search=${encodeURIComponent(currentSearchTerm)}`;
-                }
-
-                // Check API_URL value in console
-                console.log("API URL:", api.API_URL);
-                
-                // Fetch topics from API
-                const response = await fetch(`${api.API_URL}/forum?${queryParams}`);
-
-
-                
-
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.message || 'Failed to load topics');
-                }
-                
-                // Display topics
-                displayTopics(data.topics);
-                
-                // Update pagination
-                updatePagination(data.currentPage, data.totalPages);
-                
-            } catch (error) {
-                console.error('Error loading topics:', error);
-                document.getElementById('topicList').innerHTML = `
-                    <div class="alert alert-danger">
-                        Error loading topics: ${error.message}
-                        <button class="btn btn-sm btn-danger ms-2" onclick="loadTopics()">Retry</button>
-                    </div>
-                `;
-            }
-        }
-
-        function displayTopics(topics) {
-            const topicList = document.getElementById('topicList');
-            
-            if (!topics || topics.length === 0) {
-                topicList.innerHTML = `
-                    <div class="alert alert-info">
-                        No topics found matching your criteria. Try adjusting your search or creating a new topic.
-                    </div>
-                `;
-                return;
-            }
-            
-            // Clear container
-            topicList.innerHTML = '';
-            
-            // Add each topic
-            topics.forEach(topic => {
-                const topicItem = document.createElement('a');
-                topicItem.className = 'list-group-item';
-                topicItem.href = 'subforum.html';
-
-                const formattedDate = topic.datePosted.split("T")[0]; 
-                
-                
-                topicItem.innerHTML = `
-                    <h4 class="list-group-item-heading">${topic.title}</h4>
-                    <small class="text-muted">Posted on ${formattedDate}</small>
-                    <p class="list-group-item-text">${topic.content}</p>
-                `;
-
-                topicItem.addEventListener("click", () => {
-                localStorage.setItem("selectedTopic", JSON.stringify(topic));
                 });
 
-                
-                topicList.appendChild(topicItem);
-            });
-        }
-
-        function updatePagination(currentPage, totalPages) {
-            const paginationContainer = document.getElementById('paginationContainer');
-            
-            if (!totalPages || totalPages <= 1) {
-                paginationContainer.innerHTML = '';
-                return;
-            }
-            
-            let paginationHTML = '';
-            
-          
-            paginationHTML += `<a href="#" class="${currentPage === 1 ? 'disabled' : ''}" data-page="${currentPage - 1}">&laquo;</a>`;
-            
-           
-            for (let i = 1; i <= totalPages; i++) {
-                paginationHTML += `<a href="#" class="${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`;
-            }
-            
-          
-            paginationHTML += `<a href="#" class="${currentPage === totalPages ? 'disabled' : ''}" data-page="${currentPage + 1}">&raquo;</a>`;
-            
-            paginationContainer.innerHTML = paginationHTML;
-            
-            paginationContainer.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (this.classList.contains('disabled')) return;
-                    
-                    const page = parseInt(this.getAttribute('data-page'));
-                    if (!isNaN(page)) {
-                        currentPage = page;
+                document.getElementById('searchInput').addEventListener('keyup', function (e) {
+                    if (e.key === 'Enter') {
+                        const searchTerm = this.value.trim();
+                        currentSearchTerm = searchTerm;
                         loadTopics();
-                     
-                        document.getElementById('topicList').scrollIntoView();
                     }
                 });
+
+                 document.getElementById('postBtn').addEventListener('click', function () {
+                    // Only logged in users can create topics
+                    if (!api.auth.isLoggedIn()) {
+                        // Show a nicer notification
+                        const topicList = document.getElementById('topicList');
+                        const currentContent = topicList.innerHTML;
+
+                        topicList.innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        You need to log in to create a topic. 
+                        <a href="signin.html" class="alert-link">Sign in now</a>
+                    </div>
+                ` + currentContent;
+
+                        // Scroll to the top to show the message
+                        topicList.scrollIntoView({ behavior: 'smooth' });
+                        return;
+                    }
+
+                    // Show the create topic modal
+                    const modal = new bootstrap.Modal(document.getElementById('createTopicModal'));
+                    modal.show();
+                });
+
+                document.getElementById('createTopicForm').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+
+                    // Get the UI elements
+                    const submitBtn = document.querySelector('#createTopicModal button[type="submit"]');
+                    const modalBody = document.querySelector('#createTopicModal .modal-body');
+                    const originalBtnText = submitBtn.innerHTML;
+
+                    // Clear previous errors
+                    modalBody.querySelectorAll('.alert').forEach(el => el.remove());
+
+                    try {
+                        // 1. Get form data
+                        const title = document.getElementById('topicTitle').value.trim();
+                        const content = document.getElementById('topicContent').value.trim();
+                        const description = document.getElementById('topicDescription').value.trim();
+
+                        console.log('Form data ready:', { title, content, description });
+
+                        // 2. Validate (existing code is fine)
+                        if (title.length < 5) {
+                            throw new Error('Title must be at least 5 characters long');
+                        }
+
+                        if (content.length < 20) {
+                            throw new Error('Content must be at least 20 characters long');
+                        }
+
+                        // 3. Show loading state
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Creating...';
+
+                        // 4. Get the auth token
+                        const token = localStorage.getItem('token');
+                        if (!token) {
+                            throw new Error('You must be logged in to create a topic');
+                        }
+
+                        console.log('Preparing to send request to:', api.API_URL + '/forum');
+
+                        // 5. Send the request with COMPLETE error handling
+                        const response = await fetch(`${api.API_URL}/forum`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({ title, content, description })
+                        });
+
+                        console.log('Response received:', response.status);
+
+                        // 6. Handle non-JSON responses (critical error handling)
+                        const contentType = response.headers.get('content-type');
+                        if (!contentType || !contentType.includes('application/json')) {
+                            console.error('Non-JSON response received:', await response.text());
+                            throw new Error('Server returned an invalid response format. Check the console for details.');
+                        }
+
+                        // 7. Parse the JSON response
+                        const data = await response.json();
+                        console.log('Response data:', data);
+
+                        // 8. Handle error responses
+                        if (!response.ok) {
+                            throw new Error(data.message || 'Failed to create topic');
+                        }
+
+                        console.log('Topic created successfully:', data);
+
+                        // 9. Success handling - close modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('createTopicModal'));
+                        modal.hide();
+
+                        // 10. Reset the form
+                        this.reset();
+
+                        // 11. Show success message
+                        const topicList = document.getElementById('topicList');
+                        const successAlert = document.createElement('div');
+                        successAlert.className = 'alert alert-success alert-dismissible fade show';
+                        successAlert.innerHTML = `
+                            <i class="fas fa-check-circle me-2"></i> Topic "${data.title}" created successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        `;
+                        topicList.insertBefore(successAlert, topicList.firstChild);
+
+                        // 12. Reload topics
+                        await loadTopics();
+
+                    } catch (error) {
+                        // Better error display
+                        console.error('Error creating topic:', error);
+
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'alert alert-danger';
+                        errorDiv.innerHTML = `
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <strong>Error:</strong> ${error.message}
+                        `;
+                        modalBody.appendChild(errorDiv);
+                    } finally {
+                        // Always restore button state
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
+                    }
+                });
+
             });
-        }
+
+
+
+          // Replace the existing loadTopics function with this simplified version
+            async function loadTopics() {
+                try {
+                    // Show loading state
+                    const topicList = document.getElementById('topicList');
+                    topicList.innerHTML = `
+                        <div class="text-center py-3">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="visually-hidden">Loading topics...</span>
+                            </div>
+                            <p class="mt-2">Loading topics...</p>
+                        </div>
+                    `;
+
+                    // Build query parameters - only include search now
+                    let queryParams = '';
+                    if (currentSearchTerm) {
+                        queryParams = `search=${encodeURIComponent(currentSearchTerm)}`;
+                    }
+
+                    // Add the queryParams to the URL only if we have any
+                    const url = `${api.API_URL}/forum${queryParams ? '?' + queryParams : ''}`;
+                    console.log("Fetching all topics from:", url);
+
+                    const response = await fetch(url, {
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    // Check content type
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        throw new Error('Server returned invalid response format');
+                    }
+
+                    const data = await response.json();
+                    console.log("API Response:", data);
+
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Failed to load topics');
+                    }
+
+                    // Display topics
+                    displayTopics(data.topics);
+
+                    // Add topic count
+                    const countDiv = document.createElement('div');
+                    countDiv.className = 'text-muted mb-3';
+                    countDiv.innerHTML = `
+                        <i class="fas fa-list me-1"></i> 
+                        Showing ${data.topics.length} topic${data.topics.length !== 1 ? 's' : ''}
+                        ${currentSearchTerm ? ` matching "${currentSearchTerm}"` : ''}
+                    `;
+                    topicList.insertBefore(countDiv, topicList.firstChild);
+
+                } catch (error) {
+                    console.error('Error loading topics:', error);
+                    document.getElementById('topicList').innerHTML = `
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i>Error loading topics</h5>
+                            <p>${error.message}</p>
+                            <button class="btn btn-outline-danger" onclick="loadTopics()">
+                                <i class="fas fa-sync me-1"></i>Try Again
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+
+        // Replace the entire displayTopics function with this consolidated version
+            function displayTopics(topics) {
+                const topicList = document.getElementById('topicList');
+
+                if (!topics || topics.length === 0) {
+                    topicList.innerHTML = `
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                No topics found matching your criteria. Try adjusting your search or creating a new topic.
+            </div>
+        `;
+                    return;
+                }
+
+                // Clear container
+                topicList.innerHTML = '';
+
+                // Add each topic
+                topics.forEach(topic => {
+                    const topicItem = document.createElement('a');
+                    topicItem.className = 'list-group-item list-group-item-action';
+                    topicItem.href = `subforum.html?id=${topic._id}`;
+
+                    // Format date
+                    const date = new Date(topic.datePosted);
+                    const formattedDate = date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+
+                    // Truncate content for preview
+                    const contentPreview = topic.description || topic.content.substring(0, 100);
+                    const showEllipsis = topic.content.length > 100 && !topic.description;
+
+                    // Create topic HTML with improved styling
+                    topicItem.innerHTML = `
+                        <div class="d-flex w-100 justify-content-between align-items-start">
+                            <h5 class="mb-1">${topic.title}</h5>
+                            <small class="text-muted">${formattedDate}</small>
+                        </div>
+                        <p class="mb-1">${contentPreview}${showEllipsis ? '...' : ''}</p>
+                        <div class="topic-meta">
+                            <small>
+                                <i class="fas fa-user me-1"></i>
+                                ${topic.user ? topic.user.username : 'Anonymous'}
+                            </small>
+                            <small class="ms-3">
+                                <i class="fas fa-comment me-1"></i>
+                                ${topic.replies ? topic.replies.length : 0} replies
+                            </small>
+                            ${topic.status !== 'active' ?
+                                        `<span class="badge bg-${topic.status === 'locked' ? 'warning' : 'secondary'} ms-2">
+                                    ${topic.status === 'locked' ? 'Locked' : 'Archived'}
+                                </span>` :
+                                        ''}
+                        </div>
+                    `;
+
+                    topicList.appendChild(topicItem);
+                });
+            }
+        
+
+               
+            
+
+
+
+          
+        
 
 
         </script>
 
+
+    <div class="modal fade" id="createTopicModal" tabindex="-1" aria-labelledby="createTopicModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="createTopicModalLabel">
+                        <i class="fas fa-plus-circle me-2"></i>Create New Topic
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createTopicForm">
+                        <div class="mb-3">
+                            <label for="topicTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="topicTitle" required
+                                placeholder="Enter a descriptive title for your topic">
+                        </div>
+                        <div class="mb-3">
+                            <label for="topicDescription" class="form-label">Short Description (optional)</label>
+                            <input type="text" class="form-control" id="topicDescription"
+                                placeholder="Brief summary of your topic (optional)">
+                        </div>
+                        <div class="mb-3">
+                            <label for="topicContent" class="form-label">Content</label>
+                            <textarea class="form-control" id="topicContent" rows="6" required
+                                placeholder="Share your thoughts, questions, or information..."></textarea>
+                        </div>
+                        <div class="form-text mb-3">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Be respectful and follow community guidelines when posting.
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Cancel
+                    </button>
+                    <button type="submit" form="createTopicForm" class="btn btn-success">
+                        <i class="fas fa-paper-plane me-1"></i>Create Topic
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     </body>
 </html>
