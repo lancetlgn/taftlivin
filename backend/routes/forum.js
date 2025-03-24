@@ -33,6 +33,7 @@ router.get('/', async (req, res) => {
 
     // Fetch forum posts from the database
     const topics = await Topic.find(filter)
+      .populate('user', 'username')
       .limit(limit)
       .skip(skip)
       .sort({ datePosted: -1 });

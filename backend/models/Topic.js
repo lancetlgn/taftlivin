@@ -34,6 +34,10 @@ const TopicSchema = new mongoose.Schema({
   datePosted: {
     type: Date,
     default: Date.now
+  },
+  featured: {
+    type: Boolean,
+    default: false
   }
 });
 

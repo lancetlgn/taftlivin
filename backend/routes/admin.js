@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Condo = require('../models/Condo');
+const Topic = require('../models/Topic');
 const upload = require('../middleware/upload');
 const { protect, admin } = require('../middleware/auth');
 
@@ -401,6 +402,75 @@ router.post('/upload/condo/gallery', upload.array('galleryImages', 4), async (re
       res.json({ fileUrls });
   } catch (error) {
       res.status(500).json({ message: error.message });
+  }
+});
+
+//Get all forums
+router.get('/forum', async (req, res) => {
+  try {
+    // Get all forums with most recent first
+    const forum = await Topic.find().sort({ createdAt: -1 });
+    
+    res.json({
+      forum
+    });
+  } catch (error) {
+    console.error('Error fetching forum:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Delete forum
+router.delete('/forum/:id', async (req, res) => {
+  try {
+    const forum = await Topic.findById(req.params.id);
+    
+    if (!forum) {
+      return res.status(404).json({ message: 'Forum not found' });
+    }
+    
+    // Delete the Forum
+    await Topic.deleteOne({ _id: req.params.id });
+    
+    res.json({ message: 'Forum deleted successfully' });
+  } catch (error) {
+  
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Lock/Unlock a Topic
+router.put('/forum/:id/lock', async (req, res) => {
+  try {
+    const topic = await Topic.findById(req.params.id);
+    if (!topic) {
+      return res.status(404).json({ message: 'Topic not found' });
+    }
+    
+    // Toggle status
+    topic.status = topic.status === 'locked' ? 'active' : 'locked';
+    await topic.save();
+
+    res.json({ message: `Topic ${topic.status === 'locked' ? 'locked' : 'unlocked'}` });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Feature a Topic (Add featured field)
+router.put('/forum/:id/feature', async (req, res) => {
+  try {
+    const topic = await Topic.findById(req.params.id);
+    if (!topic) {
+      return res.status(404).json({ message: 'Topic not found' });
+    }
+
+    topic.featured = true;
+    await topic.save();
+
+    res.json({ message: 'Topic marked as featured' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
