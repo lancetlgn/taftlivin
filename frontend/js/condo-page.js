@@ -183,9 +183,20 @@ function updateUserReviewSection() {
     
     // Set up delete button
     newDeleteButton.addEventListener('click', function() {
-        if (confirm('Are you sure you want to delete your review? This cannot be undone.')) {
-            deleteReview();
-        }
+        Swal.fire({
+            title: 'Delete Review?',
+            text: 'Are you sure you want to delete your review? This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Yes, delete it',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteReview();
+            }
+        });
     });
 }
 
@@ -664,16 +675,21 @@ function showError(message) {
 }
 
 // Function to delete the current user's review
+
 async function deleteReview() {
     const token = localStorage.getItem('token');
     if (!token || !currentUserReview) return;
     
     try {
-        // Show loading state
-        const deleteBtn = document.getElementById('deleteReviewBtn');
-        const originalText = deleteBtn.innerHTML;
-        deleteBtn.disabled = true;
-        deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...';
+        // Show loading state with SweetAlert
+        Swal.fire({
+            title: 'Deleting...',
+            text: 'Please wait',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         
         const response = await fetch(`${api.API_URL}/reviews/${currentUserReview._id}`, {
             method: 'DELETE',
@@ -689,7 +705,14 @@ async function deleteReview() {
         }
         
         console.log('Delete review response:', data);
-        showNotification('Success', 'Your review has been deleted successfully', 'success');
+        
+        // Show success message with SweetAlert
+        Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'Your review has been deleted successfully',
+            confirmButtonColor: '#28a745'
+        });
         
         // Update condo data with the returned values to avoid an extra API call
         if (data.updatedCondo && currentCondo) {
@@ -706,7 +729,6 @@ async function deleteReview() {
         
         updateUserReviewSection();
         
-
         document.getElementById('reviewForm').reset();
         document.getElementById('reviewSubmitBtn').textContent = 'Submit Review';
         
@@ -714,15 +736,17 @@ async function deleteReview() {
         
     } catch (error) {
         console.error('Error deleting review:', error);
-        showNotification('Error', error.message, 'danger');
-    } finally {
-        const deleteBtn = document.getElementById('deleteReviewBtn');
-        if (deleteBtn) {
-            deleteBtn.disabled = false;
-            deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Delete';
-        }
+        
+        // Show error message with SweetAlert
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message || 'Failed to delete review',
+            confirmButtonColor: '#28a745'
+        });
     }
 }
+
 //utility function to convert meters to walking time
 function calculateWalkingTime(meters) {
     const walkingSpeedMetersPerMinute = 84;
