@@ -9,63 +9,300 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .list-group-item.active {
-            background-color: #169754;
+        :root {
+            --taft-green: #28a745;
+            --taft-green-dark: #169754;
+            --taft-green-light: #e8f5e9;
         }
 
-        .profile-pic {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .topic-content {
-            white-space: pre-line;
-        }
-
-        .reply-card {
-            border-left: 3px solid #28a745;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .forum-background {
-            min-height: 90vh;
-            background-size: cover;
-            background-attachment: fixed;
-            padding: 100px 0 40px 0;
-        }
-
-        .reply-form {
-            margin-top: 30px;
-            padding: 20px;
+        body {
             background-color: #f8f9fa;
-            border-radius: 10px;
-            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0.5rem 0;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb-item a {
+            color: var(--taft-green);
+            text-decoration: none;
+        }
+
+        .breadcrumb-item.active {
+            color: #6c757d;
         }
 
         .topic-container {
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 24px;
             margin-bottom: 30px;
+            border-left: 5px solid var(--taft-green);
+            transition: transform 0.2s;
+        }
+
+        .topic-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
         }
 
         .topic-header {
-            background-color: #28a745;
+            margin: -24px -24px 20px -24px;
+            padding: 18px 24px;
+            background: linear-gradient(135deg, var(--taft-green) 0%, var(--taft-green-dark) 100%);
             color: white;
-            padding: 15px;
-            border-radius: 10px 10px 0 0;
-            margin: -20px -20px 20px -20px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topic-title {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .topic-status {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .user-details {
+            margin-left: 15px;
+        }
+
+        .username {
+            font-weight: 600;
+            margin-bottom: 0;
+            color: #333;
+        }
+
+        .post-date {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .topic-content {
+            white-space: pre-line;
+            line-height: 1.6;
+            color: #333;
+            font-size: 1.05rem;
+            padding: 50px 10px;
+        }
+
+        .section-title {
+            color: var(--taft-green-dark);
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--taft-green);
+            border-radius: 3px;
+        }
+
+        .reply-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            border-left: 3px solid var(--taft-green);
+            transition: transform 0.2s;
+        }
+
+        .reply-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .reply-card .card-body {
+            padding: 20px;
         }
 
         .reply-content {
-            font-size: 16px;
-            padding: 15px;
+            white-space: pre-line;
+            color: #333;
+            line-height: 1.6;
+            padding: 15px 0 0 0;
+            font-size: 1rem;
         }
+
+        .reply-form {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            margin-top: 30px;
+            border-top: 4px solid var(--taft-green);
+        }
+
+        .reply-form textarea {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 120px;
+            padding: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .reply-form textarea:focus {
+            border-color: var(--taft-green);
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+
+        .btn-success {
+            background-color: var(--taft-green);
+            border-color: var(--taft-green);
+            border-radius: 8px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-success:hover {
+            background-color: var(--taft-green-dark);
+            border-color: var(--taft-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-success:active {
+            transform: translateY(0);
+        }
+
+        .login-prompt {
+            background-color: var(--taft-green-light);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+            border-left: 3px solid var(--taft-green);
+        }
+
+        .login-prompt p {
+            margin-bottom: 0;
+            color: #2e7d32;
+        }
+
+        .login-prompt a {
+            font-weight: 500;
+            color: var(--taft-green-dark);
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 60px;
+            background-color: #212529;
+        }
+
+        .empty-replies {
+            padding: 20px;
+            text-align: center;
+            color: #6c757d;
+            background-color: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .empty-replies i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+
+        .reply-count {
+            background-color: var(--taft-green);
+            color: white;
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50px;
+            margin-left: 10px;
+            font-weight: normal;
+        }
+
+        .topic-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            color: #6c757d;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+            color: #495057;
+        }
+
+        .action-btn i {
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .topic-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .topic-status {
+                margin-top: 10px;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+
+            .profile-pic {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        
     </style>
 </head>
 
@@ -123,55 +360,60 @@
         </div>
     </nav>
 
-    <div class="forum-background">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <!-- Breadcrumb -->
-                    <nav aria-label="breadcrumb" class="mb-4">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="forum.html">Forum</a></li>
-                            <li class="breadcrumb-item active" aria-current="page" id="topicBreadcrumb">Topic</li>
-                        </ol>
-                    </nav>
+    <div class="container" style="margin-top: 80px;">
+        <div class="row">
+            <div class="col-12">
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="forum.html"><i class="fas fa-home me-1"></i>Forum</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" id="topicBreadcrumb">Topic</li>
+                    </ol>
+                </nav>
 
-                    <!-- Topic content -->
-                    <div id="topicContainer" class="topic-container mb-4">
-                        <div class="d-flex justify-content-center">
-                            <div class="spinner-border text-success" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
+                <!-- Topic content -->
+                <div id="topicContainer" class="topic-container">
+                    <div class="d-flex justify-content-center py-5">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Replies section -->
-                    <h3 class="mb-3 text-white">Replies</h3>
-                    <div id="repliesContainer">
-                        <!-- Replies will be loaded here -->
+                <!-- Replies section -->
+                <h3 class="section-title">Replies <span class="reply-count" id="replyCount">0</span></h3>
+                <div id="repliesContainer">
+                    <div class="d-flex justify-content-center py-4">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Loading replies...</span>
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Reply form for logged in users -->
-                    <div id="replyFormContainer" class="reply-form logged-in-only d-none">
-                        <h4 class="mb-3">Add Your Reply</h4>
-                        <form id="replyForm">
-                            <div class="mb-3">
-                                <textarea class="form-control" id="replyContent" rows="3" placeholder="Your reply..."
-                                    required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-success">Post Reply</button>
-                        </form>
-                    </div>
+                <!-- Reply form for logged in users -->
+                <div id="replyFormContainer" class="reply-form logged-in-only d-none">
+                    <h4 class="mb-3">Add Your Reply</h4>
+                    <form id="replyForm">
+                        <div class="mb-3">
+                            <textarea class="form-control" id="replyContent" rows="3"
+                                placeholder="Share your thoughts..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-paper-plane me-2"></i>Post Reply
+                        </button>
+                    </form>
+                </div>
 
-                    <!-- Login prompt for guests -->
-                    <div id="loginPrompt" class="alert alert-info logged-out-only d-none">
-                        <p>You need to <a href="signin.html">sign in</a> to post a reply.</p>
-                    </div>
+                <!-- Login prompt for guests -->
+                <div id="loginPrompt" class="login-prompt logged-out-only d-none">
+                    <p><i class="fas fa-info-circle me-2"></i>You need to <a href="signin.html">sign in</a> to join the
+                        conversation.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-dark text-white py-4">
+    <footer class="bg-dark text-white py-4 mt-5">
         <div class="container text-center">
             <div class="row">
                 <div class="col-md-6 text-md-start mb-3 mb-md-0">
@@ -203,7 +445,8 @@
             if (!topicId) {
                 document.getElementById('topicContainer').innerHTML = `
                     <div class="alert alert-danger">
-                        No topic ID provided. <a href="forum.html">Go back to forum</a>
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        No topic ID provided. <a href="forum.html" class="alert-link">Go back to forum</a>
                     </div>
                 `;
                 return;
@@ -216,10 +459,17 @@
             document.getElementById('replyForm').addEventListener('submit', async function (e) {
                 e.preventDefault();
 
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Posting...';
+
                 const content = document.getElementById('replyContent').value;
 
                 if (!content.trim()) {
                     alert('Please enter a reply');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
                     return;
                 }
 
@@ -242,11 +492,32 @@
 
                     // Clear form and reload topic
                     document.getElementById('replyContent').value = '';
+
+                    // Show success message
+                    const successMessage = document.createElement('div');
+                    successMessage.className = 'alert alert-success alert-dismissible fade show mt-3';
+                    successMessage.innerHTML = `
+                        <i class="fas fa-check-circle me-2"></i> Reply posted successfully!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    `;
+                    document.getElementById('replyFormContainer').appendChild(successMessage);
+
+                    // Reload the topic to show the new reply
                     loadTopic();
 
                 } catch (error) {
                     console.error('Error posting reply:', error);
-                    alert('Error posting reply: ' + error.message);
+
+                    const errorMessage = document.createElement('div');
+                    errorMessage.className = 'alert alert-danger alert-dismissible fade show mt-3';
+                    errorMessage.innerHTML = `
+                        <i class="fas fa-exclamation-circle me-2"></i> ${error.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    `;
+                    document.getElementById('replyFormContainer').appendChild(errorMessage);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
                 }
             });
         });
@@ -272,14 +543,19 @@
                 // Display replies
                 renderReplies(topic.replies || []);
 
+                // Update reply count
+                document.getElementById('replyCount').textContent = topic.replies ? topic.replies.length : 0;
+
             } catch (error) {
                 console.error('Error loading topic:', error);
                 document.getElementById('topicContainer').innerHTML = `
                     <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i> 
                         Error loading topic: ${error.message}
                         <button class="btn btn-sm btn-danger ms-2" onclick="loadTopic()">Retry</button>
                     </div>
                 `;
+                document.getElementById('repliesContainer').innerHTML = '';
             }
         }
 
@@ -302,19 +578,28 @@
                 ? topic.user.profilePicture
                 : '../images/anonymous.png';
 
+            // Status badge
+            let statusBadge = '';
+            if (topic.status === 'locked') {
+                statusBadge = '<span class="topic-status"><i class="fas fa-lock me-1"></i>Locked</span>';
+            } else if (topic.status === 'archived') {
+                statusBadge = '<span class="topic-status"><i class="fas fa-archive me-1"></i>Archived</span>';
+            }
+
             // Render topic
             container.innerHTML = `
                 <div class="topic-header">
-                    <h2 class="mb-0">${topic.title}</h2>
+                    <h2 class="topic-title">${topic.title}</h2>
+                    ${statusBadge}
                 </div>
-                <div class="d-flex align-items-center mb-3">
-                    <img src="${profilePic}" alt="${username}" class="profile-pic me-2">
-                    <div>
-                        <div class="fw-bold">${username}</div>
-                        <small class="text-muted">${formattedDate}</small>
+                <div class="user-info">
+                    <img src="${profilePic}" alt="${username}" class="profile-pic">
+                    <div class="user-details">
+                        <p class="username">${username}</p>
+                        <p class="post-date"><i class="far fa-clock me-1"></i>${formattedDate}</p>
                     </div>
                 </div>
-                <p class="topic-content">${topic.content}</p>
+                <div class="topic-content">${topic.content}</div>
             `;
         }
 
@@ -323,15 +608,16 @@
 
             if (!replies || replies.length === 0) {
                 container.innerHTML = `
-                    <div class="alert alert-light">
-                        <p class="text-muted">No replies yet. Be the first to reply!</p>
+                    <div class="empty-replies">
+                        <i class="far fa-comments d-block"></i>
+                        <p>No replies yet. Be the first to respond!</p>
                     </div>
                 `;
                 return;
             }
 
             // Render each reply
-            container.innerHTML = replies.map(reply => {
+            container.innerHTML = replies.map((reply, index) => {
                 // Format date
                 const date = new Date(reply.datePosted);
                 const formattedDate = date.toLocaleDateString('en-US', {
@@ -349,20 +635,44 @@
                     : '../images/anonymous.png';
 
                 return `
-                    <div class="card mb-3 reply-card">
+                    <div class="card mb-3 reply-card" id="reply-${index + 1}">
                         <div class="card-body">
-                            <div class="d-flex align-items-center mb-2">
-                                <img src="${profilePic}" alt="${username}" class="profile-pic me-2">
-                                <div>
-                                    <div class="fw-bold">${username}</div>
-                                    <small class="text-muted">${formattedDate}</small>
+                            <div class="user-info">
+                                <img src="${profilePic}" alt="${username}" class="profile-pic">
+                                <div class="user-details">
+                                    <p class="username">${username}</p>
+                                    <p class="post-date"><i class="far fa-clock me-1"></i>${formattedDate}</p>
                                 </div>
                             </div>
-                            <p class="reply-content">${reply.content}</p>
+                            <div class="reply-content">${reply.content}</div>
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+
+        // Share function
+        function shareTopic(topicId) {
+            const url = `${window.location.origin}${window.location.pathname}?id=${topicId}`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    url: url
+                }).catch(console.error);
+            } else {
+                // Fallback - copy to clipboard
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Link copied to clipboard!');
+                }).catch(err => {
+                    console.error('Error copying link: ', err);
+                });
+            }
+        }
+
+        // Report function
+        function reportTopic(topicId) {
+            alert('Topic reported. Our moderators will review it soon.');
         }
     </script>
 </body>
