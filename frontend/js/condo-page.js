@@ -202,11 +202,32 @@ function updateCondoDetails() {
     
     // Update main image
     const mainImage = document.getElementById('mainImage');
-    if (mainImage) {
-        const imageSrc = currentCondo.image || '../images/green1.jpg';
+    const mainImageLink = document.getElementById('mainImageLink');
+
+    if (mainImage && mainImageLink) {
+        const imageSrc = currentCondo.image || '../images/empty_placeholder.jpg';
         mainImage.src = imageSrc;
-        mainImage.setAttribute('onclick', `openPopup('${imageSrc}')`);
+        mainImageLink.href = imageSrc;
     }
+
+    const galleryImages = currentCondo.gallery || [];
+
+    // Update gallery images & a tags
+    for (let i = 0; i < 4; i++) {
+        const galleryImage = document.getElementById(`sideImage${i + 1}`);
+        const galleryImageLink = document.getElementById(`sideImageLink${i + 1}`);
+
+        if (galleryImage && galleryImageLink) {
+            const imageSrc = galleryImages[i] || '../images/empty_placeholder.jpg';
+
+            // Update <img> tag
+            galleryImage.src = imageSrc;
+
+            // Update <a> tag
+            galleryImageLink.href = imageSrc;
+        }
+    }
+    
     
     // Update address
     const addressElement = document.getElementById('condoAddress');
