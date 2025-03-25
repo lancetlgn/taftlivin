@@ -307,10 +307,18 @@
                     <li class="nav-item admin-only d-none">
                         <a class="nav-link text-warning" href="admin-dashboard.html">Dashboard</a>
                     </li>
+                
+                    <!-- Show when logged out -->
+                    <li class="nav-item logged-out-only">
+                        <a class="nav-link auth-btn signin-btn" href="../pages/signin.html">Sign In</a>
+                    </li>
+                    <li class="nav-item logged-out-only">
+                        <a class="nav-link auth-btn signup-btn" href="../pages/signup.html">Sign Up</a>
+                    </li>
+                
                     <!-- Show when logged in -->
                     <li class="nav-item dropdown logged-in-only d-none">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                             Welcome, <span class="username-display">User</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -321,14 +329,8 @@
                             <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
                         </ul>
                     </li>
-                    <!-- Show when logged out -->
-                    <li class="nav-item logged-out-only d-none">
-                        <a class="nav-link" href="signin.html">Sign In</a>
-                    </li>
-                    <li class="nav-item logged-out-only d-none">
-                        <a class="nav-link" href="signup.html">Sign Up</a>
-                    </li>
                 </ul>
+                
             </div>
         </div>
     </nav>
