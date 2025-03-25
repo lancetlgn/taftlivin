@@ -469,3 +469,25 @@ footer a:hover {
 .fas, .far, .fa-solid, .fa-regular {
     vertical-align: middle;
 }
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.content-wrapper {
+    flex: 1 0 auto;
+    /* This makes content area expand */
+}
+
+footer {
+    flex-shrink: 0;
+    /* Prevents footer from shrinking */
+    width: 100%;
+}

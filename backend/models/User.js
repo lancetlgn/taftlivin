@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
   },
   profilePicture: {
     type: String,
-    default: 'default.jpg'
+    default: 'profile.png'
   },
   dateJoined: {
     type: Date,
