@@ -5,51 +5,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="generator" content="Hugo 0.84.0">
-        <title> TaftLivin' Forum </title>
+        <title>TaftLivin' Forum</title>
         <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
         <link rel="stylesheet" href="../style.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         
         <style>
-
-            .list-group-item.active{
-
+            .list-group-item.active {
                 background-color: #169754;    
-
             }
 
-            .list-group-item:hover{
-
+            .list-group-item:hover {
                 color: green;
-
             }
 
             .text-muted.active {
-
-                color: white ;
-                opacity: 1 ; 
-
-            }
-
-            .page-link{
-
-                color:#169754;
-
-            }
-
-            .btn.btn-outline-success:hover{
-
-                background-color:#169754;
                 color: white;
-
+                opacity: 1; 
             }
-           
-            
 
+            .page-link {
+                color: #169754;
+            }
 
+            .btn.btn-outline-success:hover {
+                background-color: #169754;
+                color: white;
+            }
         </style>
-
     </head>
     <body>
         <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
@@ -73,14 +57,11 @@
                     <a class="nav-link active" aria-current="page" href="forum.html">Forum</a>
                   </li>
                 </ul>
-                <!-- Right side of navbar -->
                 <ul class="navbar-nav">
-                    <!-- Admin-only menu item -->
                     <li class="nav-item admin-only d-none">
                         <a class="nav-link text-warning" href="admin-dashboard.html">Dashboard</a>
                     </li>
                 
-                    <!-- Show when logged out -->
                     <li class="nav-item logged-out-only">
                         <a class="nav-link auth-btn signin-btn" href="../pages/signin.html">Sign In</a>
                     </li>
@@ -88,16 +69,13 @@
                         <a class="nav-link auth-btn signup-btn" href="../pages/signup.html">Sign Up</a>
                     </li>
                 
-                    <!-- Show when logged in -->
                     <li class="nav-item dropdown logged-in-only d-none">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                             Welcome, <span class="username-display">User</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
                         </ul>
                     </li>
@@ -119,15 +97,12 @@
                             <button class="btn btn-outline-success" id="searchBtn" type="button">Search</button>
                             <button class="btn btn-outline-success" id="postBtn" type="button">Create New Topic</button>
                         </div>
-
                     </div>
 
-                    <div class="list-group" id="topicList">
-                    </div>
+                    <div class="list-group" id="topicList"></div>
                 </div>
             </div>
         </div>
-
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="../js/api.js"></script>
@@ -139,23 +114,18 @@
                 token: localStorage.getItem('token') ? 'Exists' : 'Missing'
             });
 
-          // Current page and search term
-          let currentPage = 1;
-          let currentSearchTerm = '';
+            let currentPage = 1;
+            let currentSearchTerm = '';
 
             document.addEventListener('DOMContentLoaded', function () {
-                // Update authentication UI if the function is available
                 if (typeof updateAuthUI === 'function') {
                     updateAuthUI();
                 }
 
-
-                // Check if there is a search parameter in the URL
                 const urlParams = new URLSearchParams(window.location.search);
                 const searchParam = urlParams.get('search');
 
                 if (searchParam) {
-                    // Set the search input value
                     document.getElementById('searchInput').value = searchParam;
                     currentSearchTerm = searchParam;
                 }
@@ -175,27 +145,23 @@
                     }
                 });
 
-                 document.getElementById('postBtn').addEventListener('click', function () {
-                    // Only logged in users can create topics
+                document.getElementById('postBtn').addEventListener('click', function () {
                     if (!api.auth.isLoggedIn()) {
-                        // Show a nicer notification
                         const topicList = document.getElementById('topicList');
                         const currentContent = topicList.innerHTML;
 
                         topicList.innerHTML = `
-                    <div class="alert alert-warning">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        You need to log in to create a topic. 
-                        <a href="signin.html" class="alert-link">Sign in now</a>
-                    </div>
-                ` + currentContent;
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                You need to log in to create a topic. 
+                                <a href="signin.html" class="alert-link">Sign in now</a>
+                            </div>
+                        ` + currentContent;
 
-                        // Scroll to the top to show the message
                         topicList.scrollIntoView({ behavior: 'smooth' });
                         return;
                     }
 
-                    // Show the create topic modal
                     const modal = new bootstrap.Modal(document.getElementById('createTopicModal'));
                     modal.show();
                 });
@@ -203,23 +169,19 @@
                 document.getElementById('createTopicForm').addEventListener('submit', async function (e) {
                     e.preventDefault();
 
-                    // Get the UI elements
                     const submitBtn = document.querySelector('#createTopicModal button[type="submit"]');
                     const modalBody = document.querySelector('#createTopicModal .modal-body');
                     const originalBtnText = submitBtn.innerHTML;
 
-                    // Clear previous errors
                     modalBody.querySelectorAll('.alert').forEach(el => el.remove());
 
                     try {
-                        // 1. Get form data
                         const title = document.getElementById('topicTitle').value.trim();
                         const content = document.getElementById('topicContent').value.trim();
                         const description = document.getElementById('topicDescription').value.trim();
 
                         console.log('Form data ready:', { title, content, description });
 
-                        // 2. Validate (existing code is fine)
                         if (title.length < 5) {
                             throw new Error('Title must be at least 5 characters long');
                         }
@@ -228,11 +190,9 @@
                             throw new Error('Content must be at least 20 characters long');
                         }
 
-                        // 3. Show loading state
                         submitBtn.disabled = true;
                         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Creating...';
 
-                        // 4. Get the auth token
                         const token = localStorage.getItem('token');
                         if (!token) {
                             throw new Error('You must be logged in to create a topic');
@@ -240,7 +200,6 @@
 
                         console.log('Preparing to send request to:', api.API_URL + '/forum');
 
-                        // 5. Send the request with COMPLETE error handling
                         const response = await fetch(`${api.API_URL}/forum`, {
                             method: 'POST',
                             headers: {
@@ -252,32 +211,26 @@
 
                         console.log('Response received:', response.status);
 
-                        // 6. Handle non-JSON responses (critical error handling)
                         const contentType = response.headers.get('content-type');
                         if (!contentType || !contentType.includes('application/json')) {
                             console.error('Non-JSON response received:', await response.text());
                             throw new Error('Server returned an invalid response format. Check the console for details.');
                         }
 
-                        // 7. Parse the JSON response
                         const data = await response.json();
                         console.log('Response data:', data);
 
-                        // 8. Handle error responses
                         if (!response.ok) {
                             throw new Error(data.message || 'Failed to create topic');
                         }
 
                         console.log('Topic created successfully:', data);
 
-                        // 9. Success handling - close modal
                         const modal = bootstrap.Modal.getInstance(document.getElementById('createTopicModal'));
                         modal.hide();
 
-                        // 10. Reset the form
                         this.reset();
 
-                        // 11. Show success message
                         const topicList = document.getElementById('topicList');
                         const successAlert = document.createElement('div');
                         successAlert.className = 'alert alert-success alert-dismissible fade show';
@@ -287,11 +240,9 @@
                         `;
                         topicList.insertBefore(successAlert, topicList.firstChild);
 
-                        // 12. Reload topics
                         await loadTopics();
 
                     } catch (error) {
-                        // Better error display
                         console.error('Error creating topic:', error);
 
                         const errorDiv = document.createElement('div');
@@ -302,20 +253,14 @@
                         `;
                         modalBody.appendChild(errorDiv);
                     } finally {
-                        // Always restore button state
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = originalBtnText;
                     }
                 });
-
             });
 
-
-
-          // Replace the existing loadTopics function with this simplified version
             async function loadTopics() {
                 try {
-                    // Show loading state
                     const topicList = document.getElementById('topicList');
                     topicList.innerHTML = `
                         <div class="text-center py-3">
@@ -326,13 +271,11 @@
                         </div>
                     `;
 
-                    // Build query parameters - only include search now
                     let queryParams = '';
                     if (currentSearchTerm) {
                         queryParams = `search=${encodeURIComponent(currentSearchTerm)}`;
                     }
 
-                    // Add the queryParams to the URL only if we have any
                     const url = `${api.API_URL}/forum${queryParams ? '?' + queryParams : ''}`;
                     console.log("Fetching all topics from:", url);
 
@@ -342,7 +285,6 @@
                         }
                     });
 
-                    // Check content type
                     const contentType = response.headers.get('content-type');
                     if (!contentType || !contentType.includes('application/json')) {
                         throw new Error('Server returned invalid response format');
@@ -355,10 +297,8 @@
                         throw new Error(data.message || 'Failed to load topics');
                     }
 
-                    // Display topics
                     displayTopics(data.topics);
 
-                    // Add topic count
                     const countDiv = document.createElement('div');
                     countDiv.className = 'text-muted mb-3';
                     countDiv.innerHTML = `
@@ -382,30 +322,26 @@
                 }
             }
 
-        // Replace the entire displayTopics function with this consolidated version
             function displayTopics(topics) {
                 const topicList = document.getElementById('topicList');
 
                 if (!topics || topics.length === 0) {
                     topicList.innerHTML = `
-            <div class="alert alert-info">
-                <i class="fas fa-info-circle me-2"></i>
-                No topics found matching your criteria. Try adjusting your search or creating a new topic.
-            </div>
-        `;
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            No topics found matching your criteria. Try adjusting your search or creating a new topic.
+                        </div>
+                    `;
                     return;
                 }
 
-                // Clear container
                 topicList.innerHTML = '';
 
-                // Add each topic
                 topics.forEach(topic => {
                     const topicItem = document.createElement('a');
                     topicItem.className = 'list-group-item list-group-item-action';
                     topicItem.href = `subforum.html?id=${topic._id}`;
 
-                    // Format date
                     const date = new Date(topic.datePosted);
                     const formattedDate = date.toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -413,11 +349,9 @@
                         day: 'numeric'
                     });
 
-                    // Truncate content for preview
                     const contentPreview = topic.description || topic.content.substring(0, 100);
                     const showEllipsis = topic.content.length > 100 && !topic.description;
 
-                    // Create topic HTML with improved styling
                     topicItem.innerHTML = `
                         <div class="d-flex w-100 justify-content-between align-items-start">
                             <h5 class="mb-1">${topic.title}</h5>
@@ -434,75 +368,62 @@
                                 ${topic.replies ? topic.replies.length : 0} ${topic.replies && topic.replies.length === 1 ? 'Reply' : 'Replies'}
                             </small>
                             ${topic.status !== 'active' ?
-                                                `<span class="badge bg-${topic.status === 'locked' ? 'warning' : 'secondary'} ms-2">
+                                `<span class="badge bg-${topic.status === 'locked' ? 'warning' : 'secondary'} ms-2">
                                     ${topic.status === 'locked' ? 'Locked' : 'Archived'}
                                 </span>` :
-                                                ''}
+                                ''}
                         </div>
                     `;
 
                     topicList.appendChild(topicItem);
                 });
             }
-        
-
-               
-            
-
-
-
-          
-        
-
-
         </script>
 
-
-    <div class="modal fade" id="createTopicModal" tabindex="-1" aria-labelledby="createTopicModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="createTopicModalLabel">
-                        <i class="fas fa-plus-circle me-2"></i>Create New Topic
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="createTopicForm">
-                        <div class="mb-3">
-                            <label for="topicTitle" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="topicTitle" required
-                                placeholder="Enter a descriptive title for your topic">
-                        </div>
-                        <div class="mb-3">
-                            <label for="topicDescription" class="form-label">Short Description (optional)</label>
-                            <input type="text" class="form-control" id="topicDescription"
-                                placeholder="Brief summary of your topic (optional)">
-                        </div>
-                        <div class="mb-3">
-                            <label for="topicContent" class="form-label">Content</label>
-                            <textarea class="form-control" id="topicContent" rows="6" required
-                                placeholder="Share your thoughts, questions, or information..."></textarea>
-                        </div>
-                        <div class="form-text mb-3">
-                            <i class="fas fa-info-circle me-1"></i>
-                            Be respectful and follow community guidelines when posting.
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i>Cancel
-                    </button>
-                    <button type="submit" form="createTopicForm" class="btn btn-success">
-                        <i class="fas fa-paper-plane me-1"></i>Create Topic
-                    </button>
+        <div class="modal fade" id="createTopicModal" tabindex="-1" aria-labelledby="createTopicModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="createTopicModalLabel">
+                            <i class="fas fa-plus-circle me-2"></i>Create New Topic
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createTopicForm">
+                            <div class="mb-3">
+                                <label for="topicTitle" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="topicTitle" required
+                                    placeholder="Enter a descriptive title for your topic">
+                            </div>
+                            <div class="mb-3">
+                                <label for="topicDescription" class="form-label">Short Description (optional)</label>
+                                <input type="text" class="form-control" id="topicDescription"
+                                    placeholder="Brief summary of your topic (optional)">
+                            </div>
+                            <div class="mb-3">
+                                <label for="topicContent" class="form-label">Content</label>
+                                <textarea class="form-control" id="topicContent" rows="6" required
+                                    placeholder="Share your thoughts, questions, or information..."></textarea>
+                            </div>
+                            <div class="form-text mb-3">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Be respectful and follow community guidelines when posting.
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </button>
+                        <button type="submit" form="createTopicForm" class="btn btn-success">
+                            <i class="fas fa-paper-plane me-1"></i>Create Topic
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="../js/session-manager.js"></script>
+        <script src="../js/session-manager.js"></script>
     </body>
-    
 </html>
