@@ -66,87 +66,6 @@
         </div>
       </nav>
 
-    <!-- Filter Modal
-    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="filterModalLabel">Filter Condos</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="filterForm"> -->
-                        <!-- Location Input -->
-                        <!-- <div class="mb-3">
-                            <label for="locationInput" class="form-label">Location</label>
-                            <input type="text" class="form-control" id="locationInput" placeholder="Enter location">
-                        </div> -->
-
-                        <!-- Amenities Checkboxes -->
-                        <!-- <div class="row"> -->
-                            <!-- Left Column -->
-                            <!-- <div class="col-md-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="wifi">
-                                    <label class="form-check-label" for="wifi">WiFi</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="gym">
-                                    <label class="form-check-label" for="gym">Fitness Center</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="game">
-                                    <label class="form-check-label" for="game">Game Room</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="laundry">
-                                    <label class="form-check-label" for="laundry">Laundry Area</label>
-                                </div>
-                            </div> -->
-                        
-                            <!-- Right Column (New Checkboxes) -->
-                            <!-- <div class="col-md-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="pool">
-                                    <label class="form-check-label" for="pool">Swimming Pool</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="study">
-                                    <label class="form-check-label" for="study">Study Hall</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="garden">
-                                    <label class="form-check-label" for="garden">Sky Garden</label>
-                                </div>
-                            </div>
-                        </div> -->
-
-                        <!-- Rating Filter -->
-                        <!-- <div class="mb-3">
-                            <label for="ratingSelect" class="form-label">Sort by Rating</label>
-                            <select class="form-select" id="ratingSelect">
-                                <option value="">Any</option>
-                                <option value="desc">Highest to Lowest</option>
-                                <option value="asc">Lowest to Highest</option>
-                            </select>
-                        </div> -->
-
-                        <!-- Distance Filter -->
-                        <!-- <div class="mb-3">
-                            <label for="distanceInput" class="form-label">Max Distance (km)</label>
-                            <input type="number" class="form-control" id="distanceInput" placeholder="Enter max distance" min="0">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" class="btn btn-outline-dark fw-bold border-1 px-4" id="clearFiltersBtn">Clear</button>
-                    <button type="button" class="btn btn-success" id="applyFilterBtn">Apply Filters</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-
 
     <div class="container mt-4 py-5">
         <div class="row">
@@ -158,9 +77,6 @@
                 <button class="btn btn-success rounded-end" type="button" id="searchBtn">
                     <i class="fas fa-search"></i>
                 </button>
-                <!-- <button class="btn btn-outline-success rounded-pill ms-2 fw-bold px-4" id="filterBtn" data-bs-toggle="modal" data-bs-target="#filterModal">
-                    Filter
-                </button> -->
                 </div>
             </div>
 
@@ -180,30 +96,22 @@
             <!-- Housing Forum Section -->
             <div class="sidebar-section">
                 <h4>Housing Forum</h4>
-                <p><strong>Best dorms at DLSU?</strong><br>Vista Taft Residences... <a href="#" class="text-success">See more</a></p>
-                <p><strong>Worst dorms at DLSU?</strong><br>Green Residences by... <a href="#" class="text-success">See more</a></p>
-                <p><strong>Best freshmen dorms?</strong><br>Vista Taft Residences... <a href="#" class="text-success">See more</a></p>
+                <div id="forumTopics">
+                    <div class="text-center py-2">
+                        <div class="spinner-border spinner-border-sm text-success" role="status">
+                            <span class="visually-hidden">Loading topics...</span>
+                        </div>
+                        <p class="small text-muted mb-0">Loading forum topics...</p>
+                    </div>
+                </div>
                 <a href="forum.html" class="text-success">View All</a>
-            </div>
-
-            <!-- Links Section -->
-            <div class="sidebar-section mt-3">
-                <h4>Links</h4>
-                <ul>
-                <li><a href="#" class="text-success">Best DLSU Dorms (For Food)</a></li>
-                <li><a href="#" class="text-success">Guide to DLSU Housing</a></li>
-                <li><a href="#" class="text-success">Guide to DLSU's Freshman Dorms</a></li>
-                <li><a href="#" class="text-success">De La Salle University Dorms Ranked</a></li>
-                <li><a href="#" class="text-success">Best De La Salle University Dorms</a></li>
-                </ul>
-            </div>
-            </div>    
+            </div> 
         </div>
 
         <!-- Pagination -->
         <div class="d-flex justify-content-center mt-4">
             <div class="pagination" id="paginationContainer">
-                <!-- Pagination links will be inserted here -->
+            
             </div>
         </div>
     </div>
@@ -253,8 +161,11 @@
                     loadCondos();
                 }
             });
-        });
 
+            loadForumTopics();
+        });
+        
+        
         // Function to load condos from API
         async function loadCondos() {
             try {
@@ -299,6 +210,83 @@
                 `;
             }
         }
+
+        async function loadForumTopics() {
+                try {
+                    const topicsContainer = document.getElementById('forumTopics');
+
+                    // Fetch topics from API
+                    const response = await fetch(`${api.API_URL}/forum`);
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Failed to load forum topics');
+                    }
+
+                    // Filter for housing/dorm related topics by looking for keywords in titles
+                    const housingKeywords = ['dorm', 'condo', 'housing', 'residence', 'apartment', 'room', 'rent', 'taft'];
+
+                    // Sort by date (newest first) and filter for relevant topics
+                    const topics = data.topics
+                        .sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted))
+                        .filter(topic => {
+                            const title = topic.title.toLowerCase();
+                            return housingKeywords.some(keyword => title.includes(keyword.toLowerCase()));
+                        })
+                        .slice(0, 4); // Take top 3 most recent relevant topics
+
+                    if (topics.length === 0) {
+                        // If no relevant topics found, just take the 3 most recent topics
+                        topics = data.topics
+                            .sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted))
+                            .slice(0, 3);
+                    }
+
+                    // Clear loading state
+                    topicsContainer.innerHTML = '';
+
+                    // Handle empty state
+                    if (topics.length === 0) {
+                        topicsContainer.innerHTML = `
+        <p class="text-muted small">No forum topics found.</p>
+      `;
+                        return;
+                    }
+
+                    // Display each topic
+                    topics.forEach(topic => {
+                        // Get excerpt from content or description
+                        const excerpt = (topic.description || topic.content || '')
+                            .substring(0, 50)
+                            .trim() + '...';
+
+                        const topicElement = document.createElement('div');
+                        topicElement.className = 'mb-3';
+                        topicElement.innerHTML = `
+        <p class="mb-1">
+          <strong>
+            <a href="subforum.html?id=${topic._id}" class="text-dark">
+              ${topic.title}
+            </a>
+          </strong>
+          <br>
+          <span class="text-muted small">${excerpt}</span>
+          <a href="subforum.html?id=${topic._id}" class="text-success">See more</a>
+        </p>
+      `;
+
+                        topicsContainer.appendChild(topicElement);
+                    });
+
+                } catch (error) {
+                    console.error('Error loading forum topics:', error);
+                    document.getElementById('forumTopics').innerHTML = `
+      <div class="alert alert-danger p-2 small">
+        <i class="fas fa-exclamation-circle"></i> Error loading topics
+      </div>
+    `;
+                }
+            }
 
         // Function to display condos in the UI
         function displayCondos(condos) {
@@ -409,5 +397,7 @@
         }
     </script>
     <script src="../js/session-manager.js"></script>
+
+    
 </body>
 </html>
