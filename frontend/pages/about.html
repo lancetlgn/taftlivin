@@ -1,196 +1,494 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="About TaftLivin' - A platform for DLSU students to review and explore dormitories and condominiums near Taft Avenue.">
-    <meta name="generator" content="Hugo 0.84.0">
-    <title>About TaftLivin'</title>
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
-    <link rel="stylesheet" href="../style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  </head>
-  <body>
-    <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="../index.html">TaftLivin'</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav me-auto mb-2 mb-md-0">
-            <li class="nav-item">
-              <a class="nav-link" href="../index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="about.html">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="condos.html">Condos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="forum.html">Forum</a>
-            </li>
-          </ul>
-          
-          <!-- Right side of navbar -->
-          <ul class="navbar-nav">
 
-              <!-- Admin-only menu item -->
-              <li class="nav-item admin-only d-none">
-                <a class="nav-link text-warning" href="admin-dashboard.html">Dashboard</a>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+    content="About TaftLivin' - A platform for DLSU students to review and explore dormitories and condominiums near Taft Avenue.">
+  <meta name="generator" content="Hugo 0.84.0">
+  <title>About TaftLivin'</title>
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
+  <link rel="stylesheet" href="../style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    .tech-card {
+      height: 100%;
+      transition: transform 0.2s;
+    }
+
+    .tech-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .tech-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: #198754;
+    }
+
+    .tech-category {
+      background-color: rgba(25, 135, 84, 0.1);
+      border-left: 4px solid #198754;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+      border-radius: 0 4px 4px 0;
+    }
+  </style>
+  <style>
+    /* Developer section styling */
+    .dev-section {
+      padding: 3rem 0;
+      background-color: #f8f9fa;
+      border-radius: 12px;
+      margin: 3rem 0;
+    }
+  
+    .dev-profile {
+      text-align: center;
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease;
+    }
+
+  
+    .dev-image {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      object-fit: cover;
+      border: 6px solid white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+    }
+  
+    .dev-profile:hover .dev-image {
+      box-shadow: 0 8px 25px rgba(25, 135, 84, 0.25);
+      transform: scale(1.05);
+    }
+  
+    .dev-name {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0.3rem;
+      font-size: 1.25rem;
+    }
+  
+    .dev-role {
+      color: #198754;
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+  
+    .dev-email {
+      color: #6c757d;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+  
+    .dev-social {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+  
+    .dev-social a {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+      color: #198754;
+      border: 1px solid rgba(25, 135, 84, 0.2);
+      transition: all 0.3s ease;
+    }
+
+  
+    .section-heading {
+      position: relative;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+  
+    .section-heading:after {
+      content: "";
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background-color: #198754;
+      border-radius: 2px;
+    }
+  </style>
+
+  <style>
+    /* Updated developer section styling for fluid container */
+    .dev-section {
+      padding: 3rem 0;
+      background-color: #f8f9fa;
+      margin: 3rem 0;
+      /* Removed border-radius for full-width effect */
+    }
+  
+    /* Add some breathing room on mobile */
+    @media (max-width: 768px) {
+      .dev-section .container-fluid {
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+    }
+  
+    /* Enhanced section heading for full width */
+    .section-heading {
+      position: relative;
+      margin-bottom: 3rem;
+      text-align: center;
+      padding-bottom: 1rem;
+    }
+  
+    .section-heading:after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background-color: #198754;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-success fw-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="../index.html">TaftLivin'</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="../index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="about.html">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="condos.html">Condos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="forum.html">Forum</a>
+          </li>
+        </ul>
+
+        <!-- Right side of navbar -->
+        <ul class="navbar-nav">
+          <!-- Admin-only menu item -->
+          <li class="nav-item admin-only d-none">
+            <a class="nav-link text-warning" href="admin-dashboard.html">Dashboard</a>
+          </li>
+          <!-- Show when logged out -->
+          <li class="nav-item logged-out-only">
+            <a class="nav-link auth-btn signin-btn" href="signin.html">Sign In</a>
+          </li>
+          <li class="nav-item logged-out-only">
+            <a class="nav-link auth-btn signup-btn" href="signup.html">Sign Up</a>
+          </li>
+
+          <!-- Show when logged in -->
+          <li class="nav-item dropdown logged-in-only d-none">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+              Welcome, <span class="username-display">User</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
+              <li>
+                <hr class="dropdown-divider">
               </li>
-            <!-- Show when logged out -->
-            <li class="nav-item logged-out-only">
-              <a class="nav-link auth-btn signin-btn" href="signin.html">Sign In</a>
-            </li>
-            <li class="nav-item logged-out-only">
-              <a class="nav-link auth-btn signup-btn" href="signup.html">Sign Up</a>
-            </li>
-            
-            <!-- Show when logged in -->
-            <li class="nav-item dropdown logged-in-only d-none">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                Welcome, <span class="username-display">User</span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+              <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <main class="container my-5 pt-5"></main>
-      <div class="row">
-        <div class="col-lg-8 mx-auto text-center">
-          <h1 class="display-4 fw-bold mb-4">About <span class="text-success">TaftLivin'</span></h1>
-          <p class="lead mb-4">
-            In the busy environment in the heart of Taft Avenue, most DLSU Manila students may opt to stay in nearby condominiums or dorms to balance their academic responsibilities with convenience and avoid commuting through Manila's harsh traffic. However, choosing the right accommodations can be a daunting task due to the myriad of options and varying living/budget conditions. TaftLivin' aims to fill this gap by offering a centralized platform where students can share their detailed experiences about dorm life in a more accessible way.
-          </p>
-          <p class="mb-4">
-            Our web application, "DLSU Rate My Dorm," empowers students by providing detailed insights into dorm life and enhancing the overall student living experience. With features like user accounts, interactive dorm maps, search and filter functionality, and community discussion boards, TaftLivin' is your go-to platform for making informed decisions about accommodations near DLSU.
-          </p>
-        </div>
+  <main class="container my-5 pt-5">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1 class="display-4 fw-bold mb-4">About <span class="text-success">TaftLivin'</span></h1>
+        <p class="lead mb-4">
+          In the busy environment in the heart of Taft Avenue, most DLSU Manila students may opt to stay in nearby
+          condominiums or dorms to balance their academic responsibilities with convenience and avoid commuting through
+          Manila's harsh traffic. However, choosing the right accommodations can be a daunting task due to the myriad of
+          options and varying living/budget conditions. TaftLivin' aims to fill this gap by offering a centralized
+          platform where students can share their detailed experiences about dorm life in a more accessible way.
+        </p>
+        <p class="mb-4">
+          Our web application, "DLSU Rate My Dorm," empowers students by providing detailed insights into dorm life and
+          enhancing the overall student living experience. With features like user accounts, interactive dorm maps,
+          search and filter functionality, and community discussion boards, TaftLivin' is your go-to platform for making
+          informed decisions about accommodations near DLSU.
+        </p>
       </div>
+    </div>
 
-      <div class="row my-5 py-2">
-        <div class="col-lg-12">
-          <h2 class="text-center mb-4">Meet the Developers</h2>
-          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-            <!-- Lance Tulagan -->
-            <div class="col">
-              <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Lance Tulagan</h5>
-                  <p class="card-text">lance_tulagan@dlsu.edu.ph</p>
-                  <div class="d-flex justify-content-center gap-3">
-                    <a href="https://facebook.com/lance.tulagan" class="text-decoration-none text-success" target="_blank">
-                      <i class="fab fa-facebook fa-lg"></i>
-                    </a>
-                    <a href="mailto:lance_tulagan@dlsu.edu.ph" class="text-decoration-none text-success" target="_blank">
-                      <i class="fas fa-envelope fa-lg"></i>
-                    </a>
-                    <a href="https://github.com/lance-tulagan" class="text-decoration-none text-success" target="_blank">
-                      <i class="fab fa-github fa-lg"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Ivan Boado -->
-            <div class="col">
-              <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Ivan Boado</h5>
-                  <p class="card-text">jorem_boado@dlsu.edu.ph</p>
-                  <div class="d-flex justify-content-center gap-3">
-                    <a href="https://facebook.com/ivan.boado" class="text-decoration-none text-success" target="_blank">
-                      <i class="fab fa-facebook fa-lg"></i>
-                    </a>
-                    <a href="mailto:jorem_boado@dlsu.edu.p" class="text-decoration-none text-success" target="_blank">
-                      <i class="fas fa-envelope fa-lg"></i>
-                    </a>
-                    <a href="https://github.com/ivan-boado" class="text-decoration-none text-success" target="_blank">
-                      <i class="fab fa-github fa-lg"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Yuyang Guo -->
-            <div class="col">
-              <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Yuyang Guo</h5>
-                  <p class="card-text">yuyang_guo@dlsu.edu.ph</p>
-                  <div class="d-flex justify-content-center gap-3">
-                    <a href="https://facebook.com/yuyang.guo" class="text-decoration-none text-success" target="_blank">
-                      <i class="fab fa-facebook fa-lg"></i>
-                    </a>
-                    <a href="mailto:yuyang_guo@dlsu.edu.ph" class="text-decoration-none text-success" target="_blank">
-                      <i class="fas fa-envelope fa-lg"></i>
-                    </a>
-                    <a href="https://github.com/yuyang-guo" class="text-decoration-none text-success" target="_blank">
-                      <i class="fab fa-github fa-lg"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Mark Pineda -->
-            <div class="col">
-              <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Mark Pineda</h5>
-                  <p class="card-text">mark_pineda@dlsu.edu.ph</p>
-                  <div class="d-flex justify-content-center gap-3">
-                    <a href="https://facebook.com/mark.pineda" class="text-decoration-none text-success" target="_blank">
-                      <i class="fab fa-facebook fa-lg"></i>
-                    </a>
-                    <a href="mailto:mark_pineda@dlsu.edu.cph" class="text-decoration-none text-success" target="_blank">
-                      <i class="fas fa-envelope fa-lg"></i>
-                    </a>
-                    <a href="https://github.com/mark-pineda" class="text-decoration-none text-success" target="_blank">
-                      <i class="fab fa-github fa-lg"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <footer class="bg-dark text-white py-4 ">
-      <div class="container text-center">
+    <div class="dev-section">
+      <div class="container-fluid px-md-5">
+        <h2 class="section-heading">Meet Our Team</h2>
         <div class="row">
-          <div class="col-md-6 text-md-start mb-3 mb-md-0">
-            <p class="mb-0">&copy; 2025 TaftLivin'. All rights reserved.</p>
+          <!-- Lance Tulagan -->
+          <div class="col-md-6 col-lg-3">
+            <div class="dev-profile">
+              <div class="dev-image">
+                <img src="../images/anonymous.png" alt="Lance Tulagan" class="img-fluid">
+              </div>
+              <h3 class="dev-name">Lance Tulagan</h3>
+              <p class="dev-role">Developer</p>
+              <p class="dev-email">lance_tulagan@dlsu.edu.ph</p>
+              <div class="dev-social">
+                <a href="https://facebook.com/lance.tulagan" target="_blank" aria-label="Facebook">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="mailto:lance_tulagan@dlsu.edu.ph" aria-label="Email">
+                  <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://github.com/lance-tulagan" target="_blank" aria-label="GitHub">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
           </div>
-          <div class="col-md-6 text-md-end">
-            <a href="#" class="text-white me-3">Privacy Policy</a>
-            <a href="#" class="text-white me-3">Terms of Service</a>
-            <a href="#" class="text-white">Contact Us</a>
+    
+          <!-- Ivan Boado -->
+          <div class="col-md-6 col-lg-3">
+            <div class="dev-profile">
+              <div class="dev-image">
+                <img src="../images/anonymous.png" alt="Ivan Boado" class="img-fluid">
+              </div>
+              <h3 class="dev-name">Ivan Boado</h3>
+              <p class="dev-role">Developer</p>
+              <p class="dev-email">jorem_boado@dlsu.edu.ph</p>
+              <div class="dev-social">
+                <a href="https://facebook.com/ivan.boado" target="_blank" aria-label="Facebook">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="mailto:jorem_boado@dlsu.edu.ph" aria-label="Email">
+                  <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://github.com/ivan-boado" target="_blank" aria-label="GitHub">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+    
+          <!-- Yuyang Guo -->
+          <div class="col-md-6 col-lg-3">
+            <div class="dev-profile">
+              <div class="dev-image">
+                <img src="../images/anonymous.png" alt="Yuyang Guo" class="img-fluid">
+              </div>
+              <h3 class="dev-name">Yuyang Guo</h3>
+              <p class="dev-role">Developer</p>
+              <p class="dev-email">yuyang_guo@dlsu.edu.ph</p>
+              <div class="dev-social">
+                <a href="https://facebook.com/yuyang.guo" target="_blank" aria-label="Facebook">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="mailto:yuyang_guo@dlsu.edu.ph" aria-label="Email">
+                  <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://github.com/yuyang-guo" target="_blank" aria-label="GitHub">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+    
+          <!-- Mark Pineda -->
+          <div class="col-md-6 col-lg-3">
+            <div class="dev-profile">
+              <div class="dev-image">
+                <img src="../images/anonymous.png" alt="Mark Pineda" class="img-fluid">
+              </div>
+              <h3 class="dev-name">Mark Pineda</h3>
+              <p class="dev-role">Developer</p>
+              <p class="dev-email">mark_pineda@dlsu.edu.ph</p>
+              <div class="dev-social">
+                <a href="https://facebook.com/mark.pineda" target="_blank" aria-label="Facebook">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="mailto:mark_pineda@dlsu.edu.ph" aria-label="Email">
+                  <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://github.com/mark-pineda" target="_blank" aria-label="GitHub">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </footer>
+    </div>
+
+  
+
+    <!-- Technologies Section -->
+    <div class="row my-5">
+      <div class="col-lg-12">
+        <h2 class="text-center mb-4">Technologies Used</h2>
+
+        <h4 class="tech-category">Frontend Libraries</h4>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5">
+          <div class="col">
+            <div class="card tech-card">
+              <div class="card-body text-center">
+                <i class="fab fa-bootstrap tech-icon"></i>
+                <h5 class="card-title">Bootstrap 5.0.2</h5>
+                <p class="card-text small">Frontend framework for responsive web design</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card tech-card">
+              <div class="card-body text-center">
+                <i class="fab fa-js tech-icon"></i>
+                <h5 class="card-title">jQuery 3.6.0</h5>
+                <p class="card-text small">JavaScript library for DOM manipulation</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card tech-card">
+              <div class="card-body text-center">
+                <i class="fab fa-font-awesome tech-icon"></i>
+                <h5 class="card-title">Font Awesome 6.0.0</h5>
+                <p class="card-text small">Icon library and toolkit</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card tech-card">
+              <div class="card-body text-center">
+                <i class="fas fa-images tech-icon"></i>
+                <h5 class="card-title">Lightbox2</h5>
+                <p class="card-text small">JavaScript lightbox library for images</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="tech-category">Backend NPM Packages</h4>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+          <div class="col">
+            <div class="card tech-card">
+              <div class="card-body text-center">
+                <i class="fab fa-node-js tech-icon"></i>
+                <h5 class="card-title">Express.js</h5>
+                <p class="card-text small">Web application framework for Node.js</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card tech-card">
+              <div class="card-body text-center">
+                <i class="fas fa-database tech-icon"></i>
+                <h5 class="card-title">MongoDB/Mongoose</h5>
+                <p class="card-text small">NoSQL database and ODM</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card tech-card">
+              <div class="card-body text-center">
+                <i class="fas fa-lock tech-icon"></i>
+                <h5 class="card-title">bcryptjs</h5>
+                <p class="card-text small">Password hashing library</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card tech-card">
+              <div class="card-body text-center">
+                <i class="fas fa-key tech-icon"></i>
+                <h5 class="card-title">jsonwebtoken</h5>
+                <p class="card-text small">JWT implementation for authentication</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card tech-card">
+              <div class="card-body text-center">
+                <i class="fas fa-exchange-alt tech-icon"></i>
+                <h5 class="card-title">cors</h5>
+                <p class="card-text small">Cross-Origin Resource Sharing middleware</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card tech-card">
+              <div class="card-body text-center">
+                <i class="fas fa-file-upload tech-icon"></i>
+                <h5 class="card-title">multer</h5>
+                <p class="card-text small">Middleware for handling file uploads</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card tech-card">
+              <div class="card-body text-center">
+                <i class="fas fa-cog tech-icon"></i>
+                <h5 class="card-title">dotenv</h5>
+                <p class="card-text small">Environment variable management</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card tech-card">
+              <div class="card-body text-center">
+                <i class="fas fa-sync-alt tech-icon"></i>
+                <h5 class="card-title">nodemon</h5>
+                <p class="card-text small">Development utility for auto-restarting</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="../js/auth-ui.js"></script>
-    <script src="../js/session-manager.js"></script>
-    
+  </main>
 
-  </body>
+  <footer class="bg-dark text-white py-4">
+    <div class="container text-center">
+      <div class="row">
+        <div class="col-md-6 text-md-start mb-3 mb-md-0">
+          <p class="mb-0">&copy; 2025 TaftLivin'. All rights reserved.</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <a href="#" class="text-white me-3">Privacy Policy</a>
+          <a href="#" class="text-white me-3">Terms of Service</a>
+          <a href="#" class="text-white">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth-ui.js"></script>
+  <script src="../js/session-manager.js"></script>
+</body>
+
 </html>
