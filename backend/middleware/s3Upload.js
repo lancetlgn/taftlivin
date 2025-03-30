@@ -3,21 +3,28 @@ const multerS3 = require('multer-s3');
 const { S3Client } = require('@aws-sdk/client-s3');
 const path = require('path');
 
-// Add debug logging for AWS configuration
-console.log('S3 Middleware Initializing');
-console.log('AWS Region:', process.env.AWS_REGION);
-console.log('AWS Bucket:', process.env.AWS_BUCKET_NAME);
+// Check for required environment variables
+if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
+  console.error('Missing AWS credentials in environment variables');
+}
 
-// Create S3 client
+// Debug logging (redacted for security)
+console.log('S3 Middleware - AWS Region:', process.env.AWS_REGION);
+console.log('S3 Middleware - AWS Bucket:', process.env.AWS_BUCKET_NAME);
+console.log('S3 Middleware - AWS Access Key configured:', !!process.env.AWS_ACCESS_KEY_ID);
+console.log('S3 Middleware - AWS Secret Key configured:', !!process.env.AWS_SECRET_ACCESS_KEY);
+
+// Create S3 client with clean configuration
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-  }
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID.trim(),
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY.trim()
+  },
+  forcePathStyle: false  // This should be false for standard S3 URLs
 });
 
-// Configure multer with S3 storage
+// Configure upload with error handling
 const upload = multer({
   storage: multerS3({
     s3: s3Client,
@@ -28,20 +35,28 @@ const upload = multer({
       cb(null, { fieldname: file.fieldname });
     },
     key: function (req, file, cb) {
-      let folder = 'general';
-      
-      if (file.fieldname === 'mainImage') {
-        folder = 'condos/main';
-      } else if (file.fieldname === 'galleryImages') {
-        folder = 'condos/gallery';
-      } else if (file.fieldname === 'profilePicture') {
-        folder = 'users/profile';
-      } else if (file.fieldname === 'testImage') {
-        folder = 'test';
+      try {
+        let folder = 'general';
+        
+        // Determine folder based on field name
+        if (file.fieldname === 'mainImage') {
+          folder = 'condos/main';
+        } else if (file.fieldname === 'galleryImages') {
+          folder = 'condos/gallery';
+        } else if (file.fieldname === 'profilePicture') {
+          folder = 'users/profile';
+        } else if (file.fieldname === 'testImage') {
+          folder = 'test';
+        }
+        
+        const safeFilename = file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const filename = `${folder}/${Date.now()}-${safeFilename}`;
+        console.log('Uploading to S3 path:', filename);
+        cb(null, filename);
+      } catch (error) {
+        console.error('Error generating S3 key:', error);
+        cb(error);
       }
-      
-      const filename = `${folder}/${Date.now()}-${path.basename(file.originalname)}`;
-      cb(null, filename);
     }
   }),
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
