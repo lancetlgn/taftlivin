@@ -127,7 +127,8 @@ router.post('/upload/profile-picture', protect, upload.single('profilePicture'),
       return res.status(404).json({ message: 'User not found' });
     }
     
-    // S3 returns the full URL in req.file.location
+    // Make sure to use location for AWS S3 URLs
+    console.log('S3 upload file info:', req.file); // Log to debug
     const fileUrl = req.file.location;
     
     user.profilePicture = fileUrl;
@@ -142,5 +143,6 @@ router.post('/upload/profile-picture', protect, upload.single('profilePicture'),
     res.status(500).json({ message: error.message });
   }
 });
+
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const API_URL = 'https://taftlivin-api.onrender.com/api';
+window.API_URL = window.API_URL || 'https://taftlivin-api.onrender.com/api';
 const auth = {
     // Register a new user
     register: async (userData) => {

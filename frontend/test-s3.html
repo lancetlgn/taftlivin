@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>S3 Upload Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            background-color: #f5f5f5;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Test AWS S3 Upload</h2>
+
+    <div>
+        <button id="configBtn" type="button">Check S3 Config</button>
+        <pre id="configResult"></pre>
+    </div>
+
+    <hr>
+
+    <form id="uploadForm">
+        <div>
+            <input type="file" id="testImage" name="testImage" accept="image/*">
+        </div>
+        <button type="submit" style="margin-top: 10px;">Upload to S3</button>
+    </form>
+
+    <div id="result" class="result" style="display: none;">
+        <h3>Upload Result:</h3>
+        <div id="status"></div>
+        <div id="imagePreview" style="margin-top: 10px;"></div>
+        <h4>Response Details:</h4>
+        <pre id="details"></pre>
+    </div>
+
+    <script>
+        // Config check
+        document.getElementById('configBtn').addEventListener('click', async function () {
+            const configResult = document.getElementById('configResult');
+            configResult.textContent = 'Loading config...';
+
+            try {
+                const response = await fetch('/api/debug/s3-config');
+                const data = await response.json();
+                configResult.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                configResult.textContent = `Error: ${error.message}`;
+            }
+        });
+
+        // Upload form
+        document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const resultDiv = document.getElementById('result');
+            const statusDiv = document.getElementById('status');
+            const previewDiv = document.getElementById('imagePreview');
+            const detailsDiv = document.getElementById('details');
+
+            resultDiv.style.display = 'block';
+            statusDiv.innerHTML = 'Uploading...';
+            previewDiv.innerHTML = '';
+            detailsDiv.textContent = '';
+
+            const formData = new FormData();
+            const fileInput = document.getElementById('testImage');
+
+            if (!fileInput.files.length) {
+                statusDiv.innerHTML = '<span style="color: red;">Please select a file first</span>';
+                return;
+            }
+
+            formData.append('testImage', fileInput.files[0]);
+
+            try {
+                const response = await fetch('/api/test-s3-upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    statusDiv.innerHTML = '<span style="color: green;">✓ Success! File uploaded to S3</span>';
+                    previewDiv.innerHTML = `<img src="${data.fileUrl}" alt="Uploaded image">`;
+                    detailsDiv.textContent = JSON.stringify(data, null, 2);
+                } else {
+                    statusDiv.innerHTML = `<span style="color: red;">✗ Error: ${data.message}</span>`;
+                    detailsDiv.textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<span style="color: red;">✗ Error: ${error.message}</span>`;
+            }
+        });
+    </script>
+</body>
+
+</html>
