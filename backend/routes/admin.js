@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Condo = require('../models/Condo');
-const upload = require('../middleware/upload');
+const upload = require('../middleware/s3Upload');
 const { protect, admin } = require('../middleware/auth');
 
 // Admin middleware - checks if user is admin
@@ -373,34 +373,36 @@ router.delete('/condos/:id', async (req, res) => {
   }
 });
 
-// Upload main condo image
-router.post('/upload/condo/main', upload.single('mainImage'), async (req, res) => {
+// Update your main image upload route
+router.post('/upload/condo/main', protect, admin, upload.single('mainImage'), async (req, res) => {
   try {
-      if (!req.file) {
-          return res.status(400).json({ message: 'No file uploaded' });
-      }
-      
-      const fileUrl = `/uploads/condos/main/${req.file.filename}`;
-
-      res.json({ fileUrl });
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+    
+    // S3 returns the full URL in req.file.location
+    const fileUrl = req.file.location;
+    
+    res.json({ fileUrl });
   } catch (error) {
-
-      res.status(500).json({ message: error.message });
+    console.error('Error uploading main image:', error);
+    res.status(500).json({ message: error.message });
   }
 });
 
-// for uploading gallery images
-router.post('/upload/condo/gallery', upload.array('galleryImages', 4), async (req, res) => {
+// Update your gallery images upload route
+router.post('/upload/condo/gallery', protect, admin, upload.array('galleryImages', 4), async (req, res) => {
   try {
-      if (!req.files || req.files.length === 0) {
-          return res.status(400).json({ message: 'No files uploaded' });
-      }
-      
-      // return url paths
-      const fileUrls = req.files.map(file => `/uploads/condos/gallery/${file.filename}`);
-      res.json({ fileUrls });
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: 'No files uploaded' });
+    }
+    
+    // Return URL paths from S3
+    const fileUrls = req.files.map(file => file.location);
+    res.json({ fileUrls });
   } catch (error) {
-      res.status(500).json({ message: error.message });
+    console.error('Error uploading gallery images:', error);
+    res.status(500).json({ message: error.message });
   }
 });
 

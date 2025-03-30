@@ -443,9 +443,8 @@
                 imageElement.src = data.fileUrl;
              
                 const user = JSON.parse(localStorage.getItem('user'));
-                if (user) {
-                    user.profilePicture = data.fileUrl;
-                    localStorage.setItem('user', JSON.stringify(user));
+                if (user.profilePicture) {
+                    displayProfileImage(user.profilePicture);
                 }
                 
             
@@ -511,6 +510,19 @@
         alert(message);
     }
 }
+
+    function displayProfileImage(imageUrl) {
+        const profileImg = document.getElementById('profile-image');
+        if (profileImg) {
+            if (imageUrl) {
+                // AWS S3 URLs are already absolute URLs
+                profileImg.src = imageUrl;
+            } else {
+                profileImg.src = '../images/default-avatar.png';
+            }
+        }
+    }
+
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
