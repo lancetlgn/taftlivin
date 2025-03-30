@@ -68,15 +68,11 @@ if (!fs.existsSync(profilePicsDir)) {
 
 
 
-// Profile picture upload route
-router.post('/upload/profile-picture', protect, (req, res, next) => {
-    console.log('Profile picture upload endpoint accessed');
-    console.log('Authorization header present:', !!req.headers.authorization);
-    next();
-}, s3Upload.single('profilePicture'), async (req, res) => {
+// Profile picture upload route - SIMPLIFIED VERSION
+router.post('/upload/profile-picture', protect, s3Upload.single('profilePicture'), async (req, res) => {
     try {
-        console.log('S3 middleware completed');
-        console.log('req.file:', req.file);
+        console.log('Profile picture upload handler called');
+        console.log('Request file:', req.file);
         
         if (!req.file) {
             console.log('No file uploaded');
@@ -85,20 +81,12 @@ router.post('/upload/profile-picture', protect, (req, res, next) => {
         
         const user = await User.findById(req.user._id);
         if (!user) {
-            console.log('User not found:', req.user._id);
             return res.status(404).json({ message: 'User not found' });
         }
         
-        // Get file URL from S3
-        let fileUrl;
-        
-        if (req.file.location) {
-            // If location is available (original behavior)
-            fileUrl = req.file.location;
-        } else {
-            // Construct the URL from key if location is not available
-            fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${req.file.key}`;
-        }
+        // Get file URL from S3 - use the same approach that works for admin uploads
+        const fileUrl = req.file.location || 
+                        `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${req.file.key}`;
         
         console.log('File uploaded to S3:', fileUrl);
         
@@ -110,8 +98,8 @@ router.post('/upload/profile-picture', protect, (req, res, next) => {
             message: 'Profile picture updated successfully' 
         });
     } catch (error) {
-        console.error('Error in profile picture upload handler:', error);
-        res.status(500).json({ error: true, message: error.message });
+        console.error('Profile upload error:', error);
+        res.status(500).json({ message: error.message });
     }
 });
 
