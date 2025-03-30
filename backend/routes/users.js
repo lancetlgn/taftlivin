@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const { protect } = require('../middleware/auth');
-const upload = require('../middleware/s3Upload');
 const path = require('path');
 const s3Upload = require('../middleware/s3Upload');
 const fs = require('fs');
@@ -68,28 +67,6 @@ if (!fs.existsSync(profilePicsDir)) {
 
 
 
-// Change password
-router.post('/change-password', protect, async (req, res) => {
-  try {
-    const { currentPassword, newPassword } = req.body;
-    
-    const user = await User.findById(req.user._id);
-    
-    const isMatch = await user.comparePassword(currentPassword);
-    
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Current password is incorrect' });
-    }
-    
-    user.password = newPassword;
-    await user.save();
-    
-    res.json({ message: 'Password updated successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
 
 // Profile picture upload route
 router.post('/upload/profile-picture', protect, (req, res, next) => {
