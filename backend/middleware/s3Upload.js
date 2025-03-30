@@ -3,33 +3,26 @@ const multerS3 = require('multer-s3');
 const { S3Client } = require('@aws-sdk/client-s3');
 const path = require('path');
 
-// Check for required environment variables
-if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
-  console.error('Missing AWS credentials in environment variables');
-}
-
-// Debug logging (redacted for security)
+// Debug logging
 console.log('S3 Middleware - AWS Region:', process.env.AWS_REGION);
 console.log('S3 Middleware - AWS Bucket:', process.env.AWS_BUCKET_NAME);
-console.log('S3 Middleware - AWS Access Key configured:', !!process.env.AWS_ACCESS_KEY_ID);
-console.log('S3 Middleware - AWS Secret Key configured:', !!process.env.AWS_SECRET_ACCESS_KEY);
 
-// Create S3 client with clean configuration
+// Create S3 client
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID.trim(),
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY.trim()
-  },
-  forcePathStyle: false  // This should be false for standard S3 URLs
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  }
 });
 
-// Configure upload with error handling
+// Configure upload - IMPORTANT: REMOVE the acl parameter!
 const upload = multer({
   storage: multerS3({
     s3: s3Client,
     bucket: process.env.AWS_BUCKET_NAME,
     contentType: multerS3.AUTO_CONTENT_TYPE,
+    // REMOVE THIS LINE: acl: 'public-read',
     metadata: function (req, file, cb) {
       cb(null, { fieldname: file.fieldname });
     },
@@ -37,7 +30,6 @@ const upload = multer({
       try {
         let folder = 'general';
         
-        // Determine folder based on field name
         if (file.fieldname === 'mainImage') {
           folder = 'condos/main';
         } else if (file.fieldname === 'galleryImages') {
@@ -58,7 +50,7 @@ const upload = multer({
       }
     }
   }),
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
     if (allowedTypes.includes(file.mimetype)) {

@@ -83,22 +83,23 @@ router.post('/upload/profile-picture', protect, (req, res, next) => {
             return res.status(400).json({ message: 'No file uploaded' });
         }
         
-        // Check if req.file has the expected properties
-        if (!req.file.location) {
-            console.error('File uploaded but no location returned from S3');
-            return res.status(500).json({ 
-                message: 'S3 upload failed - no file URL returned',
-                file: req.file 
-            });
-        }
-        
         const user = await User.findById(req.user._id);
         if (!user) {
             console.log('User not found:', req.user._id);
             return res.status(404).json({ message: 'User not found' });
         }
         
-        const fileUrl = req.file.location;
+        // Get file URL from S3
+        let fileUrl;
+        
+        if (req.file.location) {
+            // If location is available (original behavior)
+            fileUrl = req.file.location;
+        } else {
+            // Construct the URL from key if location is not available
+            fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${req.file.key}`;
+        }
+        
         console.log('File uploaded to S3:', fileUrl);
         
         user.profilePicture = fileUrl;
