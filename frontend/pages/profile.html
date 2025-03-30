@@ -411,18 +411,14 @@
             try {
                 // Show loading state
                 imageElement.style.opacity = '0.5';
-                const loadingIndicator = document.createElement('div');
-                loadingIndicator.className = 'spinner-border text-success position-absolute';
-                loadingIndicator.style.top = '50%';
-                loadingIndicator.style.left = '50%';
-                loadingIndicator.style.transform = 'translate(-50%, -50%)';
-                imageElement.parentNode.appendChild(loadingIndicator);
 
                 // Create and send form data
                 const formData = new FormData();
                 formData.append('profilePicture', file);
 
-                const response = await fetch(`${api.API_URL}/users/upload/profile-picture`, {
+                console.log('Uploading to:', `${window.API_URL}/users/upload/profile-picture`);
+
+                const response = await fetch(`${window.API_URL}/users/upload/profile-picture`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -431,17 +427,18 @@
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Upload failed');
+                    const errorText = await response.text();
+                    console.error('Server response:', response.status, errorText);
+                    throw new Error(`Upload failed with status ${response.status}: ${errorText}`);
                 }
 
-                // Process response
                 const data = await response.json();
+                console.log('Upload success:', data);
 
                 // Update image on page
                 imageElement.src = data.fileUrl;
 
-                // IMPORTANT: Update user in localStorage
+                // Update user in localStorage
                 const user = JSON.parse(localStorage.getItem('user'));
                 if (user) {
                     user.profilePicture = data.fileUrl;
@@ -456,10 +453,6 @@
             } finally {
                 // Clean up loading state
                 imageElement.style.opacity = '1';
-                const loadingIndicator = imageElement.parentNode.querySelector('.spinner-border');
-                if (loadingIndicator) {
-                    loadingIndicator.remove();
-                }
             }
         }
 

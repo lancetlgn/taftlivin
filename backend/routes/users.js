@@ -64,33 +64,7 @@ if (!fs.existsSync(profilePicsDir)) {
     fs.mkdirSync(profilePicsDir, { recursive: true });
 }
 
-// Update user profile
-router.put('/profile', protect, async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    
-    if (req.body.bio !== undefined) {
-      user.bio = req.body.bio;
-    }
-    
-    await user.save();
-    
-    res.json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      userType: user.userType,
-      bio: user.bio
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
+
 
 // Change password
 router.post('/change-password', protect, async (req, res) => {

@@ -79,6 +79,48 @@ app.post('/api/test-s3-upload', s3Upload.single('testImage'), (req, res) => {
   }
 });
 
+// Add these debug endpoints
+app.get('/api/debug/s3-config', (req, res) => {
+  res.json({
+    region: process.env.AWS_REGION,
+    bucketName: process.env.AWS_BUCKET_NAME,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID ? "Configured (first chars: " + 
+      process.env.AWS_ACCESS_KEY_ID.substring(0, 3) + "...)" : "Not configured",
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ? "Configured (length: " + 
+      process.env.AWS_SECRET_ACCESS_KEY.length + ")" : "Not configured"
+  });
+});
+
+// Simple test S3 upload endpoint
+app.post('/api/test-s3-upload', upload.single('testImage'), (req, res) => {
+  try {
+    console.log('Test upload request received');
+    console.log('File:', req.file);
+    
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+    
+    console.log('S3 location:', req.file.location);
+    
+    res.json({ 
+      success: true,
+      fileUrl: req.file.location,
+      fileDetails: {
+        fieldname: req.file.fieldname,
+        key: req.file.key,
+        bucket: req.file.bucket,
+        size: req.file.size,
+        mimetype: req.file.mimetype,
+        encoding: req.file.encoding
+      }
+    });
+  } catch (error) {
+    console.error('Test S3 upload error:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Start server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

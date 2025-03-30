@@ -1,5 +1,5 @@
 window.API_URL = window.API_URL || 'https://taftlivin-api.onrender.com/api';
-const auth = {
+window.auth = window.auth || {
     // Register a new user
     register: async (userData) => {
       try {
