@@ -326,135 +326,60 @@
         }
         
        
-        async function updateProfile(event) {
-            event.preventDefault();
-            
-            try {
-               
-                const bio = document.getElementById('bio').value;
-                
-                
-                const profileData = { bio };
-            
-                const token = localStorage.getItem('token');
-                const profileResponse = await fetch(`${api.API_URL}/users/profile`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(profileData)
-                });
-                
-                if (!profileResponse.ok) {
-                    throw new Error('Failed to update profile');
-                }
-                
-           
-                const currentPassword = document.getElementById('currentPassword')?.value;
-                const newPassword = document.getElementById('newPassword')?.value;
-                const confirmPassword = document.getElementById('confirmPassword')?.value;
-                
-                if (currentPassword && newPassword && confirmPassword) {
-                    if (newPassword !== confirmPassword) {
-                        showToast('Error', 'New passwords do not match!', 'danger');
-                        return;
-                    }
-                    
-                    const passwordResponse = await fetch(`${api.API_URL}/users/change-password`, {
+        async function uploadProfileImage(e) {
+                if (!e.target.files || e.target.files.length === 0) return;
+
+                const file = e.target.files[0];
+                const imageElement = document.getElementById('profile-image');
+
+                try {
+                    // Show loading state
+                    imageElement.style.opacity = '0.5';
+
+                    // Create and send form data
+                    const formData = new FormData();
+                    formData.append('profilePicture', file);
+
+                    console.log('Uploading file:', file.name, 'Size:', file.size, 'Type:', file.type);
+
+                    // FIXED: Added method and headers
+                    const response = await fetch(`${api.API_URL}/users/upload/profile-picture`, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
                         },
-                        body: JSON.stringify({
-                            currentPassword,
-                            newPassword
-                        })
+                        body: formData
                     });
-                    
-                    if (!passwordResponse.ok) {
-                        const errorData = await passwordResponse.json();
-                        throw new Error(errorData.message || 'Failed to change password');
+
+                    console.log('Response status:', response.status);
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('Server response:', errorText);
+                        throw new Error(`Upload failed with status ${response.status}: ${errorText}`);
                     }
-                    
-                    
-                    document.getElementById('currentPassword').value = '';
-                    document.getElementById('newPassword').value = '';
-                    document.getElementById('confirmPassword').value = '';
-                    
-                   
-                    const passwordCollapse = bootstrap.Collapse.getInstance(document.getElementById('passwordSection'));
-                    if (passwordCollapse) {
-                        passwordCollapse.hide();
+
+                    const data = await response.json();
+                    console.log('Upload success:', data);
+
+                    // Update image on page
+                    imageElement.src = data.fileUrl;
+
+                    // Update user in localStorage
+                    const user = JSON.parse(localStorage.getItem('user'));
+                    if (user) {
+                        user.profilePicture = data.fileUrl;
+                        localStorage.setItem('user', JSON.stringify(user));
                     }
-                    
-                    showToast('Success', 'Profile and password updated successfully!', 'success');
-                } else {
-                    showToast('Success', 'Profile updated successfully!', 'success');
+
+                    showToast('Success', 'Profile picture updated successfully', 'success');
+                } catch (error) {
+                    console.error('Error uploading profile picture:', error);
+                    showToast('Error', error.message, 'danger');
+                } finally {
+                    imageElement.style.opacity = '1';
                 }
-                
-            } catch (error) {
-                console.error('Error updating profile:', error);
-                showToast('Error', 'Error updating profile: ' + error.message, 'danger');
             }
-        }
-        
-       
-        // Update the uploadProfileImage function:
-        async function uploadProfileImage(e) {
-            if (!e.target.files || e.target.files.length === 0) return;
-
-            const file = e.target.files[0];
-            const imageElement = document.getElementById('profile-image');
-
-            try {
-                // Show loading state
-                imageElement.style.opacity = '0.5';
-
-                // Create and send form data
-                const formData = new FormData();
-                formData.append('profilePicture', file);
-
-                console.log('Uploading to:', `${window.API_URL}/users/upload/profile-picture`);
-
-                const response = await fetch(`${api.API_URL}/users/upload/profile-picture`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('Server response:', response.status, errorText);
-                    throw new Error(`Upload failed with status ${response.status}: ${errorText}`);
-                }
-
-                const data = await response.json();
-                console.log('Upload success:', data);
-
-                // Update image on page
-                imageElement.src = data.fileUrl;
-
-                // Update user in localStorage
-                const user = JSON.parse(localStorage.getItem('user'));
-                if (user) {
-                    user.profilePicture = data.fileUrl;
-                    localStorage.setItem('user', JSON.stringify(user));
-                }
-
-                showToast('Success', 'Profile picture updated successfully', 'success');
-
-            } catch (error) {
-                console.error('Error uploading profile picture:', error);
-                showToast('Error', error.message, 'danger');
-            } finally {
-                // Clean up loading state
-                imageElement.style.opacity = '1';
-            }
-        }
 
         function showToast(title, message, type = 'success') {
     try {

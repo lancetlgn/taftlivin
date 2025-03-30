@@ -4,7 +4,9 @@ const User = require('../models/User');
 const { protect } = require('../middleware/auth');
 const upload = require('../middleware/s3Upload');
 const path = require('path');
+const s3Upload = require('../middleware/s3Upload');
 const fs = require('fs');
+
 
 // Update user profile
 router.put('/profile', protect, async (req, res) => {
@@ -89,42 +91,50 @@ router.post('/change-password', protect, async (req, res) => {
   }
 });
 
-// Update your profile picture upload route
-router.post('/upload/profile-picture', protect, upload.single('profilePicture'), async (req, res) => {
-  try {
-    console.log('Profile picture upload handler called');
-    console.log('Request file:', req.file);
-    
-    if (!req.file) {
-      console.log('No file in request');
-      return res.status(400).json({ message: 'No file uploaded' });
+// Profile picture upload route
+router.post('/upload/profile-picture', protect, (req, res, next) => {
+    console.log('Profile picture upload endpoint accessed');
+    console.log('Authorization header present:', !!req.headers.authorization);
+    next();
+}, s3Upload.single('profilePicture'), async (req, res) => {
+    try {
+        console.log('S3 middleware completed');
+        console.log('req.file:', req.file);
+        
+        if (!req.file) {
+            console.log('No file uploaded');
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+        
+        // Check if req.file has the expected properties
+        if (!req.file.location) {
+            console.error('File uploaded but no location returned from S3');
+            return res.status(500).json({ 
+                message: 'S3 upload failed - no file URL returned',
+                file: req.file 
+            });
+        }
+        
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            console.log('User not found:', req.user._id);
+            return res.status(404).json({ message: 'User not found' });
+        }
+        
+        const fileUrl = req.file.location;
+        console.log('File uploaded to S3:', fileUrl);
+        
+        user.profilePicture = fileUrl;
+        await user.save();
+        
+        res.json({ 
+            fileUrl, 
+            message: 'Profile picture updated successfully' 
+        });
+    } catch (error) {
+        console.error('Error in profile picture upload handler:', error);
+        res.status(500).json({ error: true, message: error.message });
     }
-    
-    const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    
-    // S3 files have the URL in the location property
-    const fileUrl = req.file.location;
-    console.log('File uploaded to S3, URL:', fileUrl);
-    
-    if (!fileUrl) {
-      console.log('No file URL returned from S3');
-      return res.status(500).json({ message: 'File upload failed - no URL returned' });
-    }
-    
-    user.profilePicture = fileUrl;
-    await user.save();
-    
-    res.json({ 
-      fileUrl, 
-      message: 'Profile picture updated successfully' 
-    });
-  } catch (error) {
-    console.error('Error in profile picture upload:', error);
-    res.status(500).json({ message: error.message });
-  }
 });
 
 module.exports = router;
