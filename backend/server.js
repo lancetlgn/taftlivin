@@ -35,6 +35,15 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
+app.get('/api/test-db', async (req, res) => {
+  try {
+    const condos = await mongoose.connection.db.collection('condos').find({}).limit(1).toArray();
+    res.json({ status: 'success', data: condos });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
+});
+
 // Start server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
