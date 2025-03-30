@@ -309,8 +309,12 @@
                 }
                 
                 
-                if (user.profilePicture && user.profilePicture !== 'default.jpg') {
+                if (user.profilePicture) {
+                    console.log('User profile picture from API:', user.profilePicture);
                     displayProfileImage(user.profilePicture);
+                } else {
+                    console.log('No profile picture found, using default');
+                    displayProfileImage(null);
                 }
                 
               
@@ -325,6 +329,74 @@
             }
         }
         
+    // Add this function right before uploadProfileImage
+        async function updateProfile(e) {
+            e.preventDefault();
+
+            const bioText = document.getElementById('bio').value;
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            try {
+                // Update bio
+                await fetch(`${api.API_URL}/users/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ bio: bioText })
+                }).then(response => {
+                    if (!response.ok) throw new Error('Failed to update profile');
+                    return response.json();
+                });
+
+                // Check if password fields are filled
+                if (currentPassword && newPassword && confirmPassword) {
+                    if (newPassword !== confirmPassword) {
+                        throw new Error('New passwords do not match');
+                    }
+
+                    // Update password
+                    await fetch(`${api.API_URL}/users/change-password`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
+                        body: JSON.stringify({
+                            currentPassword,
+                            newPassword
+                        })
+                    }).then(response => {
+                        if (!response.ok) throw new Error('Failed to change password');
+                        return response.json();
+                    });
+
+                    // Clear password fields
+                    document.getElementById('currentPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+
+                    // Collapse the password section
+                    const bsCollapse = bootstrap.Collapse.getInstance(document.getElementById('passwordSection'));
+                    if (bsCollapse) bsCollapse.hide();
+                }
+
+                // Update user in localStorage with new bio
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user) {
+                    user.bio = bioText;
+                    localStorage.setItem('user', JSON.stringify(user));
+                }
+
+                showToast('Success', 'Profile updated successfully', 'success');
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                showToast('Error', error.message, 'danger');
+            }
+        }
        
         async function uploadProfileImage(e) {
                 if (!e.target.files || e.target.files.length === 0) return;
@@ -441,13 +513,29 @@
 
     function displayProfileImage(imageUrl) {
         const profileImg = document.getElementById('profile-image');
-        if (profileImg) {
-            if (imageUrl) {
-                // AWS S3 URLs are already absolute URLs
+        if (!profileImg) return;
+
+        // Check if valid image URL
+        if (imageUrl && typeof imageUrl === 'string') {
+            // Handle different URL formats
+            if (imageUrl.startsWith('http')) {
+                // Direct URL (like S3)
+                profileImg.src = imageUrl;
+            } else if (imageUrl.startsWith('../')) {
+                // Relative path
+                profileImg.src = imageUrl;
+            } else if (imageUrl.startsWith('/')) {
+                // Root-relative path
                 profileImg.src = imageUrl;
             } else {
-                profileImg.src = '../images/default-avatar.png';
+                // Just a filename, assume it's in images directory
+                profileImg.src = `../images/${imageUrl}`;
             }
+            console.log('Set profile image to:', profileImg.src);
+        } else {
+            // Default avatar
+            profileImg.src = '../images/default-avatar.png';
+            console.log('Using default profile image');
         }
     }
 
