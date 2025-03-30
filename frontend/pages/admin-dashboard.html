@@ -1165,7 +1165,7 @@ document.getElementById('addCondoMainImageFile').addEventListener('change', asyn
         formData.append('mainImage', file);
         
         // Send request - note we're not setting Content-Type header
-        const response = await fetch(`${window.location.origin}/api/admin/upload/condo/main`, {
+        const response = await fetch(`${api.API_URL}/admin/upload/condo/main`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -1228,7 +1228,7 @@ document.getElementById('addCondoGalleryFiles').addEventListener('change', async
             formData.append('galleryImages', file);
         });
         
-        const response = await fetch(`${window.location.origin}/api/admin/upload/condo/gallery`, {
+        const response = await fetch(`${api.API_URL}/admin/upload/condo/gallery`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -2164,6 +2164,20 @@ document.getElementById('editCondoForm').addEventListener('submit', async functi
             loadForumTopics();
         }
     });
+
+    function getImageUrl(url) {
+        if (!url) return '../images/default-condo.jpg';
+        // If it's already a full URL (from S3), return it as is
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+            return url;
+        }
+        // For relative URLs, prepend API base URL
+        return `${api.API_URL}${url}`;
+    }
+
+    // Then update image display code like:
+    const imgElement = document.createElement('img');
+    imgElement.src = getImageUrl(condo.image);
     
 </script>
 

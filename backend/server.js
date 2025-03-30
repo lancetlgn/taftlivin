@@ -60,6 +60,25 @@ app.get('/api/test-db', async (req, res) => {
   }
 });
 
+const s3Upload = require('./middleware/s3Upload');
+
+app.post('/api/test-s3-upload', s3Upload.single('testImage'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+    
+    res.json({ 
+      success: true,
+      fileUrl: req.file.location,
+      fileInfo: req.file
+    });
+  } catch (error) {
+    console.error('Test S3 upload error:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Start server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
