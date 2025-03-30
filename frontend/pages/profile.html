@@ -418,7 +418,7 @@
 
                 console.log('Uploading to:', `${window.API_URL}/users/upload/profile-picture`);
 
-                const response = await fetch(`${window.API_URL}/users/upload/profile-picture`, {
+                const response = await fetch(`${api.API_URL}/users/upload/profile-picture`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`

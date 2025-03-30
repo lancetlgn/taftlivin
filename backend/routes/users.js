@@ -92,7 +92,11 @@ router.post('/change-password', protect, async (req, res) => {
 // Update your profile picture upload route
 router.post('/upload/profile-picture', protect, upload.single('profilePicture'), async (req, res) => {
   try {
+    console.log('Profile picture upload handler called');
+    console.log('Request file:', req.file);
+    
     if (!req.file) {
+      console.log('No file in request');
       return res.status(400).json({ message: 'No file uploaded' });
     }
     
@@ -101,9 +105,14 @@ router.post('/upload/profile-picture', protect, upload.single('profilePicture'),
       return res.status(404).json({ message: 'User not found' });
     }
     
-    // Make sure to use location for AWS S3 URLs
-    console.log('S3 upload file info:', req.file); // Log to debug
+    // S3 files have the URL in the location property
     const fileUrl = req.file.location;
+    console.log('File uploaded to S3, URL:', fileUrl);
+    
+    if (!fileUrl) {
+      console.log('No file URL returned from S3');
+      return res.status(500).json({ message: 'File upload failed - no URL returned' });
+    }
     
     user.profilePicture = fileUrl;
     await user.save();
@@ -113,10 +122,9 @@ router.post('/upload/profile-picture', protect, upload.single('profilePicture'),
       message: 'Profile picture updated successfully' 
     });
   } catch (error) {
-    console.error('Error uploading profile picture:', error);
+    console.error('Error in profile picture upload:', error);
     res.status(500).json({ message: error.message });
   }
 });
-
 
 module.exports = router;

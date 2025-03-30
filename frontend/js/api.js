@@ -422,6 +422,8 @@ const admin = {
 
 // Export the API
 window.api = { 
+  API_URL: window.API_URL, 
+  auth: window.auth,
   API_URL, 
   auth, 
   admin, 
