@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000/api';
+const API_URL = 'https://taftlivin-api.onrender.com';
 
 const auth = {
     // Register a new user

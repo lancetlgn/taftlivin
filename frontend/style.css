@@ -76,18 +76,21 @@ main {
     align-items: center;
 }
 
-/* Remove or comment out any .user-info styles if they exist */
-
 /* Background and Images */
 #bg-image-container {
     background: url("images/ls-bg-blur.png");
     background-size: cover;
     background-position: center;
+    height: 50vh;
     width: 100%;
+    margin-top: -0px;
+    padding-top: 150px;
+    margin-bottom: 0;
+    border-bottom: 0;
 }
 
 .bd-placeholder-img {
-    font-size: 1.125rem;
+    font-size: 1.5rem;
     text-anchor: middle;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -491,3 +494,4 @@ footer {
     /* Prevents footer from shrinking */
     width: 100%;
 }
+
