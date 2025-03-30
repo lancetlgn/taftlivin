@@ -91,35 +91,6 @@ app.get('/api/debug/s3-config', (req, res) => {
   });
 });
 
-// Simple test S3 upload endpoint
-app.post('/api/test-s3-upload', upload.single('testImage'), (req, res) => {
-  try {
-    console.log('Test upload request received');
-    console.log('File:', req.file);
-    
-    if (!req.file) {
-      return res.status(400).json({ message: 'No file uploaded' });
-    }
-    
-    console.log('S3 location:', req.file.location);
-    
-    res.json({ 
-      success: true,
-      fileUrl: req.file.location,
-      fileDetails: {
-        fieldname: req.file.fieldname,
-        key: req.file.key,
-        bucket: req.file.bucket,
-        size: req.file.size,
-        mimetype: req.file.mimetype,
-        encoding: req.file.encoding
-      }
-    });
-  } catch (error) {
-    console.error('Test S3 upload error:', error);
-    res.status(500).json({ message: error.message });
-  }
-});
 
 // Start server
 const PORT = process.env.PORT || 8000;
