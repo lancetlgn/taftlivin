@@ -13,13 +13,29 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: ['https://taftlivin.onrender.com', 'http://localhost:8000'],
-  credentials: true
+  origin: [
+    'https://taftlivin.onrender.com',
+    'https://taftlivin.netlify.app',
+    'https://www.taftlivin.onrender.com',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, '../frontend')));
+
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'API is running',
+    mongoDBConnected: !!mongoose.connection.readyState
+  });
+});
 
 // routes
 app.use('/api/auth', require('./routes/auth'));
