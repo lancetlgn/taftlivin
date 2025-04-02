@@ -495,3 +495,15 @@ footer {
     width: 100%;
 }
 
+#dropdownFilterBtn {
+
+    margin-left: 5px;
+    border-radius: 5px;
+
+}
+
+.dropdown-item.filter:active {
+    background-color: #198754 !important;
+    color: white !important;
+}
+
