@@ -16,13 +16,12 @@ const s3Client = new S3Client({
   }
 });
 
-// Configure upload - IMPORTANT: REMOVE the acl parameter!
 const upload = multer({
   storage: multerS3({
     s3: s3Client,
     bucket: process.env.AWS_BUCKET_NAME,
     contentType: multerS3.AUTO_CONTENT_TYPE,
-    // REMOVE THIS LINE: acl: 'public-read',
+  
     metadata: function (req, file, cb) {
       cb(null, { fieldname: file.fieldname });
     },
