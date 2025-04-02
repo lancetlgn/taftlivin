@@ -10,7 +10,6 @@
     <script src="../js/api.js"></script>
     <script src="../js/auth-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Add this in the head section, right before the closing </head> tag -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
 
@@ -470,7 +469,6 @@
                 }
             }
 
-       // Replace your entire showToast function with this:
         function showToast(title, message, type = 'success') {
             // Map toast types to SweetAlert icons
             const iconType = {
@@ -543,9 +541,34 @@ async function loadUserReviews() {
     }
 }
 
+function generateStarRating(rating) {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+    let starsHtml = '<div class="d-inline-flex align-items-center">';
+
+    for (let i = 0; i < fullStars; i++) {
+        starsHtml += '<i class="fas fa-star text-warning"></i>';
+    }
+
+    if (hasHalfStar) {
+        starsHtml += '<i class="fas fa-star-half-alt text-warning"></i>';
+    }
+
+    for (let i = 0; i < emptyStars; i++) {
+        starsHtml += '<i class="far fa-star text-warning"></i>';
+    }
+
+    starsHtml += `<span class="ms-2 text-dark fw-bold">${rating.toFixed(1)}</span>`;
+    starsHtml += '</div>';
+
+    return starsHtml;
+}
+
 function displayUserReviews(reviews) {
     const reviewsContainer = document.getElementById('reviews-section');
-    reviewsContainer.innerHTML = ''; // Clear previous content
+    reviewsContainer.innerHTML = '';
 
     if (reviews.length === 0) {
         reviewsContainer.innerHTML = '<p class="text-muted">You have not posted any reviews yet.</p>';
@@ -554,19 +577,19 @@ function displayUserReviews(reviews) {
 
     reviews.forEach(review => {
         const reviewCard = `
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">${review.condo?.name || 'Unknown Condo'}</h5>
-                    <p class="card-text"><strong>Address:</strong> ${review.condo?.address || 'N/A'}</p>
-                    <p class="card-text"><strong>Rating:</strong> ${'⭐'.repeat(review.rating)}</p>
-                    <p class="card-text">${review.comment || ''}</p>
-                </div>
-                <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-end">
-                    <small class="text-muted">Posted on: ${new Date(review.datePosted).toLocaleDateString()}</small>
-                    <a href="/pages/condo-page.html?id=${review.condo?._id}" class="btn btn-success">View</a>
-                </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">${review.condo?.name || 'Unknown Condo'}</h5>
+                <p class="card-text"><strong>Address:</strong> ${review.condo?.address || 'N/A'}</p>
+                <p class="card-text"><strong>Rating:</strong> ${generateStarRating(review.rating)}</p>
+                <p class="card-text">${review.comment || ''}</p>
             </div>
-        `;
+            <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-end">
+                <small class="text-muted">Posted on: ${new Date(review.datePosted).toLocaleDateString()}</small>
+                <a href="/pages/condo-page.html?id=${review.condo?._id}" class="btn btn-success">View</a>
+            </div>
+        </div>
+    `;
         reviewsContainer.innerHTML += reviewCard;
     });
 }
