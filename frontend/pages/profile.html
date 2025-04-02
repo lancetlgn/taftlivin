@@ -205,6 +205,12 @@
                 </div>
             </div>
         </div>
+        <div class="mt-5">
+            <h4>Your Reviews</h4>
+            <div id="reviews-section">
+                <p class="text-muted">Loading your reviews...</p>
+            </div>
+        </div>
     </main>
 
 
@@ -506,6 +512,54 @@
             console.log('Using default profile image');
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+    loadUserReviews();
+});
+
+async function loadUserReviews() {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Not authenticated');
+
+        const response = await fetch('/api/reviews/user', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        const data = await response.json();
+        if (!data.success) throw new Error('Failed to fetch reviews');
+
+        displayUserReviews(data.reviews);
+    } catch (error) {
+        console.error('Error loading reviews:', error);
+        document.getElementById('reviews-section').innerHTML = '<p class="text-danger">Error loading reviews.</p>';
+    }
+}
+
+function displayUserReviews(reviews) {
+    const reviewsContainer = document.getElementById('reviews-section');
+    reviewsContainer.innerHTML = ''; // Clear previous content
+
+    if (reviews.length === 0) {
+        reviewsContainer.innerHTML = '<p class="text-muted">You have not posted any reviews yet.</p>';
+        return;
+    }
+
+    reviews.forEach(review => {
+        const reviewCard = `
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">${review.condo?.name || 'Unknown Condo'}</h5>
+                    <p class="card-text"><strong>Address:</strong> ${review.condo?.address || 'N/A'}</p>
+                    <p class="card-text"><strong>Rating:</strong> ${'⭐'.repeat(review.rating)}</p>
+                    <p class="card-text">${review.comment || 'No comment provided.'}</p>
+                    <small class="text-muted">Posted on: ${new Date(review.datePosted).toLocaleDateString()}</small>
+                </div>
+            </div>
+        `;
+        reviewsContainer.innerHTML += reviewCard;
+    });
+}
 
     </script>
 
