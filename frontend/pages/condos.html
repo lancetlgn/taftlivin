@@ -77,6 +77,18 @@
                 <button class="btn btn-success rounded-end" type="button" id="searchBtn">
                     <i class="fas fa-search"></i>
                 </button>
+                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownFilterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                    Filter by
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownFilterButton">
+                    <li><button class="dropdown-item filter" id="filterByName">Name</button></li>
+                    <li><button class="dropdown-item filter" id="filterByReviewsMost">Most Reviews</button></li>
+                    <li><button class="dropdown-item filter" id="filterByReviewsLeast">Least Reviews</button></li>
+                    <li><button class="dropdown-item filter" id="filterByDistanceMost">Farthest Distance</button></li>
+                    <li><button class="dropdown-item filter" id="filterByDistanceLeast">Nearest Distance</button></li>
+                    <li><button class="dropdown-item filter" id="filterByRatingMost">Highest Rating</button></li>
+                    <li><button class="dropdown-item filter" id="filterByRatingLeast">Lowest Rating</button></li>
+                </ul>
                 </div>
             </div>
 
@@ -123,6 +135,7 @@
         // Current page and search term
         let currentPage = 1;
         let currentSearchTerm = '';
+        let filter = 1;
 
         // Load condos on DOM content loaded
         document.addEventListener('DOMContentLoaded', function() {
@@ -150,6 +163,55 @@
                 currentSearchTerm = searchTerm;
                 currentPage = 1;
                 loadCondos();
+            });
+
+            document.getElementById('filterByName').addEventListener('click', function() {
+
+                filter = 1;
+                loadCondos();
+
+            });
+
+            document.getElementById('filterByReviewsMost').addEventListener('click', function() {
+
+                filter = 2;
+                loadCondos();
+
+            });
+
+            document.getElementById('filterByReviewsLeast').addEventListener('click', function() {
+
+                filter = 3;
+                loadCondos();
+
+            });
+
+            document.getElementById('filterByDistanceMost').addEventListener('click', function() {
+
+                filter = 4;
+                loadCondos();
+
+            });
+
+            document.getElementById('filterByDistanceLeast').addEventListener('click', function() {
+
+                filter = 5;
+                loadCondos();
+
+            });
+
+            document.getElementById('filterByRatingMost').addEventListener('click', function() {
+
+                filter = 6;
+                loadCondos();
+
+            });
+
+            document.getElementById('filterByRatingLeast').addEventListener('click', function() {
+
+                filter = 7;
+                loadCondos();
+
             });
             
             // Setup search on Enter key
@@ -288,6 +350,47 @@
                 }
             }
 
+            // Function to return sorted condos depending on filter
+        function sortCondos(condos){
+
+            if (filter == 1){
+
+                return condos.sort((a, b) => a.name.localeCompare(b.name));
+
+            }
+            if (filter == 2){
+
+                return condos.sort((a, b) => b.reviewCount - a.reviewCount);
+
+            }
+            if (filter == 3){
+
+                return condos.sort((a, b) => a.reviewCount - b.reviewCount);
+
+            }
+            if (filter == 4){
+
+                return condos.sort((a, b) => b.distance - a.distance);
+
+            }
+            if (filter == 5){
+
+                return condos.sort((a, b) => a.distance - b.distance);
+
+            }
+            if (filter == 6){
+
+                return condos.sort((a, b) => b.averageRating - a.averageRating);
+
+            }
+            if (filter == 7){
+
+                return condos.sort((a, b) => a.averageRating - b.averageRating);
+
+            }
+
+        }
+
         // Function to display condos in the UI
         function displayCondos(condos) {
             const dormList = document.getElementById('dormList');
@@ -305,6 +408,9 @@
             dormList.innerHTML = '';
             
             // Add each condo
+
+            condos = sortCondos(condos);
+            
             condos.forEach(condo => {
                 const condoItem = document.createElement('div');
                 condoItem.className = 'dorm-item d-flex align-items-center';
