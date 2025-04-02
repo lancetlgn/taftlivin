@@ -14,6 +14,13 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
 
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 10px;
+        }
+
         main.container {
             padding-bottom: 100px;
         }
@@ -552,8 +559,11 @@ function displayUserReviews(reviews) {
                     <h5 class="card-title">${review.condo?.name || 'Unknown Condo'}</h5>
                     <p class="card-text"><strong>Address:</strong> ${review.condo?.address || 'N/A'}</p>
                     <p class="card-text"><strong>Rating:</strong> ${'⭐'.repeat(review.rating)}</p>
-                    <p class="card-text">${review.comment || 'No comment provided.'}</p>
+                    <p class="card-text">${review.comment || ''}</p>
+                </div>
+                <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-end">
                     <small class="text-muted">Posted on: ${new Date(review.datePosted).toLocaleDateString()}</small>
+                    <a href="/pages/condo-page.html?id=${review.condo?._id}" class="btn btn-success">View</a>
                 </div>
             </div>
         `;
