@@ -527,9 +527,15 @@ async function loadUserReviews() {
         const token = localStorage.getItem('token');
         if (!token) throw new Error('Not authenticated');
 
-        const response = await fetch('/api/reviews/user', {
+        const response = await fetch(`${api.API_URL}/reviews/user`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Server response:', response.status, errorText);
+            throw new Error(`Failed with status ${response.status}`);
+        }
 
         const data = await response.json();
         if (!data.success) throw new Error('Failed to fetch reviews');
@@ -537,7 +543,7 @@ async function loadUserReviews() {
         displayUserReviews(data.reviews);
     } catch (error) {
         console.error('Error loading reviews:', error);
-        document.getElementById('reviews-section').innerHTML = '<p class="text-danger">Error loading reviews.</p>';
+        document.getElementById('reviews-section').innerHTML = `<p class="text-danger">Error loading reviews: ${error.message}</p>`;
     }
 }
 
